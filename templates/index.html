@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+    <title>FLASK</title>
+</head>
+<body>
+    <div class="col1"></div>
+    <div class="col2">
+        <h1>Welcome back!</h1>
+        <h2>Sistema de Gestión de Alumnos</h2>
+        <form action="{{ url_for('respuesta') }}" method="post">
+            <p class="items-name">Correo electronico</p>
+            <input type="text" name="email" autocomplete="off" placeholder="Introduce tu email" required>
+            <p class="items-name">Contraseña</p>
+            <input type="text" name="password" autocomplete="off" placeholder="Introduce tu contraseña" required>
+            <div style="width: 100%; display: flex; justify-content: end;">
+                <input type="submit" class="button1" value="Iniciar sesion">
+            </div>
+        </form>
+    </div>
+</body>
+</html>
