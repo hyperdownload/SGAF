@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+    <title>Iniciar sesion</title>
+</head>
+<body>
+    <div class="col1">
+    </div>
+    <div class="col2">
+        <h1 style="margin: 10px 0;">Bienvenido de nuevo!</h1>
+        <h2 style="color: var(--negro);">Sistema de Gestión de Alumnos</h2>
+        <form action="{{ url_for('login') }}" method="post">
+            <p class="items-name">Correo electronico</p>
+            <input type="email" class="input-style" name="email" autocomplete="off" placeholder="" required>
+            <p class="items-name">Contraseña</p>
+            <input type="password" class="input-style" name="password" autocomplete="off" placeholder="" required>
+            <div style="width: 100%; display: flex; align-items: flex-end; justify-content: end; flex-direction: column;">
+                <a href="{{ url_for('forgot_password') }}" style="margin: 20px 0 0;">Recuperar contraseña</a>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div style="text-align: center; width: 100%; margin: 12px 0 0;">
+                            <p style="color: var(--rojo); text-align: center;">{{ message }}</p>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <input type="submit" style="width: 100%;" class="button1" value="Iniciar sesion">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -5,15 +5,16 @@
     text-decoration: none;
 }
 :root{
-    --background:#fafafa;
+    --background:#FBF8F3;
     --amarillo:#fabe25;
     --azul:#0080ff;
     --rojo:#e9353f;
     --verde:#33d072;
     --verde2:#4bbf7a;
-    --negro:#252525;
+    --negro2: #232323;
+    --negro:#3d3d3d;
     --gris:#dcdcdc;
-    --gris1:#f1f0ef;
+    --gris1:#edebeb;
 
 }
 .plus-jakarta {
@@ -38,14 +39,35 @@ button{
     padding: 12px 24px;
     border-radius: 10px;
     border: none;
-    background-color: var(--verde);
+    background-color: var(--negro2);
     color: #ffff;
-    transition: all 0.5s ease;
+    transition: all 0.2s ease;
     font-family: 'Plus Jakarta Sans';
     font-size: 14px;
 }
 .button1:hover{
-    background-color: var(--verde2);
+    background-color: var(--negro);
+}
+.button2{
+    width: fit-content;
+    margin-top: 20px;
+    height: 40px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: 2px solid var(--negro);
+    background-color: var(--background);
+    color: var(--negro);
+    transition: all 0.2s ease;
+    font-family: 'Plus Jakarta Sans';
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.button2:hover{
+    background-color: var(--gris);
+    border: 2px solid var(--gris);
 }
 
 body{
@@ -57,13 +79,15 @@ body{
 }
 .col1{
     width: 55%;
+    margin: 20px;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--verde);
+    background-color: var(--negro2);
 }
 .col2{
-    box-shadow: #919eab4d 0 0 2px, #919eab1f 0 12px 24px -4px;
+    /* box-shadow: #919eab4d 0 0 2px, #919eab1f 0 12px 24px -4px; */
     width: 45%;
     display: flex;
     align-items: center;
@@ -75,22 +99,23 @@ body{
         margin: 5px 0 0;
     }
 
-    form input[type="text"], form input[type="tel"] {
+    form input.input-style{
         width: 100%;
         height: 50px;
+        background-color: var(--background);
         color: var(--negro);
         border-style: none;
         border-radius: 10px;
-        border: 1px solid #d6d6d6;
+        border: 2px solid #d2d0d0;
         padding: 15px;
         font-family: 'Plus Jakarta Sans';
     }
     
-    form input[type="text"]:hover{
-        border: 2px solid var(--verde);
+    form input.input-style:hover{
+        border: 2px solid var(--negro2);
     }
-    form input[type="text"]:focus {
-        border: 2px solid var(--verde);
+    form input.input-style:focus {
+        border: 2px solid var(--negro2);
         outline: none;
     }
     .items-name{
@@ -101,7 +126,14 @@ body{
         /* color: #2A3547; */
         margin: 20px 0 10px;
     }
-    p{
-        margin: 35px 0;
-    }
+}
+@media (min-width: 0) and (max-width: 840px) {
+    .col1{display: none;}
+    .col2{
+        width: 100%;
+        text-align: center;
+    form{
+        width: 80%;
+        text-align: start;
+    }}
 }

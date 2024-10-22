@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <title>{% block title %}Plantilla{% endblock %}</title>
+    <link rel="stylesheet" href="static/dashboard.css">
+    {% block headerinf %}{% endblock %}
+</head>
+<body>
+    <div class="side-bar" id="sideBar">
+        <img src="static/img/crown-solid.svg" style="width: 25px; height: 25px; margin: 20px 27px;">
+        <div class="scroll-alumnos">
+            <p class="items-name">ALUMNOS</p>
+            <a href="{{ url_for('new_student') }}" class="cuadritos">
+                <span>
+                    <img src="static/img/agregar-usuario.svg">
+                    <p class="sideBar-item">Nuevo alumno</p>
+                </span>
+            </a>
+
+        </div>
+        <!-- {% block sidebarContent %}
+            Contenido específico de la página
+        {% endblock %} -->
+    </div>
+    <div class="container">
+        <header>
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <button class="button-header" onclick="openSidebar()"><img src="static/img/menu.png"></button>
+                <!-- NAV -->
+                <nav style="display: flex;">
+                    <a href="{{ url_for('dashboard') }}" class="item-nav">inicio</a> 
+                    <!-- <span  id="dropdownButton" class="item-nav" onclick="toggledropdown()">
+                        Curso
+                        <img src="static/img/chevron-down-solid.svg">
+                    </span> -->
+                    <!-- {% block navcontent %} -->
+                    <!-- Contenido específico de la página -->
+                    <!-- {% endblock %} -->
+                </nav>
+            </div>
+            <button  id="profileButton" class="button-header" onclick="toggleMenu()"><img src="static/img/perfil.jpg" style="width: 35px; height: 35px; border-radius: 50%;"></button>
+            <!-- Dropdown -->
+            <div class="drop" id="dropdown">
+                <div class="dropdown-container">
+                    pinga
+                </div>
+            </div>
+            <!-- Submenu -->
+            <div class="sub-menu-wrap" id="subMenu" >
+                <div class="sub-menu">
+                    <h4>Perfil de usuario</h4>
+                    <div class="user-info">
+                        <img src="static/img/perfil.jpg">
+                        <div style="display: flex; flex-direction: column;">
+                            <h4>Julio jaramillo</h4> <!-- CONECTAR CON LA BD PARA OBTENER EL USERNAME -->
+                        <p>Elpapu@gmail.com</p> <!-- CONECTAR CON LA BD PARA OBTENER EL MAIL -->
+                        </div>
+                    </div>
+                    <hr>
+                    <a href="" class="sub-menu-link">
+                        <div class="cuadro"><img src="static/img/icon-account.svg"></div>
+                        <div style="padding-left: 30px;">
+                            <h4>Mi perfil</h4>
+                            <p>Configurar cuenta</p>
+                        </div>
+                    </a>
+                    <a href="{{ url_for('logout') }}"style="width: 100%;" class="button2">Cerrar sesión </a>
+                </div>
+            </div>
+        </header>
+        <main>
+            {% block maincontent %}
+            <!-- Contenido específico de la página -->
+            {% endblock %}
+        </main>
+    </div>
+    <script> // Ni idea de JS zzz
+        let subMenu = document.getElementById("subMenu");
+        let dropdown = document.getElementById("dropdown");
+        let sideBar = document.getElementById("sideBar");
+        function toggleMenu(){
+            subMenu.classList.toggle("open-menu");
+            checkDisableHover();
+        }
+        function toggledropdown(){
+            dropdown.classList.toggle("open-menu");
+            checkDisableHover();
+        }
+        function openSidebar(){
+            sideBar.classList.toggle("open-sidebar");
+        }
+        function checkDisableHover() {
+            // añade la clase para desactivar hover
+            if (subMenu.classList.contains("open-menu") || dropdown.classList.contains("open-menu")) {
+                sideBar.classList.add("no-hover");
+            } else {
+                sideBar.classList.remove("no-hover");
+            }
+        }
+        // Cerrar menús si se hace clic fuera
+        document.addEventListener('click', function(event) {
+            let isClickInsideSubMenu = subMenu.contains(event.target);
+            let isClickInsideDropdown = dropdown.contains(event.target);
+            let isButtonClick = event.target.closest('#profileButton') || event.target.closest('#dropdownButton');
+            if (!isClickInsideSubMenu && !isClickInsideDropdown && !isButtonClick) {
+                subMenu.classList.remove("open-menu");
+                dropdown.classList.remove("open-menu");
+                checkDisableHover();
+            }
+        });
+    </script>
+</body>
+</html>
