@@ -1,6 +1,6 @@
 import sqlite3
 import hashlib
-database_path = 'escuela.db'
+database_path = '\database\escuela.db'
 
 def create_database(path:str)->None:
     conn = sqlite3.connect(path)
@@ -148,4 +148,6 @@ def get_property_user(x:str, y:str)->any:
     conn.close()
     return dat[0]
 
-create_database(database_path)
+if __name__ == '__main__':
+    create_database(database_path)
+    register_user('a','1','b@gmail.com')
