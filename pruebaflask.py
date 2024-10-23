@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
-
+import database.Elbase as base
+import hashlib
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey' #algo mucho muy importante para que funcione flash
@@ -19,8 +20,10 @@ def login():
     if request.method == 'POST':
         email = request.form.get("email")
         password = request.form.get("password")
+        # nombre = base.get_property_user('NombreUser', email)
+        print(hashlib.sha256(password.encode()).hexdigest() , base.get_property_user('Password', email))
         #OBVIAMENTE CAMBIAR LOGICA
-        if email == "a@gmail.com" and password == "1":
+        if hashlib.sha256(password.encode()).hexdigest() == base.get_property_user('Password', email):
             session['user'] = email  
             return redirect(url_for('dashboard'))
         else:

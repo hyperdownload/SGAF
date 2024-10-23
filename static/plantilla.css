@@ -242,7 +242,9 @@ main{
     width: 100%;
     padding: 30px;
     display: flex;
-    justify-content: center;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
     .title-main{
         max-width: 1150px;
         width: 100%;
@@ -257,5 +259,31 @@ main{
             font-size: 20px;
             font-weight: 600;
         }
+    }
+    .container-inputs{
+        width: 100%;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 10px;
+        box-shadow: #919eab4d 0 0 2px, #919eab1f 0 12px 24px -4px;
+    }
+    form input.input-style{
+        width: 100%;
+        height: 50px;
+        background-color: var(--background);
+        color: var(--negro);
+        border-style: none;
+        border-radius: 10px;
+        border: 2px solid #d2d0d0;
+        padding: 15px;
+        font-family: 'Plus Jakarta Sans';
+    }
+    
+    form input.input-style:hover{
+        border: 2px solid var(--negro2);
+    }
+    form input.input-style:focus {
+        border: 2px solid var(--negro2);
+        outline: none;
     }
 }
