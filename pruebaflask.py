@@ -41,11 +41,10 @@ def forgot_password():
 # --------------------------------------------------
 @app.route("/dashboard")
 def dashboard():
-    if 'user' in session:
-        response = make_response(render_template("dashboard.html", email=session['user']))
-        return no_cache(response)
-    else:
+    if 'user' not in session:
         return redirect(url_for('login'))
+    response = make_response(render_template("dashboard.html", email=session['user']))
+    return no_cache(response)
     
 @app.route("/Nuevo-alumno")
 def new_student():
