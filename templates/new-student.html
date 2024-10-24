@@ -10,12 +10,40 @@
         <p>ciclo lectivo 2024</p>
     </div>
     <div class="container-inputs">
-        <div class="tab-container" style="height: 48px; border-bottom:  2px solid var(--azul);">
-
+        {% include 'components/tab.html'%}
+        <div class="tab-header-container">
+            <button class="tab_btn active">Alumno</button>
+            <button class="tab_btn">Tutor</button>
+            <button class="tab_btn">Inscripcion</button>
+            <button class="tab_btn">Legal</button>
+            <div class="line"></div>
         </div>
-        <form action="" method="post">
-            <p class="items-name">Contraseña</p>
-            <input type="password" class="input-style" name="password" autocomplete="off" placeholder="" required>
-        </form>
+        
+        <div class="tab-body-container">
+            <div class="content active">
+                <form action="" method="post">
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Datos del estudiante</h2>
+
+                        <div class="column-form-left">
+                            <p class="items-name">Apellido</p>
+                            <input type="text" class="input-style" name="apellido" autocomplete="off" placeholder="" required>
+                        </div>
+                        <div class="column-form-right">
+                            <p class="items-name">Nombre</p>
+                            <input type="text" class="input-style" name="nombre" autocomplete="off" placeholder="" required>
+                        </div>
+
+                        <p class="items-name">Fecha de nacimiento</p>
+                        <input type="date" class="input-style" name="fechaNacimiento" autocomplete="off" placeholder="" required>
+
+                        <p class="items-name">¿Posee DNI argentino?</p>
+                    </div>
+                </form>
+            </div>
+            <div class="content">Tutor</div>
+            <div class="content">Inscripcion</div>
+            <div class="content">Legal</div>
+        </div>
     </div>
 {% endblock %}

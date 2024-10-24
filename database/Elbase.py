@@ -1,6 +1,6 @@
 import sqlite3
 import hashlib
-database_path = '\database\escuela.db'
+database_path = '.\database\escuela.db'
 
 def create_database(path:str)->None:
     conn = sqlite3.connect(path)
