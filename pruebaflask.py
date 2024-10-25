@@ -20,10 +20,10 @@ def login():
     if request.method == 'POST':
         email = request.form.get("email")
         password = request.form.get("password")
-        # nombre = base.get_property_user('NombreUser', email)
-        print(hashlib.sha256(password.encode()).hexdigest() , base.get_property_user('Password', email))
+        # nombre = base.get_user_property('NombreUser', email)
+        print(hashlib.sha256(password.encode()).hexdigest() , base.get_user_property('Password', email))
         #OBVIAMENTE CAMBIAR LOGICA
-        if hashlib.sha256(password.encode()).hexdigest() == base.get_property_user('Password', email):
+        if hashlib.sha256(password.encode()).hexdigest() == base.get_user_property('Password', email):
             session['user'] = email  
             return redirect(url_for('dashboard'))
         else:
@@ -49,6 +49,10 @@ def dashboard():
 @app.route("/Nuevo-alumno")
 def new_student():
     return render_template("new-student.html")
+
+@app.route("/curso")
+def curso():
+    return render_template("cursos.html")
     
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,99 @@
+{% extends 'plantilla.html' %}
+{% block title %}Menu Principal{% endblock %}
+<!-- ----------------------------------------------------->
+{% block maincontent %}
+<div class="title-main">
+    <h2>Cursos</h2>
+    <p>ciclo lectivo 2024</p>
+</div>
+<div class="container-inputs">
+    <form action="">
+        <div class="column-form-left">
+            <p class="items-name">Buscador:</p>
+            <input type="text" class="input-style" name="apellido" autocomplete="off" placeholder="" required>
+        </div>
+    </form>
+</div>
+<div>
+    <style>
+        .tarjeta {
+          width: 370px;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          font-family: Arial, sans-serif;
+        }
+      
+        .encabezado-tarjeta {
+          background-color: #2F2F2F;
+          padding: 15px;
+          border-radius: 10px 10px 0 0;
+          color: white;
+          font-weight: bold;
+        }
+      
+        .encabezado-tarjeta div {
+          display: inline-block;
+        }
+      
+        .izquierda {
+          float: left;
+        }
+      
+        .derecha {
+          float: right;
+        }
+      
+        .cuerpo-tarjeta {
+          padding: 15px;
+          text-align: center;
+        }
+      
+        .titulo-tarjeta {
+          font-size: 20px;
+          font-weight: bold;
+        }
+      
+        .subtitulo-tarjeta {
+          font-size: 16px;
+          color: gray;
+          margin-top: 5px;
+        }
+      
+        .boton-tarjeta {
+          width: 80%;  
+          margin-top: 20px;
+          padding: 10px 20px;
+          background-color: #f1f1f1;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer; 
+        }
+        hr{
+            margin-top: 20px;
+            border: 1px solid #ccc;
+        }
+      
+        .sua::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+      </style>
+      
+      <div class="tarjeta">
+        <div class="encabezado-tarjeta sua">
+          <div class="izquierda">Curso</div>
+          <div class="derecha">Cantidad:</div>
+        </div>
+      
+        <div class="cuerpo-tarjeta">
+          <div class="titulo-tarjeta">Curso 1ra 1ra</div>
+          <div class="subtitulo-tarjeta">ultima actualizacion:</div>
+          <hr>
+          <button class="boton-tarjeta">Entrar</button>
+        </div>
+      </div>
+
+      
+</div>
+{% endblock %}

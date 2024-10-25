@@ -1,0 +1,94 @@
+<style>
+    .tab-header-container{
+        height: 50px;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-bottom: 2px solid #ebebeb;
+        position: relative;
+        .tab_btn{
+            font-size: 18px;
+            font-weight: 600;
+            color: #919191;
+            padding: 18px;
+        }
+        .tab_btn.active{
+            color: #0080ff;
+        }
+        
+    }
+    .line{
+        position: absolute;
+        top: 47px;
+        left: 0px;
+        width: 90px;
+        height: 5px;
+        border-radius: 10px;
+        background-color: #0080ff;
+        transition: all 0.3s ease-in-out;
+    }
+    .content{
+        display: none;
+        animation: moving .5s ease;
+    }
+    @keyframes moving{
+        from{transform: translateX(50px); opacity: 0;}
+        to{transform: translateX(0px); opacity: 1;}
+
+    }
+    .content.active{
+        display: block;
+    }
+
+</style>
+<!-- fakin life tio toda la tarde trantando de hacer de este un componente util
+ y no pude maldito flask de los cojones ni el que escribio su documentacion la entiende
+███████████████████████████
+███████▀▀▀░░░░░░░▀▀▀███████
+████▀░░░░░░░░░░░░░░░░░▀████
+███│░░░░░░░░░░░░░░░░░░░│███
+██▌│░░░░░░░░░░░░░░░░░░░│▐██
+██░└┐░░░░░░░░░░░░░░░░░┌┘░██
+██░░└┐░░░░░░░░░░░░░░░┌┘░░██
+██░░┌┘▄▄▄▄▄░░░░░▄▄▄▄▄└┐░░██
+██▌░│██████▌░░░▐██████│░▐██
+███░│▐███▀▀░░▄░░▀▀███▌│░███
+██▀─┘░░░░░░░▐█▌░░░░░░░└─▀██
+██▄░░░▄▄▄▓░░▀█▀░░▓▄▄▄░░░▄██
+████▄─┘██▌░░░░░░░▐██└─▄████
+█████░░▐█─┬┬┬┬┬┬┬─█▌░░█████
+████▌░░░▀┬┼┼┼┼┼┼┼┬▀░░░▐████
+█████▄░░░└┴┴┴┴┴┴┴┘░░░▄█████
+███████▄░░░░░░░░░░░▄███████
+██████████▄▄▄▄▄▄▄██████████
+███████████████████████████
+ -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const tabs = document.querySelectorAll('.tab_btn');
+    const all_content = document.querySelectorAll('.content');
+    const line = document.querySelector('.line');
+    
+    function setActiveLine() {
+        const activeTab = document.querySelector('.tab_btn.active');
+        line.style.width = activeTab.offsetWidth + "px";
+        line.style.left = activeTab.offsetLeft + "px";
+    }
+
+    // Inicializar la posición de la línea
+    setActiveLine();
+
+    tabs.forEach((tab, index) => {
+        tab.addEventListener('click', (e) => {
+            tabs.forEach(tab => tab.classList.remove('active'));
+            tab.classList.add('active');
+
+            setActiveLine();
+
+            all_content.forEach(content => content.classList.remove('active'));
+            all_content[index].classList.add('active');
+        });
+    });
+});
+</script>
