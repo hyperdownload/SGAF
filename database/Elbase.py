@@ -1,8 +1,9 @@
 import sqlite3
 import hashlib
-database_path = '\database\escuela.db'
 
-def create_database(path:str)->None:
+database_path = './database/escuela.db'
+
+def create_database(path: str) -> None:
     conn = sqlite3.connect(path)
     cursor = conn.cursor()
 
@@ -16,7 +17,8 @@ def create_database(path:str)->None:
         FechaDeNacimiento DATE NOT NULL,
         Domicilio TEXT NOT NULL,
         Activo BOOLEAN NOT NULL,
-        FechaCreacion DATETIME NOT NULL
+        FechaCreacion DATETIME NOT NULL,
+        FOREIGN KEY (IdTutor) REFERENCES Tutor(IdTutor)
     );
     ''')
 
@@ -34,7 +36,7 @@ def create_database(path:str)->None:
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS LibroMatriz (
         IdLibroMatriz INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        FechaCreacion INTEGER NOT NULL,
+        FechaCreacion DATETIME NOT NULL,
         IdCalificador INTEGER NOT NULL,
         FOREIGN KEY (IdCalificador) REFERENCES Calificador(IdCalificador)
     );
@@ -72,7 +74,8 @@ def create_database(path:str)->None:
 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS MatriculaDetalle (
-        IdMatricula INTEGER PRIMARY KEY AUTOINCREMENT,
+        IdMatriculaDetalle INTEGER PRIMARY KEY AUTOINCREMENT,
+        IdMatricula INTEGER NOT NULL,
         TipoMatricula TEXT NOT NULL,
         Analitico BOOLEAN NOT NULL,
         Calificador BOOLEAN NOT NULL,
@@ -104,50 +107,89 @@ def create_database(path:str)->None:
         IdUsuario INTEGER PRIMARY KEY AUTOINCREMENT,
         NombreUser TEXT NOT NULL,
         Password TEXT NOT NULL,
-        Email TEXT NOT NULL
+        Email TEXT NOT NULL,
+        IdRango INTEGER NOT NULL,
+        FOREIGN KEY (IdRango) REFERENCES Rangos(IdRango)
     );
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Rangos (
+        IdRango INTEGER PRIMARY KEY AUTOINCREMENT,
+        NombreRango TEXT NOT NULL
+    );
+    ''')
+
+    cursor.execute('''
+    INSERT OR IGNORE INTO Rangos (IdRango, NombreRango)
+    VALUES 
+        (1, 'Admin'),
+        (2, 'Preceptor');
     ''')
 
     conn.commit()
     conn.close()
 
-def register_user(user_name:str, password:str, email:str)->None:
+def register_user(user_name: str, password: str, email: str, rango: str) -> str:
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
-    cursor.execute('SELECT IdUsuario FROM Users WHERE email = ?', (email,))
+
+    cursor.execute('SELECT IdUsuario FROM Users WHERE Email = ?', (email,))
     if cursor.fetchone() is not None:
-        print("Error: ya existe un usuario con este email.")
         conn.close()
         return "Error: ya existe un usuario con este email."
+
+    cursor.execute('SELECT IdRango FROM Rangos WHERE NombreRango = ?', (rango,))
+    rango_data = cursor.fetchone()
+    if rango_data is None:
+        conn.close()
+        return f"Error: el rango '{rango}' no existe."
+
+    id_rango = rango_data[0]
 
     hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
     cursor.execute('''
-    INSERT INTO Users (NombreUser, Email, Password)
-    VALUES (?, ?, ?)
-    ''', (user_name, email, hashed_password))
+    INSERT INTO Users (NombreUser, Email, Password, IdRango)
+    VALUES (?, ?, ?, ?)
+    ''', (user_name, email, hashed_password, id_rango))
 
     conn.commit()
     conn.close()
 
-    return(f"Usuario {user_name} registrado.")
+    return f"Usuario {user_name} registrado con rango {rango}."
 
-def get_property_user(x:str, y:str)->any:
-    '''
-        x = El elemento a seleccionar de la tabla Users
-        y = El elemento condicional a obtener 
-    '''
+import sqlite3
+
+def get_user_property(property_name: str, condition_value: str, condition_field: str = 'Email') -> any:
+    """
+    Obtiene una propiedad especifica de un usuario basado en una condicion.
+
+    :param property_name: El campo que se desea obtener (ejemplo: 'NombreUser', 'Email', 'IdRango').
+    :param condition_value: El valor del campo condicional (ejemplo: un correo electronico o un nombre de usuario).
+    :param condition_field: El campo por el cual se va a filtrar (por defecto 'Email').
+    :return: El valor de la propiedad solicitada o un mensaje de error si no se encuentra.
+    """
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
 
-    cursor.execute(f'''
-    SELECT {x} FROM Users WHERE Email = ?
-    ''', (y,))
-    dat = cursor.fetchone()
-    conn.commit()
-    conn.close()
-    return dat[0]
+    try:
+        cursor.execute(f'''
+        SELECT {property_name} FROM Users WHERE {condition_field} = ?
+        ''', (condition_value,))
+        result = cursor.fetchone()
+        
+        if result is not None:
+            return result[0]
+        else:
+            return f"Error: no se encontró un usuario con {condition_field} = {condition_value}"
+    
+    except sqlite3.Error as e:
+        return f"Error en la base de datos: {e}"
+    
+    finally:
+        conn.close()
 
 if __name__ == '__main__':
     create_database(database_path)
-    register_user('a','1','b@gmail.com')
+    print(register_user('Sex', '1', 'b@gmail.com', 'Admin'))
