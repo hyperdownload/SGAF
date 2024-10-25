@@ -49,6 +49,13 @@ def dashboard():
 @app.route("/Nuevo-alumno")
 def new_student():
     return render_template("new-student.html")
+    
+
+@app.route('/submit', methods=['POST'])
+def formulario():
+    data = request.form
+    print(data)
+    return "Datos recibidos", 200
 
 @app.route("/curso")
 def curso():

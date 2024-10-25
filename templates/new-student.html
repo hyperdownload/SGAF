@@ -21,13 +21,13 @@
         
         <div class="tab-body-container">
             <div class="content active">
-                <form action="" method="post">
+                <form action="{{ url_for('formulario') }}" method="post">
                     <div class="divisor-inputs">
                         <h2 style="width: 100%;">Datos del estudiante</h2>
 
                         <div class="column-form-left">
                             <p class="items-name">Apellido</p>
-                            <input type="text" class="input-style" name="apellido" autocomplete="off" placeholder="" required>
+                            <input type="text" class="input-style" name="apellido-alumno" autocomplete="off" placeholder="" required>
                         </div>
                         <div class="column-form-right">
                             <p class="items-name">Nombre</p>
@@ -38,6 +38,98 @@
                         <input type="date" class="input-style" name="fechaNacimiento" autocomplete="off" placeholder="" required>
 
                         <p class="items-name">¿Posee DNI argentino?</p>
+
+                        <div class="checkbox-container" id="dni-options">
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox1" name="dni-student" value="Si, y tiene el DNI fisico" checked>
+                                <label for="checkbox1">Si, y tiene el DNI fisico</label>
+                            </div>
+                            <div class="check-label">
+                                 <input type="checkbox" id="checkbox2" name="dni-student" value="Si, pero NO tiene el DNI fisico y se encuentra en tramite">
+                                <label for="checkbox2">Si, pero NO tiene el DNI fisico y se encuentra en tramite</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox3" name="dni-student" value="Si, pero NO tiene el DNI fisico y NO se encuentra en tramite">
+                                <label for="checkbox3">Si, pero NO tiene el DNI fisico y NO se encuentra en tramite</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox4" name="dni-student" value="NO posee DNI argentino">
+                                <label for="checkbox3">NO posee DNI argentino</label>
+                            </div>
+                        </div>
+                        <!-- Hacer un JS para quitar o agregar dependiendo de la respuesta de los check-->
+                        
+                        <div id="section-has-dni" style="display: none; width: 100%;">
+                            <div class="column-form-left">
+                                <p class="items-name">Sí respondió SI, indique número de DNI argentino:</p>
+                                <input type="text" class="input-style" name="apellido" autocomplete="off" placeholder="" required>
+                            </div>
+                            <div class="column-form-right">
+                                <p class="items-name">CUIL</p>
+                                <input type="text" class="input-style" name="nombre" autocomplete="off" placeholder="" required>
+                            </div>
+                        </div>
+                        <!-- Hacer un JS para quitar o agregar dependiendo de la respuesta de los check-->
+                        <div id="section-no-dni" style="display: none;">
+                            <p class="items-name">Sí respondio que NO tiene DNI argentino:</p>
+                            <div class="checkbox-container">
+                                <div class="check-label">
+                                    <label>¿Posee certificado de pre-identificación(CPI)?</label>
+                                    <input style="margin: 0 10px 0 0;" type="checkbox" name="cpi-student" value="Si" checked>
+                                    <label for="checkbox1">Si</label>
+                                    <input style="margin: 0 10px 0 0;" type="checkbox" name="cpi-student" value="No">
+                                    <label for="checkbox1">No</label>
+                                </div>
+                                <div class="check-label">
+                                    <label>¿Posee documento extranjero?</label>
+                                    <input style="margin: 0 10px 0 0;" type="checkbox" name="foreign_doc" value="Si" checked>
+                                    <label for="checkbox1">Si</label>
+                                    <input type="text" style="max-width: 110px" placeholder="Indique tipo" name="document_type" class="input-style">
+                                    <input style="margin: 0 10px 0 10px;"type="checkbox" name="foreign_doc"  value="No">
+                                    <label for="checkbox1">No</label>
+                                </div>
+                            </div> 
+                        </div>
+                        
+                        <!--  -->
+                        <p class="items-name" style="width: 100%;">Identidad de género</p>
+                        <div class="checkbox-container" style="flex-direction: row;">
+                            <div class="column-form-left"  id="gender-options">
+                                <div class="check-label">
+                                    <input type="checkbox" id="checkbox-1" name="gender" value="Mujer" checked>
+                                    <label for="checkbox-1">Mujer</label>
+                                </div>
+                                
+                                <div class="check-label">
+                                    <input type="checkbox" id="checkbox-2" name="gender" value="Mujer trans/ travesti">
+                                    <label for="checkbox2">Transformer mujer</label>
+                                </div>
+                                
+                                <div class="check-label">
+                                    <input type="checkbox" id="checkbox3" name="gender" value="No binario">
+                                    <label for="checkbox-3">No binario</label>
+                                </div>
+                                <div class="check-label">
+                                    <input type="checkbox" id="checkbox4" name="gender" value="No desea responder">
+                                    <label for="checkbox-4">No desea responder</label>
+                                </div>
+                            </div>
+                            <div class="column-form-right"  id="gender-options">
+                                <div class="check-label">
+                                    <input type="checkbox" id="checkbox5" name="gender" value="Hombre">
+                                    <label for="checkbox5">Hombre</label>
+                                </div>
+                                <div class="check-label">
+                                    <input type="checkbox" id="checkbox6" name="gender" value="Hombre trans/ travesti">
+                                    <label for="checkbox6">Transformer hombre</label>
+                                </div>
+                                <div class="check-label">
+                                    <input type="checkbox" id="checkbox7" name="gender" value="Otra">
+                                    <label for="checkbox7">Otra</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="button2">subir</button>
                     </div>
                 </form>
             </div>
@@ -46,4 +138,47 @@
             <div class="content">Legal</div>
         </div>
     </div>
+    <script>
+        document.querySelectorAll('.checkbox-container').forEach(container => {
+            container.addEventListener('change', function(e) {
+                if (e.target.type === 'checkbox') {
+                    container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                        if (checkbox.name === e.target.name && checkbox !== e.target) {
+                    checkbox.checked = false;
+                }
+            });
+                    // Deshabilitar el input
+                    if (e.target.name === 'foreign_doc') {
+                        const documentInput = document.querySelector('input[name="document_type"]');
+                        if (e.target.value === 'No' && e.target.checked) {
+                            documentInput.disabled = true;
+                            documentInput.value = "";
+                        } else if (e.target.value === 'Si' && e.target.checked) {
+                            documentInput.disabled = false;
+                        }
+                    }
+                }
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", updateSections);
+        document.getElementById("dni-options").addEventListener("change", updateSections);
+        function updateSections() {
+            const hasDniSection = document.getElementById("section-has-dni");
+            const noDniSection = document.getElementById("section-no-dni");
+            const checkedValue = [...document.querySelectorAll("#dni-options input[type='checkbox']:checked")].map(cb => cb.value);
+
+            if (checkedValue.includes("NO posee DNI argentino")) {
+                hasDniSection.style.display = "none";
+                noDniSection.style.display = "block";
+            } else if (checkedValue.length > 0) {
+                hasDniSection.style.display = "flex";
+                noDniSection.style.display = "none";
+            } else {
+                hasDniSection.style.display = "none";
+                noDniSection.style.display = "none";
+            }
+        }
+
+    </script>
 {% endblock %}

@@ -285,24 +285,46 @@ main{
             flex-wrap: wrap;
             margin: 15px 0;
         }
+        .checkbox-container{
+            width: 100%;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+        }
+        .check-label{
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            label{
+                margin: 0 20px 0 0;
+            }
+        }
     }
-    form input.input-style{
-        width: 100%;
-        height: 50px;
-        background-color: var(--background);
-        color: var(--negro);
-        border-style: none;
-        border-radius: 10px;
-        border: 2px solid #d2d0d0;
-        padding: 15px;
-        font-family: 'Plus Jakarta Sans';
-    }
-    
-    form input.input-style:hover{
-        border: 2px solid var(--negro2);
-    }
-    form input.input-style:focus {
-        border: 2px solid var(--negro2);
-        outline: none;
-    }
+}
+form input.input-style{
+    width: 100%;
+    height: 50px;
+    background-color: var(--background);
+    color: var(--negro);
+    border-style: none;
+    border-radius: 10px;
+    border: 2px solid #d2d0d0;
+    padding: 15px;
+    font-family: 'Plus Jakarta Sans';
+}
+
+form input.input-style:hover{
+    border: 2px solid var(--negro2);
+}
+form input.input-style:focus {
+    border: 2px solid var(--negro2);
+    outline: none;
+}
+form input[type="checkbox"]{
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    accent-color: var(--azul);
+    font-size: 12px;
+    margin:0 20px 0 0;
 }
