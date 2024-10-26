@@ -228,6 +228,18 @@ def register_student(nombre_alumno: str, apellido_alumno: str, dni_alumno: int, 
         conn.close()
 
 def create_course(nombre: str, turno: str, activo: bool, id_orientacion: int) -> str:
+    '''
+    Crea un nuevo curso en la base de datos si no existe uno con el mismo nombre y turno.
+
+    Parametros:
+    nombre (str): El nombre del curso.
+    turno (str): El turno en el que se impartira el curso (por ejemplo, 'Mañana', 'Tarde').
+    activo (bool): Estado de actividad del curso (True si esta activo, False si está inactivo).
+    id_orientacion (int): El ID de la orientación asociada al curso.
+
+    Retorna:
+    str: Un mensaje indicando si el curso fue creado exitosamente o si ocurrio un error o duplicado.
+    '''
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
     try:
