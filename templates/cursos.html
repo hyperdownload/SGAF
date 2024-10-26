@@ -19,101 +19,645 @@
           required>
       
       <!-- Input de selección de año -->
-      <input 
-          style="width: 280px;" 
-          list="years" 
-          id="year-select" 
-          class="input-style" 
-          placeholder="Selecciona el año">
-      <datalist id="years">
-          <option value="1er año">
-          <option value="2do año">
-          <option value="3er año">
-          <option value="4to año">
-          <option value="5to año">
-          <option value="6to año">
-          <option value="7mo año">
-      </datalist>
+      <div style="position: relative; width: 280px;">
+        <div id="custom-select" onclick="toggleDropdown()" style="
+            width: 100%; 
+            font-size: 16px; 
+            color: #333; 
+            background-color: #fff; 
+            border: 2px solid #d2d0d0; 
+            border-radius: 8px; 
+            padding: 12px 16px; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: #919eab4d 0 0 2px, #919eab1f 0 12px 24px -4px">
+          <span id="selected-option">Selecciona el año</span>
+          <span style="color: #000000;">▼</span> <!-- Icono de flecha -->
+        </div>
+      
+        <div id="dropdown-options" style="
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;">
+          <div onclick="selectOption('1er año')" style="padding: 10px 16px; cursor: pointer;">1er año</div>
+          <div onclick="selectOption('2do año')" style="padding: 10px 16px; cursor: pointer;">2do año</div>
+          <div onclick="selectOption('3er año')" style="padding: 10px 16px; cursor: pointer;">3er año</div>
+          <div onclick="selectOption('4to año')" style="padding: 10px 16px; cursor: pointer;">4to año</div>
+          <div onclick="selectOption('5to año')" style="padding: 10px 16px; cursor: pointer;">5to año</div>
+          <div onclick="selectOption('6to año')" style="padding: 10px 16px; cursor: pointer;">6to año</div>
+          <div onclick="selectOption('7mo año')" style="padding: 10px 16px; cursor: pointer;">7mo año</div>
+        </div>
+      </div>
+      
+      <script>
+        function toggleDropdown() {
+          const dropdown = document.getElementById("dropdown-options");
+          dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
+        }
+      
+        function selectOption(optionText) {
+          document.getElementById("selected-option").innerText = optionText;
+          document.getElementById("dropdown-options").style.display = "none";
+        }
+      
+        // Cierra el dropdown si haces clic fuera de él
+        document.addEventListener("click", function(event) {
+          const customSelect = document.getElementById("custom-select");
+          const dropdownOptions = document.getElementById("dropdown-options");
+          if (!customSelect.contains(event.target)) {
+            dropdownOptions.style.display = "none";
+          }
+        });
+      </script>
   </form>
 </div>
 <div>
-    <style>
-        .tarjeta {
-          width: 370px;
-          border-radius: 10px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          font-family: Arial, sans-serif;
-        }
-      
-        .encabezado-tarjeta {
-          background-color: #2F2F2F;
-          padding: 15px;
-          border-radius: 10px 10px 0 0;
-          color: white;
-          font-weight: bold;
-        }
-      
-        .encabezado-tarjeta div {
-          display: inline-block;
-        }
-      
-        .izquierda {
-          float: left;
-        }
-      
-        .derecha {
-          float: right;
-        }
-      
-        .cuerpo-tarjeta {
-          padding: 15px;
-          text-align: center;
-        }
-      
-        .titulo-tarjeta {
-          font-size: 20px;
-          font-weight: bold;
-        }
-      
-        .subtitulo-tarjeta {
-          font-size: 16px;
-          color: gray;
-          margin-top: 5px;
-        }
-      
-        .boton-tarjeta {
-          width: 80%;  
-          margin-top: 20px;
-          padding: 10px 20px;
-          background-color: #f1f1f1;
-          border: none;
-          border-radius: 10px;
-          cursor: pointer; 
-        }
-        hr{
-            margin-top: 20px;
-            border: 1px solid #ccc;
-        }
-      
-        .sua::after {
-          content: "";
-          clear: both;
-          display: table;
-        }
-      </style>
-      
+  <style>
+    .contenedor-tarjetas {
+        display: flex;
+        flex-wrap: wrap; /* Permite que las tarjetas se muevan a la siguiente fila */
+        justify-content: flex-start; /* Alinea las tarjetas a la izquierda */
+    }
+
+    .tarjeta {
+        width: 290px; /* Ancho fijo para cada tarjeta */
+        margin: 10px; /* Espacio alrededor de cada tarjeta */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
+
+    .encabezado-tarjeta {
+        background-color: #2F2F2F;
+        padding: 15px;
+        border-radius: 10px 10px 0 0;
+        color: white;
+        font-weight: bold;
+    }
+
+    .encabezado-tarjeta div {
+        display: inline-block;
+    }
+
+    .izquierda {
+        float: left;
+    }
+
+    .derecha {
+        float: right;
+    }
+
+    .cuerpo-tarjeta {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .titulo-tarjeta {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .subtitulo-tarjeta {
+        font-size: 16px;
+        color: gray;
+        margin-top: 5px;
+    }
+
+    .boton-tarjeta {
+        width: 80%;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #f1f1f1;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 17px;
+    }
+
+    hr {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+    }
+
+    .sua::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+</style>
+
+ <div class="contenedor-tarjetas">
+  <!--------- Cursos de 1ro --------->
+        <div class="tarjeta">
+            <div class="encabezado-tarjeta sua">
+                <div class="izquierda">Curso</div>
+                <div class="derecha">Cantidad:</div>
+            </div>
+            <div class="cuerpo-tarjeta">
+                <div class="titulo-tarjeta">Curso 1ra 1ra</div>
+                <div class="subtitulo-tarjeta">última actualización:</div>
+                <hr>
+                <button class="boton-tarjeta">ENTRAR</button>
+            </div>
+        </div>
+        <div class="tarjeta">
+            <div class="encabezado-tarjeta sua">
+                <div class="izquierda">Curso</div>
+                <div class="derecha">Cantidad:</div>
+            </div>
+            <div class="cuerpo-tarjeta">
+                <div class="titulo-tarjeta">Curso 1ra 2da</div>
+                <div class="subtitulo-tarjeta">última actualización:</div>
+                <hr>
+                <button class="boton-tarjeta">ENTRAR</button>
+            </div>
+        </div>
+        <div class="tarjeta">
+            <div class="encabezado-tarjeta sua">
+                <div class="izquierda">Curso</div>
+                <div class="derecha">Cantidad:</div>
+            </div>
+            <div class="cuerpo-tarjeta">
+                <div class="titulo-tarjeta">Curso 1ra 3ra</div>
+                <div class="subtitulo-tarjeta">última actualización:</div>
+                <hr>
+                <button class="boton-tarjeta">ENTRAR</button>
+            </div>
+        </div>
+        <div class="tarjeta">
+            <div class="encabezado-tarjeta sua">
+                <div class="izquierda">Curso</div>
+                <div class="derecha">Cantidad:</div>
+            </div>
+            <div class="cuerpo-tarjeta">
+                <div class="titulo-tarjeta">Curso 1ra 4ta</div>
+                <div class="subtitulo-tarjeta">última actualización:</div>
+                <hr>
+                <button class="boton-tarjeta">ENTRAR</button>
+            </div>
+        </div>
+        <div class="tarjeta">
+            <div class="encabezado-tarjeta sua">
+                <div class="izquierda">Curso</div>
+                <div class="derecha">Cantidad:</div>
+            </div>
+            <div class="cuerpo-tarjeta">
+                <div class="titulo-tarjeta">Curso 1ra 5ta</div>
+                <div class="subtitulo-tarjeta">última actualización:</div>
+                <hr>
+                <button class="boton-tarjeta">ENTRAR</button>
+            </div>
+        </div>
+        <div class="tarjeta">
+            <div class="encabezado-tarjeta sua">
+                <div class="izquierda">Curso</div>
+                <div class="derecha">Cantidad:</div>
+            </div>
+            <div class="cuerpo-tarjeta">
+                <div class="titulo-tarjeta">Curso 1ra 6ta</div>
+                <div class="subtitulo-tarjeta">última actualización:</div>
+                <hr>
+                <button class="boton-tarjeta">ENTRAR</button>
+            </div>
+        </div>
+      <!--------- Cursos de 2do --------->
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 2da 1ra</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 2da 2da</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 2da 3ra</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 2da 4ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 2da 5ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
       <div class="tarjeta">
         <div class="encabezado-tarjeta sua">
-          <div class="izquierda">Curso</div>
-          <div class="derecha">Cantidad:</div>
+            <div class="izquierda">Curso</div>
+            <div class="derecha">Cantidad:</div>
         </div>
-      
         <div class="cuerpo-tarjeta">
-          <div class="titulo-tarjeta">Curso 1ra 1ra</div>
-          <div class="subtitulo-tarjeta">ultima actualizacion:</div>
-          <hr>
-          <button class="boton-tarjeta">Entrar</button>
+            <div class="titulo-tarjeta">Curso 2da 6ta</div>
+            <div class="subtitulo-tarjeta">última actualización:</div>
+            <hr>
+            <button class="boton-tarjeta">ENTRAR</button>
         </div>
+    </div>
+      <!--------- Cursos de 3ro --------->
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 3ra 1ra</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
       </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 3ra 2da</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 3ra 3ra</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 3ra 4ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 3ra 5ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 3ra 6ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <!--------- Cursos de 4to --------->
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 4to 1ra</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 4to 2da</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 4to 3ra</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 4to 4ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 4to 5ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 4to 6ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 4to 8va</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <!--------- Cursos de 5to --------->
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 5to 1ra</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 5to 2da</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+        <div class="encabezado-tarjeta sua">
+            <div class="izquierda">Curso</div>
+            <div class="derecha">Cantidad:</div>
+        </div>
+        <div class="cuerpo-tarjeta">
+            <div class="titulo-tarjeta">Curso 5to 3ra</div>
+            <div class="subtitulo-tarjeta">última actualización:</div>
+            <hr>
+            <button class="boton-tarjeta">ENTRAR</button>
+        </div>
+    </div>
+    <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 5to 4ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 5to 5ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 5to 6ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <!--------- Cursos de 6to --------->
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 6to 1ra</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 6to 2da</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 6to 3ra</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 6to 4ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 6to 5ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 6to 6ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+      <!--------- Cursos de 7mo --------->
+      <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 7to 1ra</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+            <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 7mo 2da</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+            <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 7mo 3ra</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+            <div class="tarjeta">
+          <div class="encabezado-tarjeta sua">
+              <div class="izquierda">Curso</div>
+              <div class="derecha">Cantidad:</div>
+          </div>
+          <div class="cuerpo-tarjeta">
+              <div class="titulo-tarjeta">Curso 7to 4ta</div>
+              <div class="subtitulo-tarjeta">última actualización:</div>
+              <hr>
+              <button class="boton-tarjeta">ENTRAR</button>
+          </div>
+      </div>
+  </div>
 </div>
+
 {% endblock %}
