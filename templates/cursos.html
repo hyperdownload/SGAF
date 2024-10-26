@@ -6,17 +6,35 @@
     <h2>Cursos</h2>
     <p>Ciclo lectivo 2024</p>
 </div>
-<div class="container-inputs">
-      <form action="">
-            <div class="column-form-left">
-              <style>
-                
-              </style>
-                <p class="items-name" >buscar:</p>
-                <input style="width: 280px;"  type="text" class="input-style" name="apellido" autocomplete="off" placeholder="" required src="static\img\lupa.png">
-                <!--- <img src="static\img\lupa.png" alt="" height="30px" width="30px"> --->
-            </div>
-        </form> 
+<div class="container-inputs" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+  <form action="" style="width: 100%; display: flex; justify-content: space-between;">
+      <!-- Input de búsqueda -->
+      <input 
+          style="width: 280px; padding-right: 30px; background-image: url('static/img/lupa.png'); background-repeat: no-repeat; background-position: 98% center; background-size: 20px;"  
+          type="text" 
+          class="input-style" 
+          name="apellido" 
+          autocomplete="off" 
+          placeholder="Buscar:" 
+          required>
+      
+      <!-- Input de selección de año -->
+      <input 
+          style="width: 280px;" 
+          list="years" 
+          id="year-select" 
+          class="input-style" 
+          placeholder="Selecciona el año">
+      <datalist id="years">
+          <option value="1er año">
+          <option value="2do año">
+          <option value="3er año">
+          <option value="4to año">
+          <option value="5to año">
+          <option value="6to año">
+          <option value="7mo año">
+      </datalist>
+  </form>
 </div>
 <div>
     <style>
