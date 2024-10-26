@@ -160,8 +160,6 @@ def register_user(user_name: str, password: str, email: str, rango: str) -> str:
 
     return f"Usuario {user_name} registrado con rango {rango}."
 
-import sqlite3
-
 def get_user_property(property_name: str, condition_value: str, condition_field: str = 'Email') -> any:
     """
     Obtiene una propiedad especifica de un usuario basado en una condicion.
@@ -229,6 +227,46 @@ def register_student(nombre_alumno: str, apellido_alumno: str, dni_alumno: int, 
     finally:
         conn.close()
 
+def create_course(nombre: str, turno: str, activo: bool, id_orientacion: int) -> str:
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+    try:
+        #Verifica si el curso ya existe para evitar duplicados
+        cursor.execute('SELECT IdCurso FROM Curso WHERE Nombre = ? AND Turno = ?', (nombre, turno))
+        if cursor.fetchone() is not None:
+            return "Error: ya existe un curso con este nombre y turno."
+
+        #Registra el curso
+        fecha_creacion = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        cursor.execute('''
+        INSERT INTO Curso (Nombre, Turno, Activo, FechaCreacion, IdOrientacion)
+        VALUES (?, ?, ?, ?, ?)
+        ''', (nombre, turno, activo, fecha_creacion, id_orientacion))
+        
+        conn.commit()
+        return f"Curso '{nombre}' en turno '{turno}' registrado exitosamente."
+
+    except sqlite3.Error as e:
+        return f"Error en la base de datos: {e}"
+
+    finally:
+        conn.close()
+
+def get_all_courses() -> list:
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+    try:
+        cursor.execute('SELECT IdCurso, Nombre, Turno, Activo, FechaCreacion FROM Curso')
+        cursos = cursor.fetchall()
+        return [{"IdCurso": row[0], "Nombre": row[1], "Turno": row[2], "Activo": row[3], "FechaCreacion": row[4]} for row in cursos]
+
+    except sqlite3.Error as e:
+        print(f"Error en la base de datos: {e}")
+        return []
+
+    finally:
+        conn.close()
+        
 if __name__ == '__main__':
     create_database(database_path)
     print(register_user('Sex', '1', 'b@gmail.com', 'Admin'))
