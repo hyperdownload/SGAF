@@ -1,5 +1,6 @@
 import sqlite3
 import hashlib
+import datetime
 
 database_path = './database/escuela.db'
 
@@ -187,6 +188,44 @@ def get_user_property(property_name: str, condition_value: str, condition_field:
     except sqlite3.Error as e:
         return f"Error en la base de datos: {e}"
     
+    finally:
+        conn.close()
+
+def register_student(nombre_alumno: str, apellido_alumno: str, dni_alumno: int, fecha_nacimiento: str,
+                     domicilio: str, activo: bool, nombre_tutor: str, apellido_tutor: str, dni_tutor: int,
+                     telefono_tutor: int, parentezco: str) -> str:
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+    try:
+        cursor.execute('SELECT IdTutor FROM Tutor WHERE DNI = ?', (dni_tutor,))
+        if tutor_data := cursor.fetchone():
+            id_tutor = tutor_data[0]
+        else:
+            #Registra el tutor si no existe
+            cursor.execute('''
+            INSERT INTO Tutor (Nombre, Apellido, DNI, Telefono, Parentezco)
+            VALUES (?, ?, ?, ?, ?)
+            ''', (nombre_tutor, apellido_tutor, dni_tutor, telefono_tutor, parentezco))
+            id_tutor = cursor.lastrowid
+
+        #Verifica si el alumno ya existe para evitar duplicados
+        cursor.execute('SELECT IdAlumno FROM Alumno WHERE DNI = ?', (dni_alumno,))
+        if cursor.fetchone() is not None:
+            return "Error: ya existe un alumno con este DNI."
+
+        #Registra al alumno
+        fecha_creacion = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        cursor.execute('''
+        INSERT INTO Alumno (IdTutor, Nombre, Apellido, DNI, FechaDeNacimiento, Domicilio, Activo, FechaCreacion)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (id_tutor, nombre_alumno, apellido_alumno, dni_alumno, fecha_nacimiento, domicilio, activo, fecha_creacion))
+
+        conn.commit()
+        return f"Alumno {nombre_alumno} {apellido_alumno} registrado exitosamente."
+
+    except sqlite3.Error as e:
+        return f"Error en la base de datos: {e}"
+
     finally:
         conn.close()
 
