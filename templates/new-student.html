@@ -31,45 +31,43 @@
                         </div>
                         <div class="column-form-right">
                             <p class="items-name">Nombre</p>
-                            <input type="text" class="input-style" name="nombre" autocomplete="off" placeholder="" required>
+                            <input type="text" class="input-style" name="nombre-alumno" autocomplete="off" placeholder="" required>
                         </div>
 
                         <p class="items-name">Fecha de nacimiento</p>
                         <input type="date" class="input-style" name="fechaNacimiento" autocomplete="off" placeholder="" required>
 
                         <p class="items-name">¿Posee DNI argentino?</p>
-
                         <div class="checkbox-container" id="dni-options">
                             <div class="check-label">
-                                <input type="checkbox" id="checkbox1" name="dni-student" value="Si, y tiene el DNI fisico" checked>
+                                <input type="checkbox" id="checkbox1" name="dni-student-state" value="Si, y tiene el DNI fisico" checked>
                                 <label for="checkbox1">Si, y tiene el DNI fisico</label>
                             </div>
                             <div class="check-label">
-                                 <input type="checkbox" id="checkbox2" name="dni-student" value="Si, pero NO tiene el DNI fisico y se encuentra en tramite">
+                                 <input type="checkbox" id="checkbox2" name="dni-student-state" value="Si, pero NO tiene el DNI fisico y se encuentra en tramite">
                                 <label for="checkbox2">Si, pero NO tiene el DNI fisico y se encuentra en tramite</label>
                             </div>
                             <div class="check-label">
-                                <input type="checkbox" id="checkbox3" name="dni-student" value="Si, pero NO tiene el DNI fisico y NO se encuentra en tramite">
+                                <input type="checkbox" id="checkbox3" name="dni-student-state" value="Si, pero NO tiene el DNI fisico y NO se encuentra en tramite">
                                 <label for="checkbox3">Si, pero NO tiene el DNI fisico y NO se encuentra en tramite</label>
                             </div>
                             <div class="check-label">
-                                <input type="checkbox" id="checkbox4" name="dni-student" value="NO posee DNI argentino">
+                                <input type="checkbox" id="checkbox4" name="dni-student-state" value="NO posee DNI argentino">
                                 <label for="checkbox3">NO posee DNI argentino</label>
                             </div>
                         </div>
-                        <!-- Hacer un JS para quitar o agregar dependiendo de la respuesta de los check-->
                         
                         <div id="section-has-dni" style="display: none; width: 100%;">
                             <div class="column-form-left">
                                 <p class="items-name">Sí respondió SI, indique número de DNI argentino:</p>
-                                <input type="text" class="input-style" name="apellido" autocomplete="off" placeholder="" required>
+                                <input type="number" class="input-style" name="dni-student" autocomplete="off" placeholder="" >
                             </div>
                             <div class="column-form-right">
                                 <p class="items-name">CUIL</p>
-                                <input type="text" class="input-style" name="nombre" autocomplete="off" placeholder="" required>
+                                <input type="number" class="input-style" name="cuil-student" autocomplete="off" placeholder="" >
                             </div>
                         </div>
-                        <!-- Hacer un JS para quitar o agregar dependiendo de la respuesta de los check-->
+                       
                         <div id="section-no-dni" style="display: none;">
                             <p class="items-name">Sí respondio que NO tiene DNI argentino:</p>
                             <div class="checkbox-container">
@@ -84,7 +82,7 @@
                                     <label>¿Posee documento extranjero?</label>
                                     <input style="margin: 0 10px 0 0;" type="checkbox" name="foreign_doc" value="Si" checked>
                                     <label for="checkbox1">Si</label>
-                                    <input type="text" style="max-width: 110px" placeholder="Indique tipo" name="document_type" class="input-style">
+                                    <input type="text" style="max-width: 110px" placeholder="Indique tipo" autocomplete="off" name="document_type" class="input-style" required>
                                     <input style="margin: 0 10px 0 10px;"type="checkbox" name="foreign_doc"  value="No">
                                     <label for="checkbox1">No</label>
                                 </div>
@@ -129,7 +127,276 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="button2">subir</button>
+                        
+                        <p class="items-name">Lugar de nacimiento</p>
+                        <div class="checkbox-container" style="flex-direction: row;" id="lugar-nacimiento-alumno">
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox7" name="lugar-nacimiento-check" value="En Argentina" checked>
+                                <label for="checkbox7">En Argentina</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox8" name="lugar-nacimiento-check" value="En el extranjero">
+                                <label for="checkbox8">En el extranjero</label>
+                            </div>
+                            <input type="text" style="width:200px;" class="input-style" name="Nacionalidad-alumno" autocomplete="off" placeholder="Nacionalidad" required>
+                        </div>
+                        
+                        <p class="items-name">Solo para quienes marcaron Argentina</p>
+                        <div class="checkbox-container" style="flex-direction: row;" id="provincia-nacimiento-alumno">
+                            <div class="check-label">
+                                <label for="checkbox7">Provincia:</label>
+                                <input type="checkbox" id="checkbox7" name="provincia-nacimiento-alumno-check" value="Buenos Aires" checked>
+                                <label for="checkbox7">Buenos Aires</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox8" name="provincia-nacimiento-alumno-check" value="Otra">
+                                <label for="checkbox8">Otra</label>
+                            </div>
+                            <input type="text" style="width:200px;" class="input-style" name="provincia-nacimiento-alumno" autocomplete="off" placeholder="Provincia" required>
+                        </div>
+
+                        <div class="checkbox-container" id="BSAS-option">
+                            <div style="display: flex; width: 100%;">
+                                <div class="column-form-left">
+                                    <p class="items-name">Distritos</p>
+                                    <input type="text" class="input-style" name="distrito-alumno" autocomplete="off" placeholder="" >
+                                </div>
+                                <div class="column-form-right">
+                                    <p class="items-name">Localidad</p>
+                                    <input type="text" class="input-style" name="localidad-alumno" autocomplete="off" placeholder="" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Domicilio</h2>
+                        <div class="column-form-left" style="display: flex; flex-wrap: wrap; column-gap:30px;">
+
+                                <p class="items-name">Calle</p>
+                                <input type="text" class="input-style" name="calle-alumno" autocomplete="off" placeholder="" required>
+                            
+                                <div style="width: 47%;">
+                                    <p class="items-name">Entre calle</p>
+                                    <input type="text" class="input-style" name="entre-calle-alumno" autocomplete="off" placeholder="" required>
+                                </div>
+                                <div style="width: 47%;">
+                                    <p class="items-name">Y calle</p>
+                                    <input type="text" class="input-style" name="y-calle-alumno" autocomplete="off" placeholder="" required>
+                                </div>
+                                <div style="width: 47%;">
+                                    <p class="items-name">Provincia</p>
+                                    <input type="text" class="input-style" name="provincia-residencia-alumno" autocomplete="off" placeholder="" required>
+                                </div>
+                                <div style="width: 47%;">
+                                    <p class="items-name">Distrito</p>
+                                    <input type="text" class="input-style" name="distrito-residencia-alumno" autocomplete="off" placeholder="" required>
+                                </div>
+                                <p class="items-name">Telefono</p>
+                                <input type="number" class="input-style" name="telefono-alumno" autocomplete="off" placeholder="" required>
+                        </div>
+                        <div class="column-form-right" style="display: flex; flex-wrap: wrap; column-gap:30px;">
+                            <div style="width: 106px;">
+                                <p class="items-name">Nº</p>
+                                <input type="number" class="input-style" name="numero-calle-alumno" autocomplete="off" placeholder="" required>
+                            </div>
+                            <div style="width: 106px;">
+                                <p class="items-name">Piso</p>
+                                <input type="number" class="input-style" name="piso-domicilio-alumno" autocomplete="off" placeholder="" required>
+                            </div>
+                            <div style="width: 106px;">
+                                <p class="items-name">Torre</p>
+                                <input type="text" class="input-style" name="torre-domicilio-alumno" autocomplete="off" placeholder="" required>
+                            </div>
+                            <div style="width: 106px;">
+                                <p class="items-name">Depto</p>
+                                <input type="text" class="input-style" name="depto-domicilio-alumno" autocomplete="off" placeholder="" required>
+                            </div>
+                            <p class="items-name">Otro dato</p>
+                            <input type="text" class="input-style" name="otrodato-domicilio-alumno" autocomplete="off" placeholder="" required>
+                            <p class="items-name">Localidad</p>
+                            <input type="text" class="input-style" name="localidad-residencia-alumno" autocomplete="off" placeholder="" required>
+                            <p class="items-name">Telefono celular</p>
+                            <input type="number" class="input-style" name="telefono-celular-alumno" autocomplete="off" placeholder="" required>
+                        </div>
+                    </div>
+
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Otros datos</h2>
+                        <p class="items-name">Hermanas o hermanos</p>
+                        <div class="checkbox-container" id="siblings-options">
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox1" name="siblings" value="Si" checked>
+                                <label for="checkbox1">Si</label>
+                            </div>
+                            <div class="check-label">
+                                 <input type="checkbox" id="checkbox2" name="siblings" value="No">
+                                <label for="checkbox2">NO tiene hermanas o hermanos</label>
+                            </div>
+                        </div>
+                        
+                        <p class="items-name">¿Se hablan lenguas distintas al castellano en el hogar?</p>
+                        <div class="checkbox-container" style="flex-direction: row;" id="siblings-options">
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox1" name="language" value="Si" checked>
+                                <label for="checkbox1">Si</label>
+                            </div>
+                            <div class="check-label">
+                                 <input type="checkbox" id="checkbox2" name="language" value="No">
+                                <label for="checkbox2">No</label>
+                            </div>
+                        </div>
+                        <p class="items-name">En caso afirmativo</p>
+                        <div class="checkbox-container" style="flex-direction: row;" id="other-languages-options">
+                            <div class="check-label">
+                                <label for="checkbox1">Lengua/s indígena/s</label>
+                                <input type="checkbox" id="checkbox1" name="other-language" value="Si" checked>
+                                <label for="checkbox1">Si</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox1" name="other-language" value="No">
+                                <label for="checkbox1">No</label>
+                            </div>
+                            <div class="check-label">
+                                <label for="checkbox2">Otra/s lengua/s</label>
+                                <input type="checkbox" id="checkbox2" name="other-language" value="Si">
+                                <label for="checkbox2">Si</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox2" name="other-language" value="No">
+                                <label for="checkbox2">No</label>
+                            </div>
+                        </div>
+
+                        <p class="items-name">¿Se reconoce perteneciente o descendiente de Pueblos Originarios?</p>
+                        <div class="checkbox-container" style="flex-direction: row;" id="aboriginal-descendant-options">
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox1" name="aboriginal-descendant" value="Si" checked>
+                                <label for="checkbox1">Si</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox1" name="aboriginal-descendant" value="No">
+                                <label for="checkbox1">No</label>
+                            </div>
+                        </div>
+                        <p class="items-name">Percibe:</p>
+                        <div class="checkbox-container" style="flex-direction: row;" id="other-languages-options">
+                            <div class="check-label">
+                                <label for="checkbox1">Asignación Universal por hijo (AUH)</label>
+                                <input type="checkbox" id="checkbox1" name="percibe-auh" value="Si" checked>
+                                <label for="checkbox1">Si</label>
+                                <input type="checkbox" id="checkbox1" name="percibe-auh" value="No">
+                                <label for="checkbox1">No</label>
+                            </div>
+                            <div class="check-label">
+                                <label for="checkbox1">Progresar</label>
+                                <input type="checkbox" id="checkbox1" name="percibe-progresar" value="Si" checked>
+                                <label for="checkbox1">Si</label>
+                                <input type="checkbox" id="checkbox1" name="percibe-progresar" value="No">
+                                <label for="checkbox1">No</label>
+                            </div>
+                        </div>
+
+                        <p class="items-name">Medio de transporte que utiliza para llegar al establecimiento (marcar todas las opciones que correspondan)</p>
+                        <div class="checkbox-container" style="flex-direction: row;">
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox1" name="transport" value="A pie/Bicicleta">
+                                <label for="checkbox1">A pie/Bicicleta</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox1" name="transport" value="Transporte escolar DGCyE">
+                                <label for="checkbox1">Transporte escolar DGCyE</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox1" name="transport" value="Colectivo">
+                                <label for="checkbox1">Colectivo</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox1" name="transport" value="Tren">
+                                <label for="checkbox1">Tren</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox1" name="transport" value="Vehículo particular">
+                                <label for="checkbox1">Vehículo particular</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox1" name="transport" value="Otro">
+                                <label for="checkbox1">Otro</label>
+                            </div>
+                        </div>
+                        <p class="items-name">Contestan estudiantes de 14 años y más</p>
+                        <div class="checkbox-container" style="flex-direction: row;" id="other-languages-options">
+                            <div class="check-label">
+                                <label for="checkbox1">¿Tiene hijas o hijos menores de 3 años?</label>
+                                <input type="checkbox" id="checkbox1" name="children" value="Si">
+                                <label for="checkbox1">Si</label>
+                                <input type="checkbox" id="checkbox1" name="children" value="No">
+                                <label for="checkbox1">No</label>
+                            </div>
+                            <div class="check-label">
+                                <label for="checkbox1">¿Asisten a una sala del Proyecto de Salas Maternales?</label>
+                                <input type="checkbox" id="checkbox1" name="salas-maternales" value="Si">
+                                <label for="checkbox1">Si</label>
+                                <input type="checkbox" id="checkbox1" name="salas-maternales" value="No">
+                                <label for="checkbox1">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Otros datos</h2>
+                        <div class="column-form-left">
+                            <table style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Sí</th>
+                                        <th>No</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="checkbox-container" style="display: block;width: 100%;"  id="enfermedades-alumno">
+                                    <tr>
+                                        <td>Asma / Broncoespasmos a repetición</td>
+                                        <td><input type="checkbox" name="asma" value="Si"></td>
+                                        <td><input type="checkbox" name="asma" value="No"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Celíaca</td>
+                                        <td><input type="checkbox" name="celiaquia" value="Si"></td>
+                                        <td><input type="checkbox" name="celiaquia" value="No"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Problemas / Condiciones cardíacas</td>
+                                        <td><input type="checkbox" name="cardiacas" value="Si"></td>
+                                        <td><input type="checkbox" name="cardiacas" value="No"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Diabetes</td>
+                                        <td><input type="checkbox" name="diabetes" value="Si"></td>
+                                        <td><input type="checkbox" name="diabetes" value="No"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Presión arterial elevada</td>
+                                        <td><input type="checkbox" name="presion" value="Si"></td>
+                                        <td><input type="checkbox" name="presion" value="No"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Convulsiones</td>
+                                        <td><input type="checkbox" name="convulsiones" value="Si"></td>
+                                        <td><input type="checkbox" name="convulsiones" value="No"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Alteraciones sanguíneas</td>
+                                        <td><input type="checkbox" name="sanguineas" value="Si"></td>
+                                        <td><input type="checkbox" name="sanguineas" value="No"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Quemaduras moderadas o severas</td>
+                                        <td><input type="checkbox" name="quemaduras" value="Si"></td>
+                                        <td><input type="checkbox" name="quemaduras" value="No"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -157,17 +424,25 @@
                             documentInput.disabled = false;
                         }
                     }
-                }
-            });
+                    if (e.target.name === 'provincia-nacimiento-alumno-check') {
+                        const documentInput = document.querySelector('input[name="provincia-nacimiento-alumno"]');
+                        if (e.target.value === 'Buenos Aires' && e.target.checked) {
+                            documentInput.disabled = true;
+                            documentInput.value = "";
+                        } else if (e.target.value === 'Otra' && e.target.checked) {
+                            documentInput.disabled = false;
+                        }
+                    }
+                }});
         });
 
-        document.addEventListener("DOMContentLoaded", updateSections);
+        document.addEventListener("DOMContentLoaded", updateSections, sectionbs);
         document.getElementById("dni-options").addEventListener("change", updateSections);
         function updateSections() {
             const hasDniSection = document.getElementById("section-has-dni");
             const noDniSection = document.getElementById("section-no-dni");
             const checkedValue = [...document.querySelectorAll("#dni-options input[type='checkbox']:checked")].map(cb => cb.value);
-
+            
             if (checkedValue.includes("NO posee DNI argentino")) {
                 hasDniSection.style.display = "none";
                 noDniSection.style.display = "block";
@@ -178,7 +453,18 @@
                 hasDniSection.style.display = "none";
                 noDniSection.style.display = "none";
             }
-        }
 
+        }
+        document.getElementById("provincia-nacimiento-alumno").addEventListener("change", sectionbs);
+        function sectionbs() {
+            const provinciaBuenosAires = document.getElementById("BSAS-option");
+            const checkedValues = [...document.querySelectorAll("#provincia-nacimiento-alumno input[type='checkbox']:checked")].map(cb => cb.value);
+
+            if (checkedValues.includes("Buenos Aires")) {
+                provinciaBuenosAires.style.display = "flex";
+            } else {
+                provinciaBuenosAires.style.display = "none";
+            }
+        }
     </script>
 {% endblock %}
