@@ -235,9 +235,9 @@ def register_student(nombre_alumno: str, apellido_alumno: str, dni_alumno: int, 
             ProvinciaNacimiento, Distrito, Localidad, Calle, NumeroCalle, Piso, Torre, Depto, Telefono,
             TelefonoCelular, Activo, FechaCreacion
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (id_tutor, nombre_alumno, apellido_alumno, dni_alumno, cuil, fecha_nacimiento, domicilio, genero,
-              nacionalidad, provincia_nacimiento, distrito, localidad, calle, numero_calle, piso, torre,
-              depto, telefono, telefono_celular, activo, fecha_creacion))
+        ''', (id_tutor, nombre_alumno.lower(), apellido_alumno.lower(), dni_alumno, cuil, fecha_nacimiento, domicilio.lower(), genero.lower(),
+              nacionalidad.lower(), provincia_nacimiento.lower(), distrito.lower(), localidad.lower(), calle.lower(), numero_calle, piso, torre.lower(),
+              depto.lower(), telefono, telefono_celular, activo, fecha_creacion))
 
         conn.commit()
         return f"Alumno {nombre_alumno} {apellido_alumno} registrado exitosamente."
