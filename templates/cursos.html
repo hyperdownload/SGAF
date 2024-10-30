@@ -89,73 +89,58 @@
     .contenedor-tarjetas {
         display: flex;
         flex-wrap: wrap; /* Permite que las tarjetas se muevan a la siguiente fila */
-        justify-content: flex-start; /* Alinea las tarjetas a la izquierda */
+        justify-content: center; /* Alinea las tarjetas a la izquierda */
+        max-width: 1150px;
+        width: 100%;
+        margin: 20px -15px 0 -15px;
     }
-
-    .tarjeta {
-        width: 290px; /* Ancho fijo para cada tarjeta */
-        margin: 10px; /* Espacio alrededor de cada tarjeta */
+    .card-container{
+        flex: 0 0 33.3333333333%;
+        max-width: 33.33333%;
         border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        font-family: Arial, sans-serif;
+        padding: 0 15px 15px;
     }
-
-    .encabezado-tarjeta {
-        background-color: #2F2F2F;
-        padding: 15px;
+    .card{    box-shadow: #919eab4d 0 0 2px, #919eab1f 0 12px 24px -4px;}
+    .header-card{
+        display: flex;
+        justify-content: space-between;
         border-radius: 10px 10px 0 0;
+        background-color: #2F2F2F;
         color: white;
-        font-weight: bold;
-    }
-
-    .encabezado-tarjeta div {
-        display: inline-block;
-    }
-
-    .izquierda {
-        float: left;
-    }
-
-    .derecha {
-        float: right;
-    }
-
-    .cuerpo-tarjeta {
         padding: 15px;
-        text-align: center;
     }
-
-    .titulo-tarjeta {
-        font-size: 20px;
-        font-weight: bold;
+    .txt-container{
+        width: 100%;
+        padding: 24px;
+        display: flex;
+        justify-content: center;
     }
-
-    .subtitulo-tarjeta {
-        font-size: 16px;
-        color: gray;
-        margin-top: 5px;
+    .main-card{
+        display: flex;
+        flex-direction: column;
     }
-
-    .boton-tarjeta {
+    hr{
+        border: solid 0.1px #e9e9e9;
+        width: 100%;
+    }
+    .btn-container{
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 8px 24px;
+        display: flex;
+        justify-content: center;
+    }
+    .btn-card{
         width: 80%;
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: #f1f1f1;
-        border: none;
-        border-radius: 10px;
+        border-radius: 5px;
         cursor: pointer;
-        font-size: 17px;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: center;
     }
-
-    hr {
-        margin-top: 20px;
-        border: 1px solid #ccc;
-    }
-
-    .sua::after {
-        content: "";
-        clear: both;
-        display: table;
+    .btn-card:hover{
+        background-color: #e9e9e9;
     }
 </style>
 
@@ -192,16 +177,17 @@
 
     function createCard(course) {
         return `
-            <div class="tarjeta">
-                <div class="encabezado-tarjeta sua">
-                    <div class="izquierda">Curso</div>
-                    <div class="derecha">Cantidad:</div>
-                </div>
-                <div class="cuerpo-tarjeta">
-                    <div class="titulo-tarjeta">${course}</div>
-                    <div class="subtitulo-tarjeta">última actualización:</div>
-                    <hr>
-                    <button class="boton-tarjeta">ENTRAR</button>
+            <div class="card-container">
+                <div class = "card">
+                    <div class="header-card">
+                        <span>Informatica</span>
+                        <span>Diurno</span>
+                    </div>
+                    <div class="main-card">
+                        <div class="txt-container"><h3 class="titulo-tarjeta">${course}</h3></div>
+                        <hr>
+                        <div class="btn-container"><a class="btn-card" href="">ENTRAR</a></div>
+                    </div>
                 </div>
             </div>
         `;
@@ -210,7 +196,7 @@
     // Filtrar tarjetas por búsqueda
     function filterCards() {
         const searchTerm = searchInput.value.toLowerCase();
-        const cards = document.querySelectorAll('.tarjeta');
+        const cards = document.querySelectorAll('.card-container');
 
         cards.forEach(card => {
             const title = card.querySelector('.titulo-tarjeta').innerText.toLowerCase();
@@ -244,11 +230,11 @@
     searchInput.addEventListener('input', filterCards);
 
     // Agregar opción "Todos" en el dropdown
-    const dropdown = document.getElementById('dropdown');
+    const dropdownCursos = document.getElementById('dropdown');
     const allOption = document.createElement('option');
     allOption.text = 'Todos';
     allOption.value = 'Todos';
-    dropdown.add(allOption);
+    dropdownCursos.add(allOption);
 
     
     // Mostrar todas las tarjetas al principio
