@@ -14,9 +14,22 @@ def create_database(path: str) -> None:
         IdTutor INTEGER NOT NULL,
         Nombre TEXT NOT NULL,
         Apellido TEXT NOT NULL,
-        DNI INTEGER NOT NULL,
+        DNI INTEGER,
+        CUIL INTEGER,
         FechaDeNacimiento DATE NOT NULL,
         Domicilio TEXT NOT NULL,
+        Genero TEXT,
+        Nacionalidad TEXT,
+        ProvinciaNacimiento TEXT,
+        Distrito TEXT,
+        Localidad TEXT,
+        Calle TEXT,
+        NumeroCalle INTEGER,
+        Piso INTEGER,
+        Torre TEXT,
+        Depto TEXT,
+        Telefono INTEGER,
+        TelefonoCelular INTEGER,
         Activo BOOLEAN NOT NULL,
         FechaCreacion DATETIME NOT NULL,
         FOREIGN KEY (IdTutor) REFERENCES Tutor(IdTutor)
@@ -191,32 +204,40 @@ def get_user_property(property_name: str, condition_value: str, condition_field:
 
 def register_student(nombre_alumno: str, apellido_alumno: str, dni_alumno: int, fecha_nacimiento: str,
                      domicilio: str, activo: bool, nombre_tutor: str, apellido_tutor: str, dni_tutor: int,
-                     telefono_tutor: int, parentezco: str) -> str:
+                     telefono_tutor: int, parentezco: str, cuil: int, genero: str, nacionalidad: str,
+                     provincia_nacimiento: str, distrito: str, localidad: str, calle: str,
+                     numero_calle: int, piso: int, torre: str, depto: str, telefono: int,
+                     telefono_celular: int) -> str:
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
     try:
+        # Verifica y registra el tutor si no existe
         cursor.execute('SELECT IdTutor FROM Tutor WHERE DNI = ?', (dni_tutor,))
         if tutor_data := cursor.fetchone():
             id_tutor = tutor_data[0]
         else:
-            #Registra el tutor si no existe
             cursor.execute('''
             INSERT INTO Tutor (Nombre, Apellido, DNI, Telefono, Parentezco)
             VALUES (?, ?, ?, ?, ?)
             ''', (nombre_tutor, apellido_tutor, dni_tutor, telefono_tutor, parentezco))
             id_tutor = cursor.lastrowid
 
-        #Verifica si el alumno ya existe para evitar duplicados
+        # Verifica si el alumno ya existe para evitar duplicados
         cursor.execute('SELECT IdAlumno FROM Alumno WHERE DNI = ?', (dni_alumno,))
         if cursor.fetchone() is not None:
             return "Error: ya existe un alumno con este DNI."
 
-        #Registra al alumno
-        fecha_creacion = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # Registra al alumno con los nuevos datos
+        fecha_creacion = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         cursor.execute('''
-        INSERT INTO Alumno (IdTutor, Nombre, Apellido, DNI, FechaDeNacimiento, Domicilio, Activo, FechaCreacion)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (id_tutor, nombre_alumno, apellido_alumno, dni_alumno, fecha_nacimiento, domicilio, activo, fecha_creacion))
+        INSERT INTO Alumno (
+            IdTutor, Nombre, Apellido, DNI, CUIL, FechaDeNacimiento, Domicilio, Genero, Nacionalidad,
+            ProvinciaNacimiento, Distrito, Localidad, Calle, NumeroCalle, Piso, Torre, Depto, Telefono,
+            TelefonoCelular, Activo, FechaCreacion
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (id_tutor, nombre_alumno, apellido_alumno, dni_alumno, cuil, fecha_nacimiento, domicilio, genero,
+              nacionalidad, provincia_nacimiento, distrito, localidad, calle, numero_calle, piso, torre,
+              depto, telefono, telefono_celular, activo, fecha_creacion))
 
         conn.commit()
         return f"Alumno {nombre_alumno} {apellido_alumno} registrado exitosamente."
@@ -282,4 +303,3 @@ def get_all_courses() -> list:
 if __name__ == '__main__':
     create_database(database_path)
     print(register_user('Sex', '1', 'b@gmail.com', 'Admin'))
-    #AAAAAAAAAa
