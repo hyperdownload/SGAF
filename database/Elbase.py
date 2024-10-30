@@ -282,3 +282,4 @@ def get_all_courses() -> list:
 if __name__ == '__main__':
     create_database(database_path)
     print(register_user('Sex', '1', 'b@gmail.com', 'Admin'))
+    #AAAAAAAAAa
