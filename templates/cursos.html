@@ -1,23 +1,20 @@
 {% extends 'plantilla.html' %}
-{% block title %}Menu Principal{% endblock %}
+{% block title %}Cursos{% endblock %}
 <!-- ----------------------------------------------------->
+{% block headerinf %}
+<link rel="stylesheet" href="static/card.css">
+{% endblock %}
 {% block maincontent %}
 <div class="title-main">
     <h2>Cursos</h2>
     <p>Ciclo lectivo 2024</p>
 </div>
 <div class="container-inputs" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-  <form action="" style="width: 100%; display: flex; justify-content: space-between;">
+    <form action="" style="width: 100%; display: flex; justify-content: space-between;">
       <!-- Input de búsqueda -->
-      <input
-          id="search-input" 
-          style="width: 280px; padding-right: 30px; background-image: url('static/img/lupa.png'); background-repeat: no-repeat; background-position: 98% center; background-size: 20px;"  
-          type="text" 
-          class="input-style" 
-          name="apellido" 
-          autocomplete="off" 
-          placeholder="Buscar:" 
-          required>
+        <input id="search-input" 
+        style="width: 280px; background-image: url('static/img/lupa.png'); background-repeat: no-repeat; background-position: 95% center; background-size: 20px;"  
+          type="text" class="input-style" name="Curso" autocomplete="off" placeholder="Buscar:" required>
       
       <!-- Input de selección de año -->
       <div style="position: relative; width: 280px;">
@@ -38,113 +35,46 @@
           <span style="color: #000000;">▼</span> 
         </div>
       
-        <div id="dropdown-options" style="
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 1000;">
-          <div onclick="selectOption('1er año')" style="padding: 10px 16px; cursor: pointer;">1er año</div>
-          <div onclick="selectOption('2do año')" style="padding: 10px 16px; cursor: pointer;">2do año</div>
-          <div onclick="selectOption('3er año')" style="padding: 10px 16px; cursor: pointer;">3er año</div>
-          <div onclick="selectOption('4to año')" style="padding: 10px 16px; cursor: pointer;">4to año</div>
-          <div onclick="selectOption('5to año')" style="padding: 10px 16px; cursor: pointer;">5to año</div>
-          <div onclick="selectOption('6to año')" style="padding: 10px 16px; cursor: pointer;">6to año</div>
-          <div onclick="selectOption('7mo año')" style="padding: 10px 16px; cursor: pointer;">7mo año</div>
-          <div onclick="selectOption('Todos')" style="padding: 10px 16px; cursor: pointer;">todos</div>
+        <div id="dropdown-options" style=" display: none; position: absolute; top: 100%; left: 0;
+            width: 100%; background-color: #fff; border: 1px solid #ccc; border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  max-height: 200px; overflow-y: auto; z-index: 1000;">
+
+            <div onclick="selectOption('1er año')" style="padding: 10px 16px; cursor: pointer;">1er año</div>
+            <div onclick="selectOption('2do año')" style="padding: 10px 16px; cursor: pointer;">2do año</div>
+            <div onclick="selectOption('3er año')" style="padding: 10px 16px; cursor: pointer;">3er año</div>
+            <div onclick="selectOption('4to año')" style="padding: 10px 16px; cursor: pointer;">4to año</div>
+            <div onclick="selectOption('5to año')" style="padding: 10px 16px; cursor: pointer;">5to año</div>
+            <div onclick="selectOption('6to año')" style="padding: 10px 16px; cursor: pointer;">6to año</div>
+            <div onclick="selectOption('7mo año')" style="padding: 10px 16px; cursor: pointer;">7mo año</div>
+            <div onclick="selectOption('Todos')" style="padding: 10px 16px; cursor: pointer;">todos</div>
+            </div>
         </div>
-      </div>
       
-      <script>
-        function toggleDropdown() {
-          const dropdown = document.getElementById("dropdown-options");
-          dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
-        }
-      
-        function selectOption(optionText) {
-          document.getElementById("selected-option").innerText = optionText;
-          document.getElementById("dropdown-options").style.display = "none";
-        }
-      
-        // Cierra el dropdown si haces clic fuera de él
-        document.addEventListener("click", function(event) {
-          const customSelect = document.getElementById("custom-select");
-          const dropdownOptions = document.getElementById("dropdown-options");
-          if (!customSelect.contains(event.target)) {
-            dropdownOptions.style.display = "none";
-          }
-        });
-      </script>
-  </form>
+        <script>
+            function toggleDropdown() {
+            const dropdown = document.getElementById("dropdown-options");
+            dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
+            }
+        
+            function selectOption(optionText) {
+            document.getElementById("selected-option").innerText = optionText;
+            document.getElementById("dropdown-options").style.display = "none";
+            }
+        
+            // Cierra el dropdown si haces clic fuera de él
+            document.addEventListener("click", function(event) {
+            const customSelect = document.getElementById("custom-select");
+            const dropdownOptions = document.getElementById("dropdown-options");
+            if (!customSelect.contains(event.target)) {
+                dropdownOptions.style.display = "none";
+            }
+            });
+        </script>
+    </form>
 </div>
-<div>
-  <style>
-    .contenedor-tarjetas {
-        display: flex;
-        flex-wrap: wrap; /* Permite que las tarjetas se muevan a la siguiente fila */
-        justify-content: center; /* Alinea las tarjetas a la izquierda */
-        max-width: 1150px;
-        width: 100%;
-        margin: 20px -15px 0 -15px;
-    }
-    .card-container{
-        flex: 0 0 33.3333333333%;
-        max-width: 33.33333%;
-        border-radius: 10px;
-        padding: 0 15px 15px;
-    }
-    .card{    box-shadow: #919eab4d 0 0 2px, #919eab1f 0 12px 24px -4px;}
-    .header-card{
-        display: flex;
-        justify-content: space-between;
-        border-radius: 10px 10px 0 0;
-        background-color: #2F2F2F;
-        color: white;
-        padding: 15px;
-    }
-    .txt-container{
-        width: 100%;
-        padding: 24px;
-        display: flex;
-        justify-content: center;
-    }
-    .main-card{
-        display: flex;
-        flex-direction: column;
-    }
-    hr{
-        border: solid 0.1px #e9e9e9;
-        width: 100%;
-    }
-    .btn-container{
-        display: flex;
-        align-items: center;
-        width: 100%;
-        padding: 8px 24px;
-        display: flex;
-        justify-content: center;
-    }
-    .btn-card{
-        width: 80%;
-        border-radius: 5px;
-        cursor: pointer;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: center;
-    }
-    .btn-card:hover{
-        background-color: #e9e9e9;
-    }
-</style>
 
 <div class="contenedor-tarjetas" id="cursoContainer"></div>
+
 <script>
     const cursos = {
         "1ro": ["Curso 1ro 1ra", "Curso 1ro 2da", "Curso 1ro 3ra", "Curso 1ro 4ta", "Curso 1ro 5ta", "Curso 1ro 6ta"],
@@ -157,40 +87,34 @@
     };
 
     const container = document.getElementById('cursoContainer');
+    const searchInput = document.getElementById('search-input');
 
-    // Generación de tarjetas
-    function generateCards(year) {
-        container.innerHTML = ''; // Limpiar contenedor
+    // Función para cargar la plantilla de carta
+    async function loadTemplate() {
+        const response = await fetch('/get-carta-template');
+        return await response.text();
+    }
+
+    // Función para generar tarjetas
+    async  function generateCards(year) {
+        container.innerHTML = ''; // Limpiar el contenedor
+        const template = await loadTemplate();
         if (year === 'todos') {
-            // Mostrar todos los cursos
+        // Mostrar todos los cursos
             Object.values(cursos).flat().forEach(course => {
-                const card = createCard(course);
+                const card = createCard(template, course);
                 container.innerHTML += card;
-            });
+        });
         } else if (year in cursos) {
             cursos[year].forEach(course => {
-                const card = createCard(course);
+                const card = createCard(template, course);
                 container.innerHTML += card;
             });
         }
     }
 
-    function createCard(course) {
-        return `
-            <div class="card-container">
-                <div class = "card">
-                    <div class="header-card">
-                        <span>Informatica</span>
-                        <span>Diurno</span>
-                    </div>
-                    <div class="main-card">
-                        <div class="txt-container"><h3 class="titulo-tarjeta">${course}</h3></div>
-                        <hr>
-                        <div class="btn-container"><a class="btn-card" href="">ENTRAR</a></div>
-                    </div>
-                </div>
-            </div>
-        `;
+    function createCard(template, course) {
+        return template.replace('${course}', course);
     }
 
     // Filtrar tarjetas por búsqueda
@@ -224,9 +148,6 @@
         filterCards(); // Aplicar filtro de búsqueda
     }
 
-    // Script para búsqueda
- const searchInput = document.getElementById('search-input');
-
     searchInput.addEventListener('input', filterCards);
 
     // Agregar opción "Todos" en el dropdown
@@ -236,7 +157,6 @@
     allOption.value = 'Todos';
     dropdownCursos.add(allOption);
 
-    
     // Mostrar todas las tarjetas al principio
     generateCards('todos'); // Muestra todas las tarjetas al cargar la página
 </script>

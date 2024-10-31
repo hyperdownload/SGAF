@@ -5,14 +5,14 @@
     text-decoration: none;
 }
 :root{
-    --background:#FBF8F3;
+    --background:#FBF8F3;/* Si se cambian este colores se modifica todo*/
+    --hover-pri-color: #232323;/* Si se cambian este colores se modifica todo*/
+    --primary-color:#3d3d3d;/* Si se cambian este colores se modifica todo*/
     --amarillo:#fabe25;
     --azul:#0080ff;
     --rojo:#e9353f;
     --verde:#33d072;
     --verde2:#4bbf7a;
-    --negro2: #232323;
-    --negro:#3d3d3d;
     --gris:#dcdcdc;
     --gris1:#e9e9e9;
 
@@ -37,9 +37,9 @@ button{
     height: 40px;
     padding: 12px 24px;
     border-radius: 10px;
-    border: 2px solid var(--negro);
+    border: 2px solid var(--primary-color);
     background-color: var(--background);
-    color: var(--negro);
+    color: var(--primary-color);
     transition: all 0.2s ease;
     font-family: 'Plus Jakarta Sans';
     font-weight: bold;
@@ -57,7 +57,7 @@ button{
     font-family: 'Plus Jakarta Sans';
     font-size: 12px;
     font-weight: bold;
-    color: var(--negro);
+    color: var(--primary-color);
     /* color: #2A3547; */
     margin: 20px 0 10px;
 }
@@ -87,14 +87,14 @@ body{
         height: 45px;
         margin: 1px;
         border-radius: 5px;
-        /* background-color: var(--negro); */
+        /* background-color: var(--primary-color); */
         display: flex;
         align-items: center;
         span{
             display: flex;
             flex-direction: row;
             width: 100%;
-            color: var(--negro1);
+            color: var(--primary-color);
             align-items: center;
             cursor: pointer;
         }
@@ -271,13 +271,15 @@ main{
         box-shadow: #919eab4d 0 0 2px, #919eab1f 0 12px 24px -4px;
         
         .column-form-left{
-            width: 50%;
             padding: 0 15px 0 0;
         }
-
         .column-form-right{
-            width: 50%;
             padding: 0 0 0 15px;
+        }
+        .column-form-left, .column-form-right{
+            width: 50%;
+            display: flex;
+            align-items: flex-start;
         }
 
         .divisor-inputs{
@@ -287,6 +289,10 @@ main{
             display: flex;
             flex-wrap: wrap;
             margin: 15px 0;
+        }
+        .name-and-input{ 
+            height: fit-content;
+            width: 100%;
         }
         .checkbox-container{
             width: 100%;
@@ -308,7 +314,7 @@ form input.input-style{
     width: 100%;
     height: 50px;
     background-color: var(--background);
-    color: var(--negro);
+    color: var(--primary-color);
     border-style: none;
     border-radius: 10px;
     border: 2px solid #d2d0d0;
@@ -317,17 +323,17 @@ form input.input-style{
 }
 
 form input.input-style:hover{
-    border: 2px solid var(--negro2);
+    border: 2px solid var(--hover-pri-color);
 }
 form input.input-style:focus {
-    border: 2px solid var(--negro2);
+    border: 2px solid var(--hover-pri-color);
     outline: none;
 }
 form input[type="checkbox"]{
     width: 20px;
     height: 20px;
     border-radius: 5px;
-    accent-color: var(--azul);
+    accent-color: var(--primary-color);
     font-size: 12px;
     margin:0 20px 0 0;
 }

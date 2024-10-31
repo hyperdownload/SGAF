@@ -60,6 +60,10 @@ def formulario():
 @app.route("/curso")
 def curso():
     return render_template("cursos.html")
+
+@app.route('/get-carta-template')
+def get_carta_template():
+    return render_template('/components/carta.html')
     
 if __name__ == '__main__':
     app.run(debug=True)
