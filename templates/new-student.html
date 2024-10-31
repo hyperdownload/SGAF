@@ -223,25 +223,18 @@
                         <h2 style="width: 100%;">Otros datos</h2>
                     
                         {% set data = {
-                        'Hermanas o hermanos': {
-                            'siblings': ['Si', 'No']
-                        },
-                        '¿Se hablan lenguas distintas al castellano en el hogar?': {
-                            'language': ['Si', 'No']
-                        },
-                        'En caso afirmativo': {
-                            'other-language': ['Lengua/s indígena/s', 'Otra/s lengua/s']
-                        },
-                        '¿Se reconoce perteneciente o descendiente de Pueblos Originarios?': {
-                            'aboriginal-descendant': ['Si', 'No']
-                        },
-                        'Percibe': {
-                            'percibe-auh': ['Asignación Universal por hijo (AUH)'],
-                            'percibe-progresar':['Progresar']
-                        },
-                        'Medio de transporte que utiliza para llegar al establecimiento': {
-                            'transport': ['A pie/Bicicleta', 'Transporte escolar DGCyE', 'Colectivo', 'Tren', 'Vehículo particular', 'Otro']
-                        } } %}
+                        'Hermanas o hermanos': { 'siblings': ['Si', 'No'] },
+                        
+                        '¿Se hablan lenguas distintas al castellano en el hogar?': { 'language': ['Si', 'No'] },
+                        
+                        'En caso afirmativo': { 'other-language': ['Lengua/s indígena/s', 'Otra/s lengua/s'] },
+
+                        '¿Se reconoce perteneciente o descendiente de Pueblos Originarios?': {'aboriginal-descendant': ['Si', 'No'] },
+                       
+                        'Percibe': { 'percibe-auh': ['Asignación Universal por hijo (AUH)'],
+                            'percibe-progresar':['Progresar']  },
+                        'Medio de transporte que utiliza para llegar al establecimiento': { 'transport': ['A pie/Bicicleta', 'Transporte escolar DGCyE', 'Colectivo', 'Tren', 'Vehículo particular', 'Otro'] } 
+                        } %}
                 
                         {% for title, options in data.items() %}
                         <p class="items-name">{{ title }}</p>
@@ -412,7 +405,143 @@
                 </form>
             </div>
 
-            <div class="content"> nada
+            <div class="content"> 
+                <form action="{{ url_for('formulario') }}" method="post">
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Inscripción</h2>
+                        {% set registration_data = {
+                            'Se inscribe en': { 'type_registration': ['Ciclo Básico', 'Ciclo Superior', 'Aula de fortalecimiento', 'Escuela Profesional Secundaria'] },}            
+                        %}
+                        {% for title, options in registration_data.items() %}
+                            <p class="items-name">{{ title }}</p>
+                            <div class="checkbox-container" style="flex-direction: row;">
+                                {% for name, labels in options.items() %}
+                                    {% for label in labels %}
+                                        <div class="check-label">
+                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                        <div class="column-form-left" style="display: flex; flex-wrap: wrap; column-gap:30px;">
+                            <div class="name-and-input">
+                                <p class="items-name">Orientación</p>
+                                <input type="text" class="input-style" name="orientation" autocomplete="off" placeholder="" >
+                            </div>
+                        </div>
+                        <div class="column-form-right" style="display: flex; flex-wrap: wrap; column-gap:30px;">
+                            {% set year_registration = {
+                                'Año': { 'year_registration_fields': ['1', '2', '3', '4','5','6','7'] },}            
+                            %}
+                            {% for title, options in year_registration.items() %}
+                                <p class="items-name">{{ title }}</p>
+                                <div class="checkbox-container" style="flex-flow: row wrap;">
+                                    {% for name, labels in options.items() %}
+                                        {% for label in labels %}
+                                            <div class="check-label">
+                                                <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                                <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% set request_for_shift = {
+                            'Año': { 'request_shift_fields': ['Mañana', 'Tarde', 'Vespertino', 'Noche'] },}            
+                        %}
+                        {% for title, options in request_for_shift.items() %}
+                            <p class="items-name">{{ title }}</p>
+                            <div class="checkbox-container" style="flex-flow: row wrap;">
+                                {% for name, labels in options.items() %}
+                                    {% for label in labels %}
+                                        <div class="check-label">
+                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        {% set request_for_workday = {
+                            'Jornada': { 'request_workday_fields': ['Simple', 'Extendida', 'Completa/Doble escolaridad'] },}            
+                        %}
+                        {% for title, options in request_for_workday.items() %}
+                            <p class="items-name">{{ title }}</p>
+                            <div class="checkbox-container" style="flex-flow: row wrap;">
+                                {% for name, labels in options.items() %}
+                                    {% for label in labels %}
+                                        <div class="check-label">
+                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Condición en la Inscripción actual</h2>
+                        {% set registration_condition = {
+                            'Jornada': { 'registration_conditiony_fields': ['Ingresante al Nivel', 'Promovid@', 'Reinscript@'] },}            
+                        %}
+                        {% for title, options in registration_condition.items() %}
+                            <p class="items-name">{{ title }}</p>
+                            <div class="checkbox-container" style="flex-flow: row wrap;">
+                                {% for name, labels in options.items() %}
+                                    {% for label in labels %}
+                                        <div class="check-label">
+                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Inclusión</h2>
+                        <p class="items-name">Vínculo con estudiante</p>
+                        <div class="checkbox-container" style="flex-direction: row;">
+                            <div class="check-label">
+                                <input type="checkbox" id="proyecto-inclusion-1" name="proyecto-inclusion" value="Si">
+                                <label for="proyecto-inclusion-1">Si</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="proyecto-inclusion-2" name="proyecto-inclusion" value="No">
+                                <label for="proyecto-inclusion-2">No</label>
+                            </div>
+                        </div>
+                        <p class="items-name">Si la respuesta es afirmativa, marque lo que corresponda</p>
+                        <div class="checkbox-container" style="flex-direction: column;">
+                            <div class="check-label">
+                                <input type="checkbox" id="proyecto-inclusion-true-1" name="proyecto-inclusion-true" value="Si">
+                                <label for="proyecto-inclusion-true-1">Concurre a una Escuela Especial a contraturno y vuenta con acompañamiento de maestr@ de inclusión</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="proyecto-inclusion-true-2" name="proyecto-inclusion-true" value="No">
+                                <label for="proyecto-inclusion-true-2">No concurre a una Escuela Especial pero cuenta con acompañante de maestr@ de inclusión</label>
+                            </div>
+                        </div>
+                        <p class="items-name">¿Cursa con acompañante asistente externo?</p>
+                        <div class="checkbox-container" style="flex-direction: row;">
+                            <div class="check-label">
+                                <input type="checkbox" id="acompañante-externo-1" name="acompañante-externo" value="Si">
+                                <label for="acompañante-externo-1">Si</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="acompañante-externo-2" name="acompañante-externo" value="No">
+                                <label for="acompañante-externo-2">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Educacion complementaria</h2>
+                    </div>
+                </form>
             </div>
             <div class="content">
                 <form action="{{ url_for('formulario') }}" method="post">
