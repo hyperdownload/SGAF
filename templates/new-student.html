@@ -310,7 +310,91 @@
                     <button class="button2" type="submit">subir</button>
                 </form>
             </div>
-            <div class="content">Tutor</div>
+            <div class="content">
+                <div class="content active">
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Datos de la persona responsable</h2>
+                        <p class="items-name">Vínculo con estudiante</p>
+                        <div class="checkbox-container" style="flex-direction: row;">
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox-madre" name="tutor-vinculo" value="Madre">
+                                <label for="checkbox-madre">Madre</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox-padre" name="tutor-vinculo" value="Padre">
+                                <label for="checkbox-padre">Padre</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox-tutor" name="tutor-vinculo" value="Tutor">
+                                <label for="checkbox-tutor">Tutor</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox-tutora" name="tutor-vinculo" value="Tutora">
+                                <label for="checkbox-tutora">Tutora</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="checkbox-otro" name="tutor-vinculo" value="Otro">
+                                <label for="checkbox-otro">Otro</label>
+                            </div>
+                        </div>
+
+                        <div class="column-form-left">
+                            <p class="items-name">Apellido</p>
+                            <input type="text" class="input-style" name="apellido-tutor" autocomplete="off" placeholder="" required>
+                        </div>
+                        <div class="column-form-right">
+                            <p class="items-name">Nombre</p>
+                            <input type="text" class="input-style" name="nombre-tutoe" autocomplete="off" placeholder="" required>
+                        </div>
+
+                        <p class="items-name">¿Posee DNI argentino?</p>
+                        <div class="checkbox-container" style="flex-direction: row;">
+                            <div class="check-label">
+                                <input type="checkbox" id="dni-si-fisico" name="tutor-dni" value="SI y tiene DNI fisico">
+                                <label for="dni-si-fisico">SI, y tiene el DNI físico</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="dni-si-sin-fisico" name="tutor-dni" value="SI, pero NO tiene el DNI fisico">
+                                <label for="dni-si-sin-fisico">SI, pero NO tiene el DNI físico</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="dni-no" name="tutor-dni" value="NO, posee DNI argentino">
+                                <label for="dni-no">NO posee DNI argentino</label>
+                            </div>
+                        </div>
+
+                        <div id="section-has-dni" style="display: none; width: 100%;">
+                            <div class="column-form-left">
+                                <p class="items-name">Sí respondió SI, indique número de DNI argentino:</p>
+                                <input type="number" class="input-style" name="dni-tutor" autocomplete="off" placeholder="" >
+                            </div>
+                        </div>
+
+                        <div id="section-no-dni" style="display: none;">
+                            <p class="items-name">Sí respondio que NO tiene DNI argentino:</p>
+                            <div class="checkbox-container">
+                                <div class="check-label">
+                                    <label>¿Posee certificado de pre-identificación(CPI)?</label>
+                                    <input style="margin: 0 10px 0 0;" type="checkbox" name="cpi-tutor" value="Si" checked>
+                                    <label for="checkbox1">Si</label>
+                                    <input style="margin: 0 10px 0 0;" type="checkbox" name="cpi-tutor" value="No">
+                                    <label for="checkbox1">No</label>
+                                </div>
+                                <div class="check-label">
+                                    <label>¿Posee documento extranjero?</label>
+                                    <input style="margin: 0 10px 0 0;" type="checkbox" name="foreign_doc" value="Si" checked>
+                                    <label for="checkbox1">Si</label>
+                                    <input type="text" style="max-width: 110px" placeholder="Indique tipo" autocomplete="off" name="document_type" class="input-style">
+                                    <input style="margin: 0 10px 0 10px;"type="checkbox" name="foreign_doc"  value="No">
+                                    <label for="checkbox1">No</label>
+                                </div>
+                            </div> 
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
             <div class="content">Inscripcion</div>
             <div class="content">Legal</div>
         </div>
