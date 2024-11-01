@@ -270,11 +270,10 @@ def create_course(nombre: str, turno: str, activo: bool, id_orientacion: int) ->
             return "Error: ya existe un curso con este nombre y turno."
 
         #Registra el curso
-        fecha_creacion = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         cursor.execute('''
         INSERT INTO Curso (Nombre, Turno, Activo, FechaCreacion, IdOrientacion)
-        VALUES (?, ?, ?, ?, ?)
-        ''', (nombre, turno, activo, fecha_creacion, id_orientacion))
+        VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)
+        ''', (nombre.lower(), turno.lower(), activo, id_orientacion))
         
         conn.commit()
         return f"Curso '{nombre}' en turno '{turno}' registrado exitosamente."

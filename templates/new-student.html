@@ -627,7 +627,42 @@
                     </div>
                     <div class="divisor-inputs">
                         <h2 style="width: 100%;">Educacion complementaria</h2>
+                        <p style="width: 100%;">¿Asiste a alguna de las siguientes instituciones?</p>
+                        {% set registration_condition = {
+                            'Centro Educativo Complementario (CEC)': {'complementary_institution_cec': ['Si', 'No'] },
+                            'Centro de Educación Física (CEF)': {'complementary_institution_cef': ['Si', 'No'] },
+                            'Escuela de Educación Estética': {'complementary_institution_eee': ['Si', 'No'] }}
+                        %}
+                        {% for title, options in registration_condition.items() %}
+                            <p class="items-name">{{ title }}</p>
+                            <div class="checkbox-container" style="flex-flow: row wrap;">
+                                {% for name, labels in options.items() %}
+                                    {% for label in labels %}
+                                        <div class="check-label">
+                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
                     </div>
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Servicio alimento escolar</h2>
+                        <p style="width: 100%;">En caso de que la institución cuente con el servicio:</p>
+                        <p class="items-name">¿Solicita la incorporación en el Servicio Alimento Escolar?</p>
+                        <div class="checkbox-container" style="flex-direction: row;">
+                            <div class="check-label">
+                                <input type="checkbox" id="alimento-escolar-1" name="alimento-escolar" value="Comedor">
+                                <label for="alimento-escolar-1">Comedor</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="alimento-escolar-2" name="alimento-escolar" value="Desayuno y Merienda">
+                                <label for="alimento-escolar-2">Desayuno y Merienda</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button2" type="submit">subir</button>
                 </form>
             </div>
             <div class="content">
