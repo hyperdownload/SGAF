@@ -316,6 +316,7 @@
                     <button class="button2" type="submit">subir</button>
                 </form>
             </div>
+            
             <div class="content">
                 <form action="{{ url_for('formulario') }}" method="post">
                     <div class="divisor-inputs">
@@ -405,15 +406,89 @@
                         <p class="items-name">¿Asistió a algún establecimiento educativo?</p>
                         <div class="checkbox-container" style="flex-direction: row;">
                             <div class="check-label">
-                                <input type="checkbox" id="educ-si" name="tutor-education" value="SI y tiene DNI fisico">
+                                <input type="checkbox" id="educ-si" name="tutor-education" value="SI">
                                 <label for="educ-si">SI</label>
                             </div>
                             <div class="check-label">
-                                <input type="checkbox" id="educ-no" name="tutor-education" value="SI, pero NO tiene el DNI fisico">
+                                <input type="checkbox" id="educ-no" name="tutor-education" value="NO">
                                 <label for="educ-no">NO</label>
                             </div>
                         </div>
+                        {% set data = {
+                        'En caso afirmativo:¿Cuál es el nivel más alto que cursó?': { 'Nivel-cursada': ['Primario', 'Secundario', 'Superior', 'Superior universitario', 'Posgrado'] },
+                        '¿Completó ese nivel?': { 'Nivel-cursada-state': ['Si', 'No'] } } %}
+                        {% for title, options in data.items() %}
+                        <p class="items-name">{{ title }}</p>
+                        <div class="checkbox-container" style="flex-direction: row;">
+                            {% for name, labels in options.items() %}
+                                {% for label in labels %}
+                                    <div class="check-label">
+                                        <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                        <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
                     </div>
+
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Condición de actividad</h2>
+                        {% set data = {
+                            '(Marcar todas las opciones que corresponden)': { 'con-actividad': ['Estudia', 'Trabaja', 'Busca trabajo', 'Hace tareas de cuidado no pagas', 'Recibe jubilación/pensión'] } } %}
+                            {% for title, options in data.items() %}
+                            <p class="items-name">{{ title }}</p>
+                            <div class="checkbox-container" style="flex-direction: row;">
+                                {% for name, labels in options.items() %}
+                                    {% for label in labels %}
+                                        <div class="check-label">
+                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        <h2 style="width: 100%;">Domicilio</h2>
+                        <div class="column-form-left" style="display: flex; flex-wrap: wrap; column-gap:30px;">
+                            {% set fields = {
+                                'Calle': {'name': 'calle-tutor', 'type': 'text', 'required': True, 'style': 'width: 100%;'},
+                                'Entre calle': {'name': 'entre-calle-tutor', 'type': 'text', 'required': True, 'style': 'width: 47%;'},
+                                'Y calle': {'name': 'y-calle-tutor', 'type': 'text', 'required': True, 'style': 'width: 47%;'},
+                                'Provincia': {'name': 'provincia-residencia-tutor', 'type': 'text', 'required': True, 'style': 'width: 47%;'},
+                                'Distrito': {'name': 'distrito-residencia-tutor', 'type': 'text', 'required': True, 'style': 'width: 47%;'},
+                                'Telefono': {'name': 'telefono-tutor', 'type': 'number', 'required': True, 'style': 'width: 100%;'}
+                            } %}
+                            
+                            {% for label, field in fields.items() %}
+                                <div  style="{{ field.style }}">
+                                    <p class="items-name">{{ label }}</p>
+                                    <input type="{{ field.type }}" class="input-style" name="{{ field.name }}" autocomplete="off" placeholder="" {% if field.required %}required{% endif %}>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="column-form-right" style="display: flex; flex-wrap: wrap; column-gap:30px;">
+                            {% set additional_fields = {
+                                'Nº': {'name': 'numero-calle-tutor', 'type': 'number', 'required': True, 'style': 'width: 106px;'},
+                                'Piso': {'name': 'piso-domicilio-tutor', 'type': 'number', 'required': True, 'style': 'width: 106px;'},
+                                'Torre': {'name': 'torre-domicilio-tutor', 'type': 'text', 'required': True, 'style': 'width: 106px;'},
+                                'Depto': {'name': 'depto-domicilio-tutor', 'type': 'text', 'required': True, 'style': 'width: 106px;'},
+                                'Otro dato': {'name': 'otrodato-domicilio-tutor', 'type': 'text', 'required': True, 'style': 'width: 100%;'},
+                                'Localidad': {'name': 'localidad-residencia-tutor', 'type': 'text', 'required': True, 'style': 'width: 100%;'},
+                                'Correo electronico': {'name': 'correo-tutor', 'type': 'text ', 'required': True, 'style': 'width: 100%;'}
+                            } %}
+                
+                            {% for label, field in additional_fields.items() %}
+                                <div style="{{ field.style }}">
+                                    <p class="items-name">{{ label }}</p>
+                                    <input type="{{ field.type }}" class="input-style" name="{{ field.name }}" style="{{ field.style }}" autocomplete="off" placeholder="" {% if field.required %}required{% endif %}>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <button class="button2" type="submit">subir</button>
                 </form>
             </div>
 
