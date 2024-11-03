@@ -22,6 +22,16 @@
     font-optical-sizing: auto;
     font-style: normal;
 }
+
+::-webkit-scrollbar {
+    width: 5px; 
+}
+  
+::-webkit-scrollbar-thumb {
+    background-color: #bebebe; 
+    border-radius: 5px;
+}
+
 a{
     text-decoration: none;
     color: inherit;
@@ -310,7 +320,7 @@ main{
         }
     }
 }
-form input.input-style{
+form input.input-style,.input-style{
     width: 100%;
     height: 50px;
     background-color: var(--background);
@@ -322,10 +332,10 @@ form input.input-style{
     font-family: 'Plus Jakarta Sans';
 }
 
-form input.input-style:hover{
+form input.input-style:hover, .input-style:hover{
     border: 2px solid var(--hover-pri-color);
 }
-form input.input-style:focus {
+form input.input-style:focu, .input-style:focus {
     border: 2px solid var(--hover-pri-color);
     outline: none;
 }
@@ -336,4 +346,9 @@ form input[type="checkbox"]{
     accent-color: var(--primary-color);
     font-size: 12px;
     margin:0 20px 0 0;
+}
+
+.option-style:hover, .option-style:focus{ /*creo que el estilo solo se ve en edge*/
+    background-color: var(--primary-color);
+    color: var(--background);
 }

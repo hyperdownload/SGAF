@@ -55,11 +55,25 @@ def new_student():
 def formulario():
     data = request.form
     print(data)
-    return "Datos recibidos", 200
+    return "Datos recibidos", 204
 
 @app.route("/curso")
 def curso():
     return render_template("cursos.html")
+
+@app.route("/Nuevo-curso")
+def nuevoCurso():
+    return render_template("nuevo-cursos.html")
+
+@app.route("/Nuevo-curso-logica" , methods=['POST']) 
+def nuevocursologica ():
+    #Aca se obtienen los datos zz
+    nombre_curso = request.form.get("nombre-curso")
+    orientation_options = request.form.get("orientation-options")
+    turno_options = request.form.get("turno-options")
+
+    print(nombre_curso,orientation_options,turno_options)
+    return "Datos recibidos pa", 204
 
 @app.route('/get-carta-template')
 def get_carta_template():

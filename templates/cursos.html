@@ -113,6 +113,9 @@
         }
     }
 
+    // Mostrar todas las tarjetas al principio
+    generateCards('todos'); // Muestra todas las tarjetas al cargar la página
+
     function createCard(template, course) {
         return template.replace('${course}', course);
     }
@@ -157,7 +160,6 @@
     allOption.value = 'Todos';
     dropdownCursos.add(allOption);
 
-    // Mostrar todas las tarjetas al principio
-    generateCards('todos'); // Muestra todas las tarjetas al cargar la página
+
 </script>
 {% endblock %}

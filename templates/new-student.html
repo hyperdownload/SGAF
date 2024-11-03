@@ -48,7 +48,7 @@
                                 <label for="checkbox1">Si, y tiene el DNI fisico</label>
                             </div>
                             <div class="check-label">
-                                 <input type="checkbox" id="checkbox2" name="dni-student-state" value="Si, pero NO tiene el DNI fisico y se encuentra en tramite">
+                                <input type="checkbox" id="checkbox2" name="dni-student-state" value="Si, pero NO tiene el DNI fisico y se encuentra en tramite">
                                 <label for="checkbox2">Si, pero NO tiene el DNI fisico y se encuentra en tramite</label>
                             </div>
                             <div class="check-label">
@@ -289,7 +289,6 @@
                                 {"nombre": "Otro problema en los huesos o articulaciones", "campo": "otro-problema"},
                                 {"nombre": "Traumatismo de cráneo que haya requerido observación o internación", "campo": "traumatismo-craneal"},
                                 {"nombre": "Problema de piel", "campo": "problema-piel"} ] } %}
-
                         {% for columna, condiciones in condiciones_salud.items() %}
                         <div class="column-form-{{ 'left' if loop.index == 1 else 'right' }}">
                             <table style="width: 100%;">
@@ -312,7 +311,237 @@
                             </table>
                         </div>
                         {% endfor %}
+                        <p class="items-name" style="width: 100%;">En relacion con el ejercicio (durante o después), ha padecido alguna vez:</p>
+                        {% set condiciones_salud_ejercicio = {
+                            "column1": [
+                                {"nombre": "Desmayos", "campo": "desmayos"},
+                                {"nombre": "Dolor fuerte en el pecho", "campo": "dolor-fuerte-en-el-pecho"},
+                                {"nombre": "Mareo", "campo": "mareo"}] ,
+                            "column2": [
+                                {"nombre": "Mayor cansancio que sus compañer@s", "campo": "mayor-cansancio"},
+                                {"nombre": "Palpitaciones", "campo": "palpitaciones"},
+                                {"nombre": "Dificultad para respirar durante o despues de la actividad fisica", "campo": "dificultad-respirar"},] } %}
+                               
+                            {% for columna, condiciones in condiciones_salud_ejercicio.items() %}
+                                <div class="column-form-{{ 'left' if loop.index == 1 else 'right' }}">
+                                    <table style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th style="margin-right: 20px;" class="checkbox">Sí</th>
+                                                <th style="margin-right: 20px;" class="checkbox">No</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="checkbox-container" style="display: contents;width: 100%;" id="enfermedades-alumno">
+                                            {% for condicion in condiciones %}
+                                            <tr>
+                                                <td>{{ condicion.nombre }}</td>
+                                                <td class="checkbox"><input class="input-check" type="checkbox" name="{{ condicion.campo }}" value="Si"></td>
+                                                <td class="checkbox"><input class="input-check" type="checkbox" name="{{ condicion.campo }}" value="No"></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endfor %}
+                        <p class="items-name" style="width: 100%;">¿Tuvo alguna internación? (Marcar por Si o por NO y en caso afirmativo, completar las últimas columnas)</p>
+                        
+                        {% set internacion = {
+                            "column1": [
+                                {"nombre": "Internación en sala común", "campo": "sala-comun"},
+                                {"nombre": "Internación en sala de cuidados intermedios/intensivos", "campo": "internacion-intensiva"},] } %}
+                        {% for columna, condiciones in internacion.items() %}
+                            <table style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th style="margin-right: 20px;" class="checkbox">Sí</th>
+                                        <th style="margin-right: 20px;" class="checkbox">No</th>
+                                        <th>¿Cuántas veces?</th>
+                                        <th>Indique la/s causa/s o diagnóstico/s</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="checkbox-container" style="display: contents;width: 100%;" id="enfermedades-alumno">
+                                    {% for condicion in condiciones %}
+                                    <tr>
+                                        <td>{{ condicion.nombre }}</td>
+                                        <td class="checkbox"><input class="input-check" type="checkbox" name="{{ condicion.campo }}" value="Si"></td>
+                                        <td class="checkbox"><input class="input-check" type="checkbox" name="{{ condicion.campo }}" value="No"></td>
+                                        <td style="padding: 0 15px;">
+                                            <div class="name-and-input">
+                                                <input type="text" class="input-style" name="cuantas-veces" autocomplete="off" placeholder="">
+                                            </div>
+                                        </td>
+                                        <td style="padding: 0 15px;">
+                                            <div class="name-and-input">
+                                                <input type="text" class="input-style" name="indique-diagnostico" autocomplete="off" placeholder="">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endfor %}
+                        
+                        <p class="items-name" style="width: 100%;">¿Padece o ha padecido algún tipo de alergía grave?</p>
+                        <div class="checkbox-container">
+                            <div class="check-label">
+                                <input type="checkbox" id="padece-alergia-1" name="padece-alergia" value="Si">
+                                <label for="padece-alergia-1">Si</label> 
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="padece-alergia-2" name="padece-alergia" value="No">
+                                <label for="padece-alergia-2">No</label>
+                            </div>
+                        </div>
+
+                        {% set  noseman = {
+                            "column1": [
+                                {"nombre": "Medicamentos", "campo": "medicamentos"},
+                                {"nombre": "Vacunas", "campo": "vacunas"},
+                                {"nombre": "Alimento", "campo": "alimento"}] ,
+                            "column2": [
+                                {"nombre": "Picadura de insectos", "campo": "Picadura-insectos"},
+                                {"nombre": "Estacionales(Polen, polvos, etc.)", "campo": "alergias-Estacionales"},
+                                {"nombre": "Otras", "campo": "otras-alergias"},] } %}
+                               
+                            {% for columna, condiciones in noseman .items() %}
+                                <div class="column-form-{{ 'left' if loop.index == 1 else 'right' }}">
+                                    <table style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th style="margin-right: 20px;" class="checkbox">Sí</th>
+                                                <th style="margin-right: 20px;" class="checkbox">No</th>
+                                                <th style="margin-right: 20px;" class="checkbox">¿Requirió internación?</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="checkbox-container" style="display: contents;width: 100%;" id="enfermedades-alumno">
+                                            {% for condicion in condiciones %}
+                                            <tr>
+                                                <td>{{ condicion.nombre }}</td>
+                                                <td class="checkbox"><input class="input-check" type="checkbox" name="{{ condicion.campo }}" value="Si"></td>
+                                                <td class="checkbox"><input class="input-check" type="checkbox" name="{{ condicion.campo }}" value="No"></td>
+                                                <td class="checkbox"  style="flex-direction: row;display: flex; justify-content: center;" >
+                                                    <div class="check-label">
+                                                        <input type="checkbox" id="requirio-internacio-1" name="{{ condicion.campo }}-requirio-internacion" value="Si">
+                                                        <label for="padece-alergia-1">Si</label>
+                                                    </div>
+                                                    <div class="check-label">
+                                                        <input type="checkbox" id="requirio-internacio-2" name="{{ condicion.campo }}-requirio-internacion" value="No">
+                                                        <label for="padece-alergia-2">No</label>
+                                                    </div>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endfor %}
+                        
+                        <div class="column-form-left" style="flex-direction: column;">
+                            {% set noseman1 = {
+                                '¿Tiene disminución auditiva?': {'disminucion-auditiva': ['Si', 'No'] },
+                                '¿Tiene disminución visual?': {'disminución-visual': ['Si', 'No'] },
+                                '¿Recibe de manera habitual algún tipo de medicación?': {'medicacion-habitual': ['Si', 'No'] },
+                                '¿Tuvo alguna operación?': {'operacion': ['Si', 'No'] }}
+                            %}
+                        
+                            {% for title, options in noseman1.items() %}
+                                <p class="items-name">{{ title }}</p>
+                                <div class="checkbox-container" style="flex-flow: row wrap;">
+                                    {% for name, labels in options.items() %}
+                                        {% for label in labels %}
+                                            <div class="check-label">
+                                                <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                                <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="column-form-right" style="flex-direction: column;">
+                            {% set noseman1 = {
+                                'En caso afirmativo:¿Usa audífonos?': {'disminucion-auditiva-audifonos': ['Si', 'No'] },
+                                'En caso afirmativo:¿Usa lentes?': {'disminución-visual-lentes': ['Si', 'No'] },}
+                            %}
+                        
+                            {% for title, options in noseman1.items() %}
+                                <p class="items-name">{{ title }}</p>
+                                <div class="checkbox-container" style="flex-flow: row wrap;">
+                                    {% for name, labels in options.items() %}
+                                        {% for label in labels %}
+                                            <div class="check-label">
+                                                <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                                <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="name-and-input">
+                                <p class="items-name">En caso afirmativo, ¿Cúal?</p>
+                                <input type="text" class="input-style" name="medicacion-habitual-tipo" autocomplete="off" placeholder="" required>
+                            </div>
+                            <div class="name-and-input">
+                                <p class="items-name">Por qué motivo</p>
+                                <input type="text" class="input-style" name="motivo-operacion" autocomplete="off" placeholder="" required>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Antecedentes familiares de salud</h2>
+                        <p class="items-name">¿Algún familiar directo padece o ha padecido alguna o algunas de las siguientes condiciones de salud?</p>
+                    
+                        <div class="column-form-left" style="flex-direction: column;">
+                            {% set noseman2 = {
+                                'Muerte súbita de un familiar menor de 50 años': {'muerte-subita': ['Si', 'No'] },
+                                'Diabetes': {'diabetes': ['Si', 'No'] },
+                                'Problemas cardíacos': {'problemas-cardíacos': ['Si', 'No'] },}
+                            %}
+                        
+                            {% for title, options in noseman2.items() %}
+                                <p class="items-name">{{ title }}</p>
+                                <div class="checkbox-container" style="flex-flow: row wrap;">
+                                    {% for name, labels in options.items() %}
+                                        {% for label in labels %}
+                                            <div class="check-label">
+                                                <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                                <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="column-form-right" style="flex-direction: column;">
+                            {% set noseman3 = {
+                                'Tos crónica': {'tos-cronica': ['Si', 'No'] },
+                                'celiaquía': {'celiaquia': ['Si', 'No'] }}
+                            %}
+                        
+                            {% for title, options in noseman3.items() %}
+                                <p class="items-name">{{ title }}</p>
+                                <div class="checkbox-container" style="flex-flow: row wrap;">
+                                    {% for name, labels in options.items() %}
+                                        {% for label in labels %}
+                                            <div class="check-label">
+                                                <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                                <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                    <div class="divisor-inputs">
+
+                    </div>
+
                     <button class="button2" type="submit">subir</button>
                 </form>
             </div>
