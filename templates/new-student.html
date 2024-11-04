@@ -539,7 +539,117 @@
                     </div>
 
                     <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Datos del establecimiento en el que se inscribe</h2>
+                        <div class="column-form-left" style="display: flex; flex-wrap: wrap; column-gap: 30px;">
+                            <div class="name-and-input">
+                                <p class="items-name">Distrito</p>
+                                <input type="text" class="input-style" name="distrito-establecimiento" autocomplete="off" placeholder="" required>
+                            </div>
+                            <div class="name-and-input" style="flex: 1 0 47%; min-width:242px;">
+                                <p class="items-name">Nombre escuela</p>
+                                <input type="text" class="input-style" name="nombre-establecimiento" autocomplete="off" placeholder="" required>
+                            </div>
+                            <div class="name-and-input" style="flex: 1 0 47%; min-width:242px;">
+                                <p class="items-name">Nº</p>
+                                <input type="text" class="input-style" name="numero-establecimiento" autocomplete="off" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="column-form-right" style="display: flex; flex-wrap: wrap; column-gap: 30px;">
+                            <p class="items-name">Sector de gestión</p>
+                            <div class="checkbox-container" style="flex-direction: row;">
+                                <div class="check-label">
+                                    <input type="checkbox" id="sector-gestion-1" name="sector-gestion" value="Estatal" checked>
+                                    <label for="sector-gestion-1">Estatal</label>
+                                </div>
+                                <div class="check-label">
+                                    <input type="checkbox" id="sector-gestion-2" name="sector-gestion" value="Privado">
+                                    <label for="sector-gestion-2">Privado</label>
+                                </div>
+                            </div>
+                            <p class="items-name" style="width: 100%;  margin: 20px 0 0px;">A completar por el establecimiento</p>
+                            <div class="name-and-input" style="flex: 1 0 47%; min-width:242px;">
+                                <p class="items-name" style=" margin: 0px 0 10px;">Clave provincial</p>
+                                <input type="text" class="input-style" name="clave-provincial" autocomplete="off" placeholder="" required>
+                            </div>
+                            <div class="name-and-input" style="flex: 1 0 47%; min-width:242px;">
+                                <p class="items-name">CUE</p>
+                                <input type="text" class="input-style" name="cue" autocomplete="off" placeholder="" required>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="divisor-inputs">
+                        <h2 style="width: 100%;">Datos del establecimiento de procedencia</h2>
+                        <p class="items-name">Completar solo si el año pasado o este año asistio a otro establecimiento</p>
+                        <div class="checkbox-container" style="flex-direction: row;">
+                            <div class="check-label">
+                                <label>País</label>
+                                <input type="checkbox" id="pais-establecimiento-procedencia-1" name="pais-establecimiento-procedencia" value="Argentina" checked>
+                                <label for="pais-establecimiento-procedencia-1">Argentina</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="pais-establecimiento-procedencia-2" name="pais-establecimiento-procedencia" value="Otro país">
+                                <label for="pais-establecimiento-procedencia-2">Otro país</label>
+                            </div>
+                        </div>
+
+                        <div class="column-form-left" style="flex-direction: column;">
+                            <p class="items-name">Solo para quienes marcaron opción Argentina:</p>
+                            <div class="checkbox-container" style="flex-direction: row;">
+                                <div class="check-label">
+                                    <label>Provincia</label>
+                                    <input type="checkbox" id="provincia-establecimiento-procedencia-1" name="provincia-establecimiento-procedencia" value="Buenos Aires" checked>
+                                    <label for="provincia-establecimiento-procedencia-1">Buenos Aires</label>
+                                </div>
+                                <div class="check-label">
+                                    <input type="checkbox" id="provincia-establecimiento-procedencia-2" name="provincia-establecimiento-procedencia" value="Otro provincia">
+                                    <label for="provincia-establecimiento-procedencia-2">Otra provincia</label>
+                                </div>
+                            </div>
+                            <div class="name-and-input">
+                                <p class="items-name">Nivel/Modalidad</p>
+                                <input type="text" class="input-style" name="nivel-modalidad" autocomplete="off" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="column-form-right" style="flex-direction: column;">
+                            <div class="name-and-input">
+                                <p class="items-name">Distrito</p>
+                                <input type="text" class="input-style" name="distrito-establecimiento-procedencia" autocomplete="off" placeholder="">
+                            </div>
+                            <p class="items-name">sector de gestión</p>
+                            <div class="checkbox-container" style="flex-direction: row;">
+                                <div class="check-label">
+                                    <input type="checkbox" id="gestion-establecimiento-procedencia-1" name="gestion-establecimiento-procedencia" value="Estatal" checked>
+                                    <label for="gestion-establecimiento-procedencia-1">Estatal</label>
+                                </div>
+                                <div class="check-label">
+                                    <input type="checkbox" id="gestion-establecimiento-procedencia-2" name="gestion-establecimiento-procedencia" value="Privado">
+                                    <label for="gestion-establecimiento-procedencia-2">Privado</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% set registration_data = {
+                            'Dependencia': { 'dependecia_establecimiento': ['Oficial', 'Municipal', 'Nacional', 'Privada', 'Otros organismos'] },}            
+                        %}
+                        {% for title, options in registration_data.items() %}
+                            <p class="items-name">{{ title }}</p>
+                            <div class="checkbox-container" style="flex-direction: row;">
+                                {% for name, labels in options.items() %}
+                                    {% for label in labels %}
+                                        <div class="check-label">
+                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                        <div class="name-and-input">
+                            <p class="items-name">Nombre escuela</p>
+                            <input type="text" class="input-style" name="nombre-escuela-procedencia" autocomplete="off" placeholder="">
+                        </div>
                     </div>
 
                     <button class="button2" type="submit">subir</button>
