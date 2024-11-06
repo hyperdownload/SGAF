@@ -57,27 +57,28 @@ def formulario():
     print(data)
     return "Datos recibidos", 204
 
-@app.route("/curso")
+@app.route("/cursos")
 def curso():
-    return render_template("cursos.html")
+    cursos = base.get_all_courses()  # Obtener la lista de cursos desde la base de datos
+    return render_template("cursos.html", cursos=cursos)
+   # Obtener la lista de cursos de la base de datos
 
 @app.route("/nuevoCurso")
 def nuevoCurso():
     return render_template("nuevo-cursos.html")
 
 @app.route("/Nuevo-curso-logica" , methods=['POST']) 
-def nuevocursologica ():
-    #Aca se obtienen los datos zz
+def nuevocursologica():
+    # Aca se obtienen los datos zz
     nombre_curso = request.form.get("nombre-curso")
     orientation_options = request.form.get("orientation-options")
     turno_options = request.form.get("turno-options")
 
-    mensaje = base.create_course(nombre_curso, turno_options, True, orientation_options)
+    # Crear el curso en la base de datos
+    base.create_course(nombre_curso, turno_options, True, orientation_options)
 
-    print(nombre_curso,orientation_options,turno_options)
-
-
-    return mensaje, 204
+    # Redirigir a la página de cursos después de crear el curso
+    return redirect(url_for('curso'))
 
 @app.route('/get-carta-template')
 def get_carta_template():
