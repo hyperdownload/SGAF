@@ -15,7 +15,7 @@ def no_cache(response): #Borra la cache para no guardar las sesiones
 def page_not_found(e):
     return render_template('404.html'), 405
 
-@app.route('/', methods= ['GET','POST']) #El get para mostrar el formulario y el post para procesarlo ._.
+@app.route('/', methods= ['GET','POST']) 
 def login():
     if request.method == 'POST':
         email = request.form.get("email")
@@ -61,7 +61,7 @@ def formulario():
 def curso():
     return render_template("cursos.html")
 
-@app.route("/Nuevo-curso")
+@app.route("/nuevoCurso")
 def nuevoCurso():
     return render_template("nuevo-cursos.html")
 
@@ -72,8 +72,12 @@ def nuevocursologica ():
     orientation_options = request.form.get("orientation-options")
     turno_options = request.form.get("turno-options")
 
+    mensaje = base.create_course(nombre_curso, turno_options, True, orientation_options)
+
     print(nombre_curso,orientation_options,turno_options)
-    return "Datos recibidos pa", 204
+
+
+    return mensaje, 204
 
 @app.route('/get-carta-template')
 def get_carta_template():

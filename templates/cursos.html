@@ -96,7 +96,7 @@
     }
 
     // Función para generar tarjetas
-    async  function generateCards(year) {
+    async function generateCards(year) {
         container.innerHTML = ''; // Limpiar el contenedor
         const template = await loadTemplate();
         if (year === 'todos') {
