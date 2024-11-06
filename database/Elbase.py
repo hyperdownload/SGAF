@@ -203,6 +203,38 @@ def register_legal_data(legal_data: dict) -> str:
     conn.close()
     return "Datos legales registrados exitosamente."
 
+def get_user_property(property_name: str, condition_value: str, condition_field: str = 'Email') -> any:
+    """
+    Obtiene una propiedad específica de un usuario basado en una condición.
+    
+    Args:
+        property_name (str): El campo que se desea obtener (ejemplo: 'NombreUser', 'Email', 'IdRango').
+        condition_value (str): El valor del campo condicional (ejemplo: un correo electrónico o un nombre de usuario).
+        condition_field (str): El campo por el cual se va a filtrar (por defecto 'Email').
+    
+    Returns:
+        any: El valor de la propiedad solicitada o un mensaje de error si no se encuentra.
+    """
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(f'''
+        SELECT {property_name} FROM Users WHERE {condition_field} = ?
+        ''', (condition_value,))
+        result = cursor.fetchone()
+        
+        if result is not None:
+            return result[0]
+        else:
+            return f"Error: no se encontró un usuario con {condition_field} = {condition_value}"
+    
+    except sqlite3.Error as e:
+        return f"Error en la base de datos: {e}"
+    
+    finally:
+        conn.close()
+
 # Función para registrar inscripción
 def register_inscription(inscription_data: dict) -> str:
     """
