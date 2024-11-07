@@ -51,28 +51,87 @@ def create_database(path: str) -> None:
         
         -- Nuevos campos 
         Hermanos INTEGER,
-        Lenguaje TEXT,
         PercibeAUH BOOLEAN,
         PercibeProgresar BOOLEAN,
+        Hijos BOOLEAN,
         AsistenciaSalasMaternal BOOLEAN,
         Asma BOOLEAN,
         Cardiaco BOOLEAN,
         Diabetes BOOLEAN,
         Presion BOOLEAN,
         Convulsiones BOOLEAN,
+        Sanguineas BOOLEAN,
         Quemaduras BOOLEAN,
-        Alergias BOOLEAN,
-        Oncohematologica BOOLEAN,
         FaltaOrgano BOOLEAN,
+        Oncohematologica BOOLEAN,
         Inmunodeficiencia BOOLEAN,
         Fracturas BOOLEAN,
-        ProblemaVision BOOLEAN,
+        OtroProblemaHuesos BOOLEAN,
         TraumatismoCraneal BOOLEAN,
-        ProblemaPie BOOLEAN,
+        ProblemaPiel BOOLEAN,
+                   
         Desmayos BOOLEAN,
         DolorPecho BOOLEAN,
         Mareo BOOLEAN,
+        MayorCansancio BOOLEAN,
+        Palpitaciones BOOLEAN,
+        DificultadRespirar BOOLEAN,
+                   
+        SalaComun BOOLEAN,
+        InternacionIntesiva BOOLEAN,
+        SalaComunVeces INTEGER,
+        InternacionIntesivaVeces INTEGER,
+        SalaComunDiagnostico TEXT,
+        InternacionIntesivaDiagnostico TEXT,
+            
+        Alergias BOOLEAN,
+        Medicamentos BOOLEAN,
+        Vacunas BOOLEAN,
+        Alimento BOOLEAN,
+        PicaduraInsectos BOOLEAN,
+        AlergiasEstacionales BOOLEAN,
+        OtrasAlergias BOOLEAN,
+        
+        MedicamentosRequirioInternacion BOOLEAN,
+        VacunasRequirioInternacion BOOLEAN,
+        AlimentoRequirioInternacion BOOLEAN,
+        PicaduraInsectosRequirioInternacion BOOLEAN,
+        AlergiasEstacionalesRequirioInternacion BOOLEAN,
+        OtrasAlergiasRequirioInternacion BOOLEAN,
+                
+        DisminucionAuditiva BOOLEAN,
+        DisminucionVisual BOOLEAN,
+        MedicacionHabitual BOOLEAN,
+        Operacion BOOLEAN,
+                   
+        DisminucionAuditivaAudifonos BOOLEAN,
+        DisminucionVisualLentes BOOLEAN,
+                   
+        MedicacionHabitualTipo TEXT,
+        MotivoOperacion TEXT,
+                   
+        MuerteSubita BOOLEAN,
+        Diabetes BOOLEAN,
+        ProblemasCardiacos BOOLEAN,
+        TosCronica BOOLEAN,
+        Celiaquia BOOLEAN,
+                   
+        DistritoEstablecimiento TEXT,
+        NombreEstablecimiento TEXT,
+        NumeroEstablecimiento INTEGER,
+                   
+        SectorGestion BOOLEAN,
+        ClaveProvincial TEXT,
+        CUE TEXT,
+        PaisEstablecimientoProcedencia BOOLEAN,
+        ProvinciaEstablecimientoProcedencia BOOLEAN,
+        NivelModalidad TEXT,
+        DistritoEstablecimientoProcedencia TEXT,
+        GestionEstablecimientoProcedencia BOOLEAN,
+        DependenciaEstablecimiento BOOLEAN,
+        NombreEscuelaProcedencia TEXT
 
+                   
         FOREIGN KEY (IdTutor) REFERENCES Tutor(IdTutor)
     );
     ''')

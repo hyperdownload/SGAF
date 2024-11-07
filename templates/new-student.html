@@ -136,7 +136,7 @@
                         <div class="checkbox-container" style="flex-direction: row;" id="lugar-nacimiento-alumno">
                             <div class="check-label">
                                 <input type="checkbox" id="checkbox7" name="lugar-nacimiento-check" value="En Argentina" checked>
-                                <label for="checkbox7">En Argentina</label>
+                                <label for="checkbox7">Argentina</label>
                             </div>
                             <div class="check-label">
                                 <input type="checkbox" id="checkbox8" name="lugar-nacimiento-check" value="En el extranjero">
@@ -365,12 +365,12 @@
                                         <td class="checkbox"><input class="input-check" type="checkbox" name="{{ condicion.campo }}" value="No"></td>
                                         <td style="padding: 0 15px;">
                                             <div class="name-and-input">
-                                                <input type="number" class="input-style" name="cuantas-veces" autocomplete="off" placeholder="">
+                                                <input type="number" class="input-style" name="{{ condicion.campo }}-cuantas-veces" autocomplete="off" placeholder="">
                                             </div>
                                         </td>
                                         <td style="padding: 0 15px;">
                                             <div class="name-and-input">
-                                                <input type="text" class="input-style" name="indique-diagnostico" autocomplete="off" placeholder="">
+                                                <input type="text" class="input-style" name="{{ condicion.campo }}-diagnostico" autocomplete="off" placeholder="">
                                             </div>
                                         </td>
                                     </tr>
@@ -727,10 +727,10 @@
                                 </div>
                                 <div class="check-label">
                                     <label>¿Posee documento extranjero?</label>
-                                    <input style="margin: 0 10px 0 0;" type="checkbox" name="foreign_doc" value="Si" checked>
+                                    <input style="margin: 0 10px 0 0;" type="checkbox" name="foreign_doc-tutor" value="Si" checked>
                                     <label for="checkbox1">Si</label>
                                     <input type="text" style="max-width: 110px" placeholder="Indique tipo" autocomplete="off" name="document_type" class="input-style">
-                                    <input style="margin: 0 10px 0 10px;"type="checkbox" name="foreign_doc"  value="No">
+                                    <input style="margin: 0 10px 0 10px;"type="checkbox" name="foreign_doc-tutor"  value="No">
                                     <label for="checkbox1">No</label>
                                 </div>
                             </div>

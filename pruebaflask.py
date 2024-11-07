@@ -56,42 +56,46 @@ def formulario():
     # data = request.form #con esta linea obtiene todos los datos
 
     student_data = {
-        'apellido-alumno': request.form.get('apellido-alumno'),
         'nombre-alumno': request.form.get('nombre-alumno'),
-        'fechaNacimiento': request.form.get('fechaNacimiento'),
-        'dni-student-state': request.form.get('dni-student-state'),
+        'apellido-alumno': request.form.get('apellido-alumno'),
         'dni-student': request.form.get('dni-student'),
+        'dni-student-state': request.form.get('dni-student-state'),
         'cuil-student': request.form.get('cuil-student'),
-        'cpi-student': request.form.get('cpi-student'),
-        'foreign_doc': request.form.get('foreign_doc'),
+        'fechaNacimiento': request.form.get('fechaNacimiento'),
         'gender': request.form.get('gender'),
-        'lugar-nacimiento-check': request.form.get('lugar-nacimiento-check'),
-        'provincia-nacimiento-alumno-check': request.form.get('provincia-nacimiento-alumno-check'),
-        'provincia-nacimiento-alumno': request.form.get('provincia-nacimiento-alumno'),
+        'nacionalidad': request.form.get('lugar-nacimiento-check'),
+        'provincia-nacimiento-alumno-check': request.form.get('provincia-nacimiento-alumno-check'), #Bs As o Otra
+        'provincia-nacimiento-alumno': request.form.get('provincia-nacimiento-alumno'), #Otra provincia input no esta¿
         'distrito-alumno': request.form.get('distrito-alumno'),
         'localidad-alumno': request.form.get('localidad-alumno'),
 
+        'otra-nacionalidad': request.form.get('Nacionalidad-alumno'), #no esta¿
+
         'calle-alumno': request.form.get('calle-alumno'),
-        'entre-calle-alumno': request.form.get('entre-calle-alumno'),
-        'y-calle-alumno': request.form.get('y-calle-alumno'),
-        'provincia-residencia-alumno': request.form.get('provincia-residencia-alumno'),
-        'distrito-residencia-alumno': request.form.get('distrito-residencia-alumno'),
-        'telefono-alumno': request.form.get('telefono-alumno'),
         'numero-calle-alumno': request.form.get('numero-calle-alumno'),
         'piso-domicilio-alumno': request.form.get('piso-domicilio-alumno'),
         'torre-domicilio-alumno': request.form.get('torre-domicilio-alumno'),
         'depto-domicilio-alumno': request.form.get('depto-domicilio-alumno'),
-        'otrodato-domicilio-alumno': request.form.get('otrodato-domicilio-alumno'),
+        'entre-calle-alumno': request.form.get('entre-calle-alumno'),
+        'y-calle-alumno': request.form.get('y-calle-alumno'),
+        'provincia-residencia-alumno': request.form.get('provincia-residencia-alumno'),
+        'distrito-residencia-alumno': request.form.get('distrito-residencia-alumno'),
         'localidad-residencia-alumno': request.form.get('localidad-residencia-alumno'),
+        'telefono-alumno': request.form.get('telefono-alumno'),
         'telefono-celular-alumno': request.form.get('telefono-celular-alumno'),
+        'otrodato-domicilio-alumno': request.form.get('otrodato-domicilio-alumno'),
+
+        'cpi-student': request.form.get('cpi-student'),
+        'foreign_doc': request.form.get('foreign_doc'),
+
+        'aboriginal-descendant': request.form.get('aboriginal-descendant'),
+        'other-language': request.form.get('other-language'),
+        'language': request.form.get('language'),
+        'transport': request.form.get('transport'),
 
         'siblings': request.form.get('siblings'),
-        'language': request.form.get('language'),
-        'other-language': request.form.get('other-language'),
-        'aboriginal-descendant': request.form.get('aboriginal-descendant'),
         'percibe-auh': request.form.get('percibe-auh'),
         'percibe-progresar': request.form.get('percibe-progresar'),
-        'transport': request.form.get('transport'),
         'children': request.form.get('children'),
         'salas-maternales': request.form.get('salas-maternales'),
 
@@ -119,8 +123,10 @@ def formulario():
 
         'sala-comun': request.form.get('sala-comun'),
         'internacion-intensiva': request.form.get('internacion-intensiva'),
-        'cuantas-veces': request.form.get('cuantas-veces'),
-        'indique-diagnostico': request.form.get('indique-diagnostico'),
+        'sala-comun-cuantas-veces': request.form.get('sala-comun-cuantas-veces'),
+        'internacion-intensiva-cuantas-veces': request.form.get('internacion-intensiva-cuantas-veces'),
+        'sala-comun-diagnostico': request.form.get('sala-comun-diagnostico'),
+        'internacion-intensiva-diagnostico': request.form.get('internacion-intensiva-diagnostico'),
 
         'padece-alergia': request.form.get('padece-alergia'),
         'medicamentos': request.form.get('medicamentos'),
@@ -179,7 +185,7 @@ def formulario():
         'tutor-dni': request.form.get('tutor-dni'),
         'dni-tutor': request.form.get('dni-tutor'),
         'cpi-tutor': request.form.get('cpi-tutor'),
-        'foreign_doc': request.form.get('foreign_doc'),
+        'foreign_doc-tutor': request.form.get('foreign_doc-tutor'),
         'tutor-education': request.form.get('tutor-education'),
         'nivel-cursada': request.form.get('nivel-cursada'),
         'nivel-cursada-state': request.form.get('nivel-cursada-state'),
