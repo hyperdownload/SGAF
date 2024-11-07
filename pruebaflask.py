@@ -54,8 +54,7 @@ def new_student():
 @app.route('/submit', methods=['POST'])
 def formulario():
     # data = request.form #con esta linea obtiene todos los datos
-    
-    #Este diccionario ya esta completo(creo), solo quedaria ordenar con respecto Elbase.py
+
     student_data = {
         'apellido-alumno': request.form.get('apellido-alumno'),
         'nombre-alumno': request.form.get('nombre-alumno'),
@@ -171,21 +170,69 @@ def formulario():
         'gestion-establecimiento-procedencia': request.form.get('gestion-establecimiento-procedencia'),
         'dependecia_establecimiento': request.form.get('dependecia_establecimiento'),
         'nombre-escuela-procedencia': request.form.get('nombre-escuela-procedencia'),
-
-
     }
     
-    tutor_data = {}
+    tutor_data = {
+        'tutor-vinculo': request.form.get('tutor-vinculo'),
+        'apellido-tutor': request.form.get('apellido-tutor'),
+        'nombre-tutoe': request.form.get('nombre-tutoe'),
+        'tutor-dni': request.form.get('tutor-dni'),
+        'dni-tutor': request.form.get('dni-tutor'),
+        'cpi-tutor': request.form.get('cpi-tutor'),
+        'foreign_doc': request.form.get('foreign_doc'),
+        'tutor-education': request.form.get('tutor-education'),
+        'nivel-cursada': request.form.get('nivel-cursada'),
+        'nivel-cursada-state': request.form.get('nivel-cursada-state'),
+        'con-actividad': request.form.get('con-actividad'),
+        'calle-tutor': request.form.get('calle-tutor'),
+        'entre-calle-tutor': request.form.get('entre-calle-tutor'),
+        'y-calle-tutor': request.form.get('y-calle-tutor'),
+        'provincia-residencia-tutor': request.form.get('provincia-residencia-tutor'),
+        'distrito-residencia-tutor': request.form.get('distrito-residencia-tutor'),
+        'telefono-tutor': request.form.get('telefono-tutor'),
+
+        'numero-calle-tutor': request.form.get('numero-calle-tutor'),
+        'piso-domicilio-tutor': request.form.get('piso-domicilio-tutor'),
+        'torre-domicilio-tutor': request.form.get('torre-domicilio-tutor'),
+        'depto-domicilio-tutor': request.form.get('depto-domicilio-tutor'),
+        'otrodato-domicilio-tutor': request.form.get('otrodato-domicilio-tutor'),
+        'localidad-residencia-tutor': request.form.get('localidad-residencia-tutor'),
+        'correo-tutor': request.form.get('correo-tutor'),
+    }
     
-    inscription_data = {}
+    inscription_data = {
+        'type_registration': request.form.get('type_registration'),
+        'orientation': request.form.get('orientation'),
+        'year_registration_fields': request.form.get('year_registration_fields'),
+        'request_shift_fields': request.form.get('request_shift_fields'),
+        'request_workday_fields': request.form.get('request_workday_fields'),
+        'registration_conditiony_fields': request.form.get('registration_conditiony_fields'),
+        'proyecto-inclusion': request.form.get('proyecto-inclusion'),
+        'proyecto-inclusion-true': request.form.get('proyecto-inclusion-true'),
+        'acompañante-externo': request.form.get('acompañante-externo'),
+        'complementary_institution_cec': request.form.get('complementary_institution_cec'),
+        'complementary_institution_cef': request.form.get('complementary_institution_cef'),
+        'complementary_institution_eee': request.form.get('complementary_institution_eee'),
+        'alimento-escolar': request.form.get('alimento-escolar'),  
+    }
 
-    legal_data = ()
+    legal_data = {
+        'last_name_legals': request.form.get('last_name_legals'),
+        'doc_type_legals': request.form.get('doc_type_legals'),
+        'doc_number_legals': request.form.get('doc_number_legals'),
+        'name_legals': request.form.get('name_legals'),
+        'restriction_legal': request.form.get('restriction_legal'),
 
-    print(student_data)
+        'n_legajo_legals': request.form.get('n_legajo_legals'),
+        'n_matriz_legal': request.form.get('n_matriz_legal'),
+        'n_folio_legal': request.form.get('n_folio_legal'),
 
-
-
-
+        'person_in_charge': request.form.get('person_in_charge'),
+        'registration_date': request.form.get('registration_date'),
+        'clarification': request.form.get('clarification'),
+        'director_signature': request.form.get('director_signature'),
+    }
+    
 
     return "Datos recibidos", 204
 

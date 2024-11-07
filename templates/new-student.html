@@ -748,8 +748,8 @@
                             </div>
                         </div>
                         {% set data = {
-                        'En caso afirmativo:¿Cuál es el nivel más alto que cursó?': { 'Nivel-cursada': ['Primario', 'Secundario', 'Superior', 'Superior universitario', 'Posgrado'] },
-                        '¿Completó ese nivel?': { 'Nivel-cursada-state': ['Si', 'No'] } } %}
+                        'En caso afirmativo:¿Cuál es el nivel más alto que cursó?': { 'nivel-cursada': ['Primario', 'Secundario', 'Superior', 'Superior universitario', 'Posgrado'] },
+                        '¿Completó ese nivel?': { 'nivel-cursada-state': ['Si', 'No'] } } %}
                         {% for title, options in data.items() %}
                         <p class="items-name">{{ title }}</p>
                         <div class="checkbox-container" style="flex-direction: row;">
@@ -936,11 +936,11 @@
                             <p class="items-name">Si la respuesta es afirmativa, marque lo que corresponda</p>
                             <div class="checkbox-container" style="flex-direction: column;">
                                 <div class="check-label">
-                                    <input type="checkbox" id="proyecto-inclusion-true-1" name="proyecto-inclusion-true" value="Si">
-                                    <label for="proyecto-inclusion-true-1">Concurre a una Escuela Especial a contraturno y vuenta con acompañamiento de maestr@ de inclusión</label>
+                                    <input type="checkbox" id="proyecto-inclusion-true-1" name="proyecto-inclusion-true" value="Concurre a una Escuela Especial a contraturno y cuenta con acompañamiento de maestr@ de inclusión">
+                                    <label for="proyecto-inclusion-true-1">Concurre a una Escuela Especial a contraturno y cuenta con acompañamiento de maestr@ de inclusión</label>
                                 </div>
                                 <div class="check-label">
-                                    <input type="checkbox" id="proyecto-inclusion-true-2" name="proyecto-inclusion-true" value="No">
+                                    <input type="checkbox" id="proyecto-inclusion-true-2" name="proyecto-inclusion-true" value="No concurre a una Escuela Especial pero cuenta con acompañante de maestr@ de inclusión">
                                     <label for="proyecto-inclusion-true-2">No concurre a una Escuela Especial pero cuenta con acompañante de maestr@ de inclusión</label>
                                 </div>
                             </div>
@@ -1063,7 +1063,7 @@
                             <div class="column-form-right" style="display: flex; flex-flow: column;"> 
                                 {% set more_legals_fields = {
                                     'Aclaración':{'name': 'clarification', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
-                                    'Firma del directivo':{'name': 'Director_signature', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
+                                    'Firma del directivo':{'name': 'director_signature', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
                                 }%}
                                 {% for label, field in more_legals_fields.items() %}
                                     <div class="name-and-input" style="{{ field.style }}">
