@@ -53,8 +53,140 @@ def new_student():
 
 @app.route('/submit', methods=['POST'])
 def formulario():
-    data = request.form
-    print(data)
+    # data = request.form #con esta linea obtiene todos los datos
+    
+    #Este diccionario ya esta completo(creo), solo quedaria ordenar con respecto Elbase.py
+    student_data = {
+        'apellido-alumno': request.form.get('apellido-alumno'),
+        'nombre-alumno': request.form.get('nombre-alumno'),
+        'fechaNacimiento': request.form.get('fechaNacimiento'),
+        'dni-student-state': request.form.get('dni-student-state'),
+        'dni-student': request.form.get('dni-student'),
+        'cuil-student': request.form.get('cuil-student'),
+        'cpi-student': request.form.get('cpi-student'),
+        'foreign_doc': request.form.get('foreign_doc'),
+        'gender': request.form.get('gender'),
+        'lugar-nacimiento-check': request.form.get('lugar-nacimiento-check'),
+        'provincia-nacimiento-alumno-check': request.form.get('provincia-nacimiento-alumno-check'),
+        'provincia-nacimiento-alumno': request.form.get('provincia-nacimiento-alumno'),
+        'distrito-alumno': request.form.get('distrito-alumno'),
+        'localidad-alumno': request.form.get('localidad-alumno'),
+
+        'calle-alumno': request.form.get('calle-alumno'),
+        'entre-calle-alumno': request.form.get('entre-calle-alumno'),
+        'y-calle-alumno': request.form.get('y-calle-alumno'),
+        'provincia-residencia-alumno': request.form.get('provincia-residencia-alumno'),
+        'distrito-residencia-alumno': request.form.get('distrito-residencia-alumno'),
+        'telefono-alumno': request.form.get('telefono-alumno'),
+        'numero-calle-alumno': request.form.get('numero-calle-alumno'),
+        'piso-domicilio-alumno': request.form.get('piso-domicilio-alumno'),
+        'torre-domicilio-alumno': request.form.get('torre-domicilio-alumno'),
+        'depto-domicilio-alumno': request.form.get('depto-domicilio-alumno'),
+        'otrodato-domicilio-alumno': request.form.get('otrodato-domicilio-alumno'),
+        'localidad-residencia-alumno': request.form.get('localidad-residencia-alumno'),
+        'telefono-celular-alumno': request.form.get('telefono-celular-alumno'),
+
+        'siblings': request.form.get('siblings'),
+        'language': request.form.get('language'),
+        'other-language': request.form.get('other-language'),
+        'aboriginal-descendant': request.form.get('aboriginal-descendant'),
+        'percibe-auh': request.form.get('percibe-auh'),
+        'percibe-progresar': request.form.get('percibe-progresar'),
+        'transport': request.form.get('transport'),
+        'children': request.form.get('children'),
+        'salas-maternales': request.form.get('salas-maternales'),
+
+        'asma': request.form.get('asma'),
+        'cardiacas': request.form.get('cardiacas'),
+        'diabetes': request.form.get('diabetes'),
+        'presion': request.form.get('presion'),
+        'convulsiones': request.form.get('convulsiones'),
+        'sanguineas': request.form.get('sanguineas'),
+        'quemaduras': request.form.get('quemaduras'),
+        'falta-organo': request.form.get('falta-organo'),
+        'oncohematologica': request.form.get('oncohematologica'),
+        'inmunodeficiencias': request.form.get('inmunodeficiencias'),
+        'fracturas': request.form.get('fracturas'),
+        'otro-problema': request.form.get('otro-problema'),
+        'traumatismo-craneal': request.form.get('traumatismo-craneal'),
+        'problema-piel': request.form.get('problema-piel'),
+
+        'desmayos': request.form.get('desmayos'),
+        'dolor-fuerte-en-el-pecho': request.form.get('dolor-fuerte-en-el-pecho'),
+        'mareo': request.form.get('mareo'),
+        'mayor-cansancio': request.form.get('mayor-cansancio'),
+        'palpitaciones': request.form.get('palpitaciones'),
+        'dificultad-respirar': request.form.get('dificultad-respirar'),
+
+        'sala-comun': request.form.get('sala-comun'),
+        'internacion-intensiva': request.form.get('internacion-intensiva'),
+        'cuantas-veces': request.form.get('cuantas-veces'),
+        'indique-diagnostico': request.form.get('indique-diagnostico'),
+
+        'padece-alergia': request.form.get('padece-alergia'),
+        'medicamentos': request.form.get('medicamentos'),
+        'vacunas': request.form.get('vacunas'),
+        'alimento': request.form.get('alimento'),
+        'picadura-insectos': request.form.get('picadura-insectos'),
+        'alergias-Estacionales': request.form.get('alergias-Estacionales'),
+        'otras-alergias': request.form.get('otras-alergias'),
+
+        'medicamentos-requirio-internacion': request.form.get('medicamentos-requirio-internacion'),
+        'vacunas-requirio-internacion': request.form.get('vacunas-requirio-internacion'),
+        'alimento-requirio-internacion': request.form.get('alimento-requirio-internacion'),
+        'picadura-insectos-requirio-internacion': request.form.get('picadura-insectos-requirio-internacion'),
+        'alergias-Estacionales-requirio-internacion': request.form.get('alergias-Estacionales-requirio-internacion'),
+        'otras-alergias-requirio-internacion': request.form.get('otras-alergias-requirio-internacion'),
+
+
+        'disminucion-auditiva': request.form.get('disminucion-auditiva'),
+        'disminución-visual': request.form.get('disminución-visual'),
+        'medicacion-habitual': request.form.get('medicacion-habitual'),
+        'operacion': request.form.get('operacion'),
+
+        'disminucion-auditiva-audifonos': request.form.get('disminucion-auditiva-audifonos'),
+        'disminución-visual-lentes': request.form.get('disminución-visual-lentes'),
+
+        'medicacion-habitual-tipo': request.form.get('medicacion-habitual-tipo'),
+        'motivo-operacion': request.form.get('motivo-operacion'),
+
+        'muerte-subita': request.form.get('muerte-subita'),
+        'Diabetes': request.form.get('Diabetes'),
+        'problemas-cardíacos': request.form.get('problemas-cardíacos'),
+
+        'tos-cronica': request.form.get('tos-cronica'),
+        'celiaquia': request.form.get('celiaquia'),
+
+        'distrito-establecimiento': request.form.get('distrito-establecimiento'),
+        'nombre-establecimiento': request.form.get('nombre-establecimiento'),
+        'numero-establecimiento': request.form.get('numero-establecimiento'),
+
+        'sector-gestion': request.form.get('sector-gestion'),
+        'clave-provincial': request.form.get('clave-provincial'),
+        'cue': request.form.get('cue'),
+        'pais-establecimiento-procedencia': request.form.get('pais-establecimiento-procedencia'),
+        'provincia-establecimiento-procedencia': request.form.get('provincia-establecimiento-procedencia'),
+        'nivel-modalidad': request.form.get('nivel-modalidad'),
+        'distrito-establecimiento-procedencia': request.form.get('distrito-establecimiento-procedencia'),
+        'gestion-establecimiento-procedencia': request.form.get('gestion-establecimiento-procedencia'),
+        'dependecia_establecimiento': request.form.get('dependecia_establecimiento'),
+        'nombre-escuela-procedencia': request.form.get('nombre-escuela-procedencia'),
+
+
+    }
+    
+    tutor_data = {}
+    
+    inscription_data = {}
+
+    legal_data = ()
+
+    print(student_data)
+
+
+
+
+
     return "Datos recibidos", 204
 
 @app.route("/cursos")

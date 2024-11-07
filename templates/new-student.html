@@ -20,8 +20,8 @@
         </div>
         
         <div class="tab-body-container">
-            <div class="content active">
-                <form action="{{ url_for('formulario') }}" method="post">
+            <form action="{{ url_for('formulario') }}" method="post">
+                <div class="content active">
                     <div class="divisor-inputs">
                         <h2 style="width: 100%;">Datos del estudiante</h2>
 
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                         </div>
-                       
+                    
                         <div id="section-no-dni" style="display: none;">
                             <p class="items-name">Sí respondio que NO tiene DNI argentino:</p>
                             <div class="checkbox-container">
@@ -97,43 +97,39 @@
                             </div> 
                         </div>
                         
-                        <!--  -->
                         <p class="items-name" style="width: 100%;">Identidad de género</p>
                         <div class="checkbox-container" style="flex-direction: row;">
-                            <div class="column-form-left"  id="gender-options">
-                                <div class="check-label">
-                                    <input type="checkbox" id="checkbox-1" name="gender" value="Mujer" checked>
-                                    <label for="checkbox-1">Mujer</label>
-                                </div>
-                                
-                                <div class="check-label">
-                                    <input type="checkbox" id="checkbox-2" name="gender" value="Mujer trans/ travesti">
-                                    <label for="checkbox2">Transformer mujer</label>
-                                </div>
-                                
-                                <div class="check-label">
-                                    <input type="checkbox" id="checkbox3" name="gender" value="No binario">
-                                    <label for="checkbox-3">No binario</label>
-                                </div>
-                                <div class="check-label">
-                                    <input type="checkbox" id="checkbox4" name="gender" value="No desea responder">
-                                    <label for="checkbox-4">No desea responder</label>
-                                </div>
-                            </div>
-                            <div class="column-form-right"  id="gender-options">
-                                <div class="check-label">
-                                    <input type="checkbox" id="checkbox5" name="gender" value="Hombre">
-                                    <label for="checkbox5">Hombre</label>
-                                </div>
-                                <div class="check-label">
-                                    <input type="checkbox" id="checkbox6" name="gender" value="Hombre trans/ travesti">
-                                    <label for="checkbox6">Transformer hombre</label>
-                                </div>
-                                <div class="check-label">
-                                    <input type="checkbox" id="checkbox7" name="gender" value="Otra">
-                                    <label for="checkbox7">Otra</label>
-                                </div>
-                            </div>
+                        <div class="check-label">
+                            <input type="checkbox" id="checkbox-1" name="gender" value="Mujer" checked>
+                            <label for="checkbox-1">Mujer</label>
+                        </div>
+                        
+                        <div class="check-label">
+                            <input type="checkbox" id="checkbox-2" name="gender" value="Mujer trans/ travesti">
+                            <label for="checkbox2">Transformer mujer</label>
+                        </div>
+                        
+                        <div class="check-label">
+                            <input type="checkbox" id="checkbox3" name="gender" value="No binario">
+                            <label for="checkbox-3">No binario</label>
+                        </div>
+                        <div class="check-label">
+                            <input type="checkbox" id="checkbox4" name="gender" value="No desea responder">
+                            <label for="checkbox-4">No desea responder</label>
+                        </div>
+                    
+                        <div class="check-label">
+                            <input type="checkbox" id="checkbox5" name="gender" value="Hombre">
+                            <label for="checkbox5">Hombre</label>
+                        </div>
+                        <div class="check-label">
+                            <input type="checkbox" id="checkbox6" name="gender" value="Hombre trans/ travesti">
+                            <label for="checkbox6">Transformer hombre</label>
+                        </div>
+                        <div class="check-label">
+                            <input type="checkbox" id="checkbox7" name="gender" value="Otra">
+                            <label for="checkbox7">Otra</label>
+                        </div>
                         </div>
                         
                         <p class="items-name">Lugar de nacimiento</p>
@@ -230,7 +226,7 @@
                         'En caso afirmativo': { 'other-language': ['Lengua/s indígena/s', 'Otra/s lengua/s'] },
 
                         '¿Se reconoce perteneciente o descendiente de Pueblos Originarios?': {'aboriginal-descendant': ['Si', 'No'] },
-                       
+                    
                         'Percibe': { 'percibe-auh': ['Asignación Universal por hijo (AUH)'],
                             'percibe-progresar':['Progresar']  },
                         'Medio de transporte que utiliza para llegar al establecimiento': { 'transport': ['A pie/Bicicleta', 'Transporte escolar DGCyE', 'Colectivo', 'Tren', 'Vehículo particular', 'Otro'] } 
@@ -321,7 +317,7 @@
                                 {"nombre": "Mayor cansancio que sus compañer@s", "campo": "mayor-cansancio"},
                                 {"nombre": "Palpitaciones", "campo": "palpitaciones"},
                                 {"nombre": "Dificultad para respirar durante o despues de la actividad fisica", "campo": "dificultad-respirar"},] } %}
-                               
+                            
                             {% for columna, condiciones in condiciones_salud_ejercicio.items() %}
                                 <div class="column-form-{{ 'left' if loop.index == 1 else 'right' }}">
                                     <table style="width: 100%;">
@@ -369,7 +365,7 @@
                                         <td class="checkbox"><input class="input-check" type="checkbox" name="{{ condicion.campo }}" value="No"></td>
                                         <td style="padding: 0 15px;">
                                             <div class="name-and-input">
-                                                <input type="text" class="input-style" name="cuantas-veces" autocomplete="off" placeholder="">
+                                                <input type="number" class="input-style" name="cuantas-veces" autocomplete="off" placeholder="">
                                             </div>
                                         </td>
                                         <td style="padding: 0 15px;">
@@ -401,10 +397,10 @@
                                 {"nombre": "Vacunas", "campo": "vacunas"},
                                 {"nombre": "Alimento", "campo": "alimento"}] ,
                             "column2": [
-                                {"nombre": "Picadura de insectos", "campo": "Picadura-insectos"},
+                                {"nombre": "Picadura de insectos", "campo": "picadura-insectos"},
                                 {"nombre": "Estacionales(Polen, polvos, etc.)", "campo": "alergias-Estacionales"},
                                 {"nombre": "Otras", "campo": "otras-alergias"},] } %}
-                               
+                            
                             {% for columna, condiciones in noseman .items() %}
                                 <div class="column-form-{{ 'left' if loop.index == 1 else 'right' }}">
                                     <table style="width: 100%;">
@@ -653,11 +649,9 @@
                     </div>
 
                     <button class="button2" type="submit">subir</button>
-                </form>
-            </div>
-            
-            <div class="content">
-                <form action="{{ url_for('formulario') }}" method="post">
+                </div>
+                
+                <div class="content">
                     <div class="divisor-inputs">
                         <h2 style="width: 100%;">Datos de la persona responsable</h2>
                         <p class="items-name">Vínculo con estudiante</p>
@@ -828,40 +822,72 @@
                         </div>
                     </div>
                     <button class="button2" type="submit">subir</button>
-                </form>
-            </div>
-
-            <div class="content"> 
-                <form action="{{ url_for('formulario') }}" method="post">
-                    <div class="divisor-inputs">
-                        <h2 style="width: 100%;">Inscripción</h2>
-                        {% set registration_data = {
-                            'Se inscribe en': { 'type_registration': ['Ciclo Básico', 'Ciclo Superior', 'Aula de fortalecimiento', 'Escuela Profesional Secundaria'] },}            
-                        %}
-                        {% for title, options in registration_data.items() %}
-                            <p class="items-name">{{ title }}</p>
-                            <div class="checkbox-container" style="flex-direction: row;">
-                                {% for name, labels in options.items() %}
-                                    {% for label in labels %}
-                                        <div class="check-label">
-                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
-                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
-                                        </div>
+                </div>
+                
+                <div class="content"> 
+                        <div class="divisor-inputs">
+                            <h2 style="width: 100%;">Inscripción</h2>
+                            {% set registration_data = {
+                                'Se inscribe en': { 'type_registration': ['Ciclo Básico', 'Ciclo Superior', 'Aula de fortalecimiento', 'Escuela Profesional Secundaria'] },}            
+                            %}
+                            {% for title, options in registration_data.items() %}
+                                <p class="items-name">{{ title }}</p>
+                                <div class="checkbox-container" style="flex-direction: row;">
+                                    {% for name, labels in options.items() %}
+                                        {% for label in labels %}
+                                            <div class="check-label">
+                                                <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                                <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                            </div>
+                                        {% endfor %}
                                     {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="column-form-left" style="display: flex; flex-wrap: wrap; column-gap:30px;">
+                                <div class="name-and-input">
+                                    <p class="items-name">Orientación</p>
+                                    <input type="text" class="input-style" name="orientation" autocomplete="off" placeholder="" >
+                                </div>
+                            </div>
+                            <div class="column-form-right" style="display: flex; flex-wrap: wrap; column-gap:30px;">
+                                {% set year_registration = {
+                                    'Año': { 'year_registration_fields': ['1', '2', '3', '4','5','6','7'] },}            
+                                %}
+                                {% for title, options in year_registration.items() %}
+                                    <p class="items-name">{{ title }}</p>
+                                    <div class="checkbox-container" style="flex-flow: row wrap;">
+                                        {% for name, labels in options.items() %}
+                                            {% for label in labels %}
+                                                <div class="check-label">
+                                                    <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                                    <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                                </div>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </div>
                                 {% endfor %}
                             </div>
-                        {% endfor %}
-                        <div class="column-form-left" style="display: flex; flex-wrap: wrap; column-gap:30px;">
-                            <div class="name-and-input">
-                                <p class="items-name">Orientación</p>
-                                <input type="text" class="input-style" name="orientation" autocomplete="off" placeholder="" >
-                            </div>
-                        </div>
-                        <div class="column-form-right" style="display: flex; flex-wrap: wrap; column-gap:30px;">
-                            {% set year_registration = {
-                                'Año': { 'year_registration_fields': ['1', '2', '3', '4','5','6','7'] },}            
+                            {% set request_for_shift = {
+                                'Año': { 'request_shift_fields': ['Mañana', 'Tarde', 'Vespertino', 'Noche'] },}            
                             %}
-                            {% for title, options in year_registration.items() %}
+                            {% for title, options in request_for_shift.items() %}
+                                <p class="items-name">{{ title }}</p>
+                                <div class="checkbox-container" style="flex-flow: row wrap;">
+                                    {% for name, labels in options.items() %}
+                                        {% for label in labels %}
+                                            <div class="check-label">
+                                                <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                                <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+
+                            {% set request_for_workday = {
+                                'Jornada': { 'request_workday_fields': ['Simple', 'Extendida', 'Completa/Doble escolaridad'] },}            
+                            %}
+                            {% for title, options in request_for_workday.items() %}
                                 <p class="items-name">{{ title }}</p>
                                 <div class="checkbox-container" style="flex-flow: row wrap;">
                                     {% for name, labels in options.items() %}
@@ -875,217 +901,181 @@
                                 </div>
                             {% endfor %}
                         </div>
-                        {% set request_for_shift = {
-                            'Año': { 'request_shift_fields': ['Mañana', 'Tarde', 'Vespertino', 'Noche'] },}            
-                        %}
-                        {% for title, options in request_for_shift.items() %}
-                            <p class="items-name">{{ title }}</p>
-                            <div class="checkbox-container" style="flex-flow: row wrap;">
-                                {% for name, labels in options.items() %}
-                                    {% for label in labels %}
-                                        <div class="check-label">
-                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
-                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
-                                        </div>
+                        <div class="divisor-inputs">
+                            <h2 style="width: 100%;">Condición en la Inscripción actual</h2>
+                            {% set registration_condition = {
+                                'Jornada': { 'registration_conditiony_fields': ['Ingresante al Nivel', 'Promovid@', 'Reinscript@'] },}            
+                            %}
+                            {% for title, options in registration_condition.items() %}
+                                <p class="items-name">{{ title }}</p>
+                                <div class="checkbox-container" style="flex-flow: row wrap;">
+                                    {% for name, labels in options.items() %}
+                                        {% for label in labels %}
+                                            <div class="check-label">
+                                                <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                                <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                            </div>
+                                        {% endfor %}
                                     {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="divisor-inputs">
+                            <h2 style="width: 100%;">Inclusión</h2>
+                            <p class="items-name">Vínculo con estudiante</p>
+                            <div class="checkbox-container" style="flex-direction: row;">
+                                <div class="check-label">
+                                    <input type="checkbox" id="proyecto-inclusion-1" name="proyecto-inclusion" value="Si">
+                                    <label for="proyecto-inclusion-1">Si</label>
+                                </div>
+                                <div class="check-label">
+                                    <input type="checkbox" id="proyecto-inclusion-2" name="proyecto-inclusion" value="No">
+                                    <label for="proyecto-inclusion-2">No</label>
+                                </div>
+                            </div>
+                            <p class="items-name">Si la respuesta es afirmativa, marque lo que corresponda</p>
+                            <div class="checkbox-container" style="flex-direction: column;">
+                                <div class="check-label">
+                                    <input type="checkbox" id="proyecto-inclusion-true-1" name="proyecto-inclusion-true" value="Si">
+                                    <label for="proyecto-inclusion-true-1">Concurre a una Escuela Especial a contraturno y vuenta con acompañamiento de maestr@ de inclusión</label>
+                                </div>
+                                <div class="check-label">
+                                    <input type="checkbox" id="proyecto-inclusion-true-2" name="proyecto-inclusion-true" value="No">
+                                    <label for="proyecto-inclusion-true-2">No concurre a una Escuela Especial pero cuenta con acompañante de maestr@ de inclusión</label>
+                                </div>
+                            </div>
+                            <p class="items-name">¿Cursa con acompañante asistente externo?</p>
+                            <div class="checkbox-container" style="flex-direction: row;">
+                                <div class="check-label">
+                                    <input type="checkbox" id="acompañante-externo-1" name="acompañante-externo" value="Si">
+                                    <label for="acompañante-externo-1">Si</label>
+                                </div>
+                                <div class="check-label">
+                                    <input type="checkbox" id="acompañante-externo-2" name="acompañante-externo" value="No">
+                                    <label for="acompañante-externo-2">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divisor-inputs">
+                            <h2 style="width: 100%;">Educacion complementaria</h2>
+                            <p style="width: 100%;">¿Asiste a alguna de las siguientes instituciones?</p>
+                            {% set registration_condition = {
+                                'Centro Educativo Complementario (CEC)': {'complementary_institution_cec': ['Si', 'No'] },
+                                'Centro de Educación Física (CEF)': {'complementary_institution_cef': ['Si', 'No'] },
+                                'Escuela de Educación Estética': {'complementary_institution_eee': ['Si', 'No'] }}
+                            %}
+                            {% for title, options in registration_condition.items() %}
+                                <p class="items-name">{{ title }}</p>
+                                <div class="checkbox-container" style="flex-flow: row wrap;">
+                                    {% for name, labels in options.items() %}
+                                        {% for label in labels %}
+                                            <div class="check-label">
+                                                <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                                <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="divisor-inputs">
+                            <h2 style="width: 100%;">Servicio alimento escolar</h2>
+                            <p style="width: 100%;">En caso de que la institución cuente con el servicio:</p>
+                            <p class="items-name">¿Solicita la incorporación en el Servicio Alimento Escolar?</p>
+                            <div class="checkbox-container" style="flex-direction: row;">
+                                <div class="check-label">
+                                    <input type="checkbox" id="alimento-escolar-1" name="alimento-escolar" value="Comedor">
+                                    <label for="alimento-escolar-1">Comedor</label>
+                                </div>
+                                <div class="check-label">
+                                    <input type="checkbox" id="alimento-escolar-2" name="alimento-escolar" value="Desayuno y Merienda">
+                                    <label for="alimento-escolar-2">Desayuno y Merienda</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="button2" type="submit">subir</button>
+                </div>
+                <div class="content">
+                        <div class="divisor-inputs">
+                            <h2 style="width: 100%;">Restricciones por decisiones judiciales</h2>
+                            <div class="column-form-left" style="display: flex; flex-wrap: wrap; column-gap:30px;">
+                                {% set legals_fields = {
+                                    'Apellido/s':{'name': 'last_name_legals', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
+                                    'Tipo de doc':{'name': 'doc_type_legals', 'type': 'text', 'required': False, 'style': 'flex: 1 0 47%; min-width:242px;'},
+                                    'Nº':{'name': 'doc_number_legals', 'type': 'number', 'required': False, 'style': 'flex: 1 0 47%; min-width:242px;'},
+                                }%}
+                                {% for label, field in legals_fields.items() %}
+                                    <div class="name-and-input" style="{{ field.style }}">
+                                        <p class="items-name">{{ label }}</p>
+                                        <input type="{{ field.type }}" class="input-style" name="{{ field.name }}"  autocomplete="off" placeholder="" {% if field.required %}required{% endif %}>
+                                    </div>
                                 {% endfor %}
                             </div>
-                        {% endfor %}
-
-                        {% set request_for_workday = {
-                            'Jornada': { 'request_workday_fields': ['Simple', 'Extendida', 'Completa/Doble escolaridad'] },}            
-                        %}
-                        {% for title, options in request_for_workday.items() %}
-                            <p class="items-name">{{ title }}</p>
-                            <div class="checkbox-container" style="flex-flow: row wrap;">
-                                {% for name, labels in options.items() %}
-                                    {% for label in labels %}
-                                        <div class="check-label">
-                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
-                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
-                                        </div>
-                                    {% endfor %}
+                            <div class="column-form-right" style="display: flex; flex-flow: column;">
+                                {% set more_legals_fields = {
+                                    'Nombre/s':{'name': 'name_legals', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
+                                    'Describa Restricción':{'name': 'restriction_legal', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
+                                }%}
+                                {% for label, field in more_legals_fields.items() %}
+                                    <div class="name-and-input" style="{{ field.style }}">
+                                        <p class="items-name">{{ label }}</p>
+                                        <input type="{{ field.type }}" class="input-style" name="{{ field.name }}"  autocomplete="off" placeholder="" {% if field.required %}required{% endif %}>
+                                    </div>
                                 {% endfor %}
                             </div>
-                        {% endfor %}
-                    </div>
-                    <div class="divisor-inputs">
-                        <h2 style="width: 100%;">Condición en la Inscripción actual</h2>
-                        {% set registration_condition = {
-                            'Jornada': { 'registration_conditiony_fields': ['Ingresante al Nivel', 'Promovid@', 'Reinscript@'] },}            
-                        %}
-                        {% for title, options in registration_condition.items() %}
-                            <p class="items-name">{{ title }}</p>
-                            <div class="checkbox-container" style="flex-flow: row wrap;">
-                                {% for name, labels in options.items() %}
-                                    {% for label in labels %}
-                                        <div class="check-label">
-                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
-                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
-                                        </div>
-                                    {% endfor %}
+                        </div>
+                        <div class="divisor-inputs">
+                            <h3>A completar por el establecimiento</h3>
+                            {% set complete_establishment = {
+                                'Nº legajo':{'name': 'n_legajo_legals', 'type': 'number', 'required': False, 'style': 'width: 33.33333%;'},
+                                'Nº de Matriz':{'name': 'n_matriz_legal', 'type': 'number', 'required': False, 'style': 'width: 33.33333%;'},
+                                'Nº de folio':{'name': 'n_folio_legal', 'type': 'number', 'required': False, 'style': 'width: 33.33333%;'},
+                            }%}
+                            <span style="width: 100%; display: flex; justify-content: space-between; gap: 30px;">
+                                {% for label, field in complete_establishment.items() %}
+                                    <div class="name-and-input" style="{{ field.style }}">
+                                        <p class="items-name">{{ label }}</p>
+                                        <input type="{{ field.type }}" class="input-style" name="{{ field.name }}"  autocomplete="off" placeholder="" {% if field.required %}required{% endif %}>
+                                    </div>
+                                {% endfor %}
+                            </span>
+                        </div>
+                        <div class="divisor-inputs">
+                            <p class="items-name">
+                                La totalidad de los datos e información suministrada por quien suscribe la presente tiene carácter de Declaración Jurada.
+                                La persona abajo firmante se compromete a comunicar al establecimiento cualquier modificación de los datos suministrados en forma inmediata y de manera fehaciente.
+                            </p>
+                        </div>
+                        <div class="divisor-inputs">
+                            <div class="column-form-left" style="display: flex; flex-wrap: wrap; column-gap:30px;">
+                                {% set legals_fields = {
+                                    'Firma persona responsable':{'name': 'person_in_charge', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
+                                    'Fecha de Inscripcion':{'name': 'registration_date', 'type': 'date', 'required': False, 'style': 'width: 100%;'},
+                                }%}
+                                {% for label, field in legals_fields.items() %}
+                                    <div class="name-and-input" style="{{ field.style }}">
+                                        <p class="items-name">{{ label }}</p>
+                                        <input type="{{ field.type }}" class="input-style" name="{{ field.name }}"  autocomplete="off" placeholder="" {% if field.required %}required{% endif %}>
+                                    </div>
                                 {% endfor %}
                             </div>
-                        {% endfor %}
-                    </div>
-                    <div class="divisor-inputs">
-                        <h2 style="width: 100%;">Inclusión</h2>
-                        <p class="items-name">Vínculo con estudiante</p>
-                        <div class="checkbox-container" style="flex-direction: row;">
-                            <div class="check-label">
-                                <input type="checkbox" id="proyecto-inclusion-1" name="proyecto-inclusion" value="Si">
-                                <label for="proyecto-inclusion-1">Si</label>
-                            </div>
-                            <div class="check-label">
-                                <input type="checkbox" id="proyecto-inclusion-2" name="proyecto-inclusion" value="No">
-                                <label for="proyecto-inclusion-2">No</label>
-                            </div>
-                        </div>
-                        <p class="items-name">Si la respuesta es afirmativa, marque lo que corresponda</p>
-                        <div class="checkbox-container" style="flex-direction: column;">
-                            <div class="check-label">
-                                <input type="checkbox" id="proyecto-inclusion-true-1" name="proyecto-inclusion-true" value="Si">
-                                <label for="proyecto-inclusion-true-1">Concurre a una Escuela Especial a contraturno y vuenta con acompañamiento de maestr@ de inclusión</label>
-                            </div>
-                            <div class="check-label">
-                                <input type="checkbox" id="proyecto-inclusion-true-2" name="proyecto-inclusion-true" value="No">
-                                <label for="proyecto-inclusion-true-2">No concurre a una Escuela Especial pero cuenta con acompañante de maestr@ de inclusión</label>
-                            </div>
-                        </div>
-                        <p class="items-name">¿Cursa con acompañante asistente externo?</p>
-                        <div class="checkbox-container" style="flex-direction: row;">
-                            <div class="check-label">
-                                <input type="checkbox" id="acompañante-externo-1" name="acompañante-externo" value="Si">
-                                <label for="acompañante-externo-1">Si</label>
-                            </div>
-                            <div class="check-label">
-                                <input type="checkbox" id="acompañante-externo-2" name="acompañante-externo" value="No">
-                                <label for="acompañante-externo-2">No</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="divisor-inputs">
-                        <h2 style="width: 100%;">Educacion complementaria</h2>
-                        <p style="width: 100%;">¿Asiste a alguna de las siguientes instituciones?</p>
-                        {% set registration_condition = {
-                            'Centro Educativo Complementario (CEC)': {'complementary_institution_cec': ['Si', 'No'] },
-                            'Centro de Educación Física (CEF)': {'complementary_institution_cef': ['Si', 'No'] },
-                            'Escuela de Educación Estética': {'complementary_institution_eee': ['Si', 'No'] }}
-                        %}
-                        {% for title, options in registration_condition.items() %}
-                            <p class="items-name">{{ title }}</p>
-                            <div class="checkbox-container" style="flex-flow: row wrap;">
-                                {% for name, labels in options.items() %}
-                                    {% for label in labels %}
-                                        <div class="check-label">
-                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
-                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
-                                        </div>
-                                    {% endfor %}
+                            <!-- Capaz algo que guarde imagenes de firmas¿ seria mejor pero alta paja -->
+                            <div class="column-form-right" style="display: flex; flex-flow: column;"> 
+                                {% set more_legals_fields = {
+                                    'Aclaración':{'name': 'clarification', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
+                                    'Firma del directivo':{'name': 'Director_signature', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
+                                }%}
+                                {% for label, field in more_legals_fields.items() %}
+                                    <div class="name-and-input" style="{{ field.style }}">
+                                        <p class="items-name">{{ label }}</p>
+                                        <input type="{{ field.type }}" class="input-style" name="{{ field.name }}"  autocomplete="off" placeholder="" {% if field.required %}required{% endif %}>
+                                    </div>
                                 {% endfor %}
                             </div>
-                        {% endfor %}
-                    </div>
-                    <div class="divisor-inputs">
-                        <h2 style="width: 100%;">Servicio alimento escolar</h2>
-                        <p style="width: 100%;">En caso de que la institución cuente con el servicio:</p>
-                        <p class="items-name">¿Solicita la incorporación en el Servicio Alimento Escolar?</p>
-                        <div class="checkbox-container" style="flex-direction: row;">
-                            <div class="check-label">
-                                <input type="checkbox" id="alimento-escolar-1" name="alimento-escolar" value="Comedor">
-                                <label for="alimento-escolar-1">Comedor</label>
-                            </div>
-                            <div class="check-label">
-                                <input type="checkbox" id="alimento-escolar-2" name="alimento-escolar" value="Desayuno y Merienda">
-                                <label for="alimento-escolar-2">Desayuno y Merienda</label>
-                            </div>
                         </div>
-                    </div>
-                    <button class="button2" type="submit">subir</button>
-                </form>
-            </div>
-            <div class="content">
-                <form action="{{ url_for('formulario') }}" method="post">
-                    <div class="divisor-inputs">
-                        <h2 style="width: 100%;">Restricciones por decisiones judiciales</h2>
-                        <div class="column-form-left" style="display: flex; flex-wrap: wrap; column-gap:30px;">
-                            {% set legals_fields = {
-                                'Apellido/s':{'name': 'last_name_legals', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
-                                'Tipo de doc':{'name': 'doc_type_legals', 'type': 'text', 'required': False, 'style': 'flex: 1 0 47%; min-width:242px;'},
-                                'Nº':{'name': 'doc_number_legals', 'type': 'number', 'required': False, 'style': 'flex: 1 0 47%; min-width:242px;'},
-                            }%}
-                            {% for label, field in legals_fields.items() %}
-                                <div class="name-and-input" style="{{ field.style }}">
-                                    <p class="items-name">{{ label }}</p>
-                                    <input type="{{ field.type }}" class="input-style" name="{{ field.name }}"  autocomplete="off" placeholder="" {% if field.required %}required{% endif %}>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="column-form-right" style="display: flex; flex-flow: column;">
-                            {% set more_legals_fields = {
-                                'Nombre/s':{'name': 'name_legals', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
-                                'Describa Restricción':{'name': 'restriction_legal', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
-                            }%}
-                            {% for label, field in more_legals_fields.items() %}
-                                <div class="name-and-input" style="{{ field.style }}">
-                                    <p class="items-name">{{ label }}</p>
-                                    <input type="{{ field.type }}" class="input-style" name="{{ field.name }}"  autocomplete="off" placeholder="" {% if field.required %}required{% endif %}>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="divisor-inputs">
-                        <h3>A completar por el establecimiento</h3>
-                        {% set complete_establishment = {
-                            'Nº legajo':{'name': 'n_legajo_legals', 'type': 'number', 'required': False, 'style': 'width: 33.33333%;'},
-                            'Nº de Matriz':{'name': 'n_matriz_legal', 'type': 'number', 'required': False, 'style': 'width: 33.33333%;'},
-                            'Nº de folio':{'name': 'n_folio_legal', 'type': 'number', 'required': False, 'style': 'width: 33.33333%;'},
-                        }%}
-                        <span style="width: 100%; display: flex; justify-content: space-between; gap: 30px;">
-                            {% for label, field in complete_establishment.items() %}
-                                <div class="name-and-input" style="{{ field.style }}">
-                                    <p class="items-name">{{ label }}</p>
-                                    <input type="{{ field.type }}" class="input-style" name="{{ field.name }}"  autocomplete="off" placeholder="" {% if field.required %}required{% endif %}>
-                                </div>
-                            {% endfor %}
-                        </span>
-                    </div>
-                    <div class="divisor-inputs">
-                        <p class="items-name">
-                            La totalidad de los datos e información suministrada por quien suscribe la presente tiene carácter de Declaración Jurada.
-                            La persona abajo firmante se compromete a comunicar al establecimiento cualquier modificación de los datos suministrados en forma inmediata y de manera fehaciente.
-                        </p>
-                    </div>
-                    <div class="divisor-inputs">
-                        <div class="column-form-left" style="display: flex; flex-wrap: wrap; column-gap:30px;">
-                            {% set legals_fields = {
-                                'Firma persona responsable':{'name': 'person_in_charge', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
-                                'Fecha de Inscripcion':{'name': 'registration_date', 'type': 'date', 'required': False, 'style': 'width: 100%;'},
-                            }%}
-                            {% for label, field in legals_fields.items() %}
-                                <div class="name-and-input" style="{{ field.style }}">
-                                    <p class="items-name">{{ label }}</p>
-                                    <input type="{{ field.type }}" class="input-style" name="{{ field.name }}"  autocomplete="off" placeholder="" {% if field.required %}required{% endif %}>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <!-- Capaz algo que guarde imagenes de firmas¿ seria mejor pero alta paja -->
-                        <div class="column-form-right" style="display: flex; flex-flow: column;"> 
-                            {% set more_legals_fields = {
-                                'Aclaración':{'name': 'clarification', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
-                                'Firma del directivo':{'name': 'Director_signature', 'type': 'text', 'required': False, 'style': 'width: 100%;'},
-                            }%}
-                            {% for label, field in more_legals_fields.items() %}
-                                <div class="name-and-input" style="{{ field.style }}">
-                                    <p class="items-name">{{ label }}</p>
-                                    <input type="{{ field.type }}" class="input-style" name="{{ field.name }}"  autocomplete="off" placeholder="" {% if field.required %}required{% endif %}>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <button class="button2" type="submit">subir</button>
-                </form>
-            </div>
+                        <button class="button2" type="submit">subir</button>
+                </div>
+            </form>
         </div>
     </div>
     <script>
