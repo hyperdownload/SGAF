@@ -48,6 +48,31 @@ def create_database(path: str) -> None:
         Transporte TEXT,
         Activo BOOLEAN NOT NULL,
         FechaCreacion DATETIME NOT NULL,
+        
+        -- Nuevos campos 
+        Hermanos INTEGER,
+        Lenguaje TEXT,
+        PercibeAUH BOOLEAN,
+        PercibeProgresar BOOLEAN,
+        AsistenciaSalasMaternal BOOLEAN,
+        Asma BOOLEAN,
+        Cardiaco BOOLEAN,
+        Diabetes BOOLEAN,
+        Presion BOOLEAN,
+        Convulsiones BOOLEAN,
+        Quemaduras BOOLEAN,
+        Alergias BOOLEAN,
+        Oncohematologica BOOLEAN,
+        FaltaOrgano BOOLEAN,
+        Inmunodeficiencia BOOLEAN,
+        Fracturas BOOLEAN,
+        ProblemaVision BOOLEAN,
+        TraumatismoCraneal BOOLEAN,
+        ProblemaPie BOOLEAN,
+        Desmayos BOOLEAN,
+        DolorPecho BOOLEAN,
+        Mareo BOOLEAN,
+
         FOREIGN KEY (IdTutor) REFERENCES Tutor(IdTutor)
     );
     ''')
@@ -59,6 +84,7 @@ def create_database(path: str) -> None:
         Nombre TEXT NOT NULL,
         Apellido TEXT NOT NULL,
         DNI INTEGER NOT NULL,
+        EstadoDNI TEXT CHECK(EstadoDNI IN ('Argentino', 'Extranjero', 'En proceso')),
         CUIL INTEGER,
         CorreoElectronico TEXT,
         Telefono INTEGER NOT NULL,
@@ -76,7 +102,49 @@ def create_database(path: str) -> None:
         NivelEducacionMaximo TEXT,
         Completado BOOLEAN,
         Actividad TEXT,
-        Parentezco TEXT NOT NULL
+        Parentezco TEXT NOT NULL,
+        CPI BOOLEAN,                     
+        AsistenciaEducativa BOOLEAN,     
+        CondicionActividad TEXT          
+    );
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Legal (
+        IdLegal INTEGER PRIMARY KEY AUTOINCREMENT,
+        IdAlumno INTEGER NOT NULL,
+        ApellidoLegal TEXT,
+        TipoDocumentoLegal TEXT,
+        NumeroDocumentoLegal INTEGER,
+        NombreLegal TEXT,
+        Restriccion TEXT,  -- Descripción de la restricción legal
+        NumLegajo INTEGER,  -- Número de legajo del alumno
+        NumMatriz INTEGER,  -- Número de matriz
+        NumFolio INTEGER,   -- Número de folio
+        FirmaResponsable TEXT,
+        FechaInscripcion DATE,
+        Aclaracion TEXT,
+        FirmaDirectivo TEXT,
+        FOREIGN KEY (IdAlumno) REFERENCES Alumno(IdAlumno)
+    );
+    ''')
+
+    # Tabla Inscripcion
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Inscripcion (
+        IdInscripcion INTEGER PRIMARY KEY AUTOINCREMENT,
+        IdAlumno INTEGER NOT NULL,
+        TipoInscripcion TEXT NOT NULL, 
+        Orientacion TEXT,
+        Anio INTEGER,                  
+        Turno TEXT,                   
+        Jornada TEXT,                 
+        CondicionInscripcion TEXT,     
+        Inclusivo BOOLEAN,           
+        AsistenteExterno BOOLEAN,      
+        EscuelaContraturno BOOLEAN,     
+        MaestriaInclusiva BOOLEAN,     
+        FOREIGN KEY (IdAlumno) REFERENCES Alumno(IdAlumno)
     );
     ''')
 
@@ -155,20 +223,19 @@ def register_user(user_name: str, password: str, email: str, rango: str) -> str:
 
 def register_student_and_tutor(student_data: dict, tutor_data: dict) -> str:
     """
-    Registra a un nuevo alumno y su tutor en la base de datos, incluyendo el estado del DNI del alumno.
+    Registra a un nuevo alumno y su tutor en la base de datos, incluyendo los datos adicionales de tutor.
     """
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
 
-    # Verificar tutor
     cursor.execute('SELECT IdTutor FROM Tutor WHERE DNI = ?', (tutor_data["dni"],))
     if tutor := cursor.fetchone():
         id_tutor = tutor[0]
     else:
         cursor.execute('''
-        INSERT INTO Tutor (Nombre, Apellido, DNI, CUIL, CorreoElectronico, Telefono, TelefonoCelular, Calle, NumeroCalle, Piso, Torre, Depto, EntreCalle1, EntreCalle2, Provincia, Distrito, Localidad, NivelEducacionMaximo, Completado, Actividad, Parentezco)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (tutor_data["nombre"], tutor_data["apellido"], tutor_data["dni"], tutor_data.get("cuil"), tutor_data.get("correo"), tutor_data["telefono"], tutor_data.get("telefono_celular"), tutor_data["calle"], tutor_data["numero_calle"], tutor_data.get("piso"), tutor_data.get("torre"), tutor_data.get("depto"), tutor_data.get("entre_calle_1"), tutor_data.get("entre_calle_2"), tutor_data["provincia"], tutor_data["distrito"], tutor_data["localidad"], tutor_data.get("nivel_educacion_maximo"), tutor_data.get("completado"), tutor_data.get("actividad"), tutor_data["parentezco"]))
+        INSERT INTO Tutor (Nombre, Apellido, DNI, EstadoDNI, CUIL, CorreoElectronico, Telefono, TelefonoCelular, Calle, NumeroCalle, Piso, Torre, Depto, EntreCalle1, EntreCalle2, Provincia, Distrito, Localidad, NivelEducacionMaximo, Completado, Actividad, Parentezco, CPI, AsistenciaEducativa, CondicionActividad)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (tutor_data["nombre"], tutor_data["apellido"], tutor_data["dni"], tutor_data["estado_dni"], tutor_data.get("cuil"), tutor_data.get("correo"), tutor_data["telefono"], tutor_data.get("telefono_celular"), tutor_data["calle"], tutor_data["numero_calle"], tutor_data.get("piso"), tutor_data.get("torre"), tutor_data.get("depto"), tutor_data.get("entre_calle_1"), tutor_data.get("entre_calle_2"), tutor_data["provincia"], tutor_data["distrito"], tutor_data["localidad"], tutor_data.get("nivel_educacion_maximo"), tutor_data.get("completado"), tutor_data.get("actividad"), tutor_data["parentezco"], tutor_data.get("cpi"), tutor_data.get("asistencia_educativa"), tutor_data.get("condicion_actividad")))
         id_tutor = cursor.lastrowid
 
     cursor.execute('SELECT IdAlumno FROM Alumno WHERE DNI = ?', (student_data["dni"],))
@@ -177,9 +244,9 @@ def register_student_and_tutor(student_data: dict, tutor_data: dict) -> str:
         return "Error: ya existe un alumno con este DNI."
 
     cursor.execute('''
-    INSERT INTO Alumno (IdTutor, Nombre, Apellido, DNI, EstadoDNI, CUIL, FechaDeNacimiento, Genero, Nacionalidad, ProvinciaNacimiento, DistritoNacimiento, LocalidadNacimiento, CalleResidencia, NumeroCalleResidencia, PisoResidencia, TorreResidencia, DeptoResidencia, EntreCalle1, EntreCalle2, ProvinciaResidencia, DistritoResidencia, LocalidadResidencia, Telefono, TelefonoCelular, OtroDatoResidencia, CPI, DocumentoExtranjero, Aborigen, LenguaIndigena, OtraLenguaHogar, Transporte, Activo, FechaCreacion)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-    ''', (id_tutor, student_data["nombre"], student_data["apellido"], student_data["dni"], student_data["estado_dni"], student_data.get("cuil"), student_data["fecha_nacimiento"], student_data.get("genero"), student_data.get("nacionalidad"), student_data.get("provincia_nacimiento"), student_data.get("distrito_nacimiento"), student_data.get("localidad_nacimiento"), student_data.get("calle_residencia"), student_data.get("numero_calle_residencia"), student_data.get("piso_residencia"), student_data.get("torre_residencia"), student_data.get("depto_residencia"), student_data.get("entre_calle_1"), student_data.get("entre_calle_2"), student_data.get("provincia_residencia"), student_data.get("distrito_residencia"), student_data.get("localidad_residencia"), student_data.get("telefono"), student_data.get("telefono_celular"), student_data.get("otro_dato_residencia"), student_data.get("cpi"), student_data.get("documento_extranjero"), student_data.get("aborigen"), student_data.get("lengua_indigena"), student_data.get("otra_lengua_hogar"), student_data.get("transporte"), student_data.get("activo")))
+    INSERT INTO Alumno (IdTutor, Nombre, Apellido, DNI, EstadoDNI, CUIL, FechaDeNacimiento, Genero, Nacionalidad, ProvinciaNacimiento, DistritoNacimiento, LocalidadNacimiento, CalleResidencia, NumeroCalleResidencia, PisoResidencia, TorreResidencia, DeptoResidencia, EntreCalle1, EntreCalle2, ProvinciaResidencia, DistritoResidencia, LocalidadResidencia, Telefono, TelefonoCelular, OtroDatoResidencia, CPI, DocumentoExtranjero, Aborigen, LenguaIndigena, OtraLenguaHogar, Transporte, Activo, FechaCreacion, Hermanos, Lenguaje, PercibeAUH, PercibeProgresar, AsistenciaSalasMaternal, Asma, Cardiaco, Diabetes, Presion, Convulsiones, Quemaduras, Alergias, Oncohematologica, FaltaOrgano, Inmunodeficiencia, Fracturas, ProblemaVision, TraumatismoCraneal, ProblemaPie, Desmayos, DolorPecho, Mareo)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (id_tutor, student_data["nombre"], student_data["apellido"], student_data["dni"], student_data["estado_dni"], student_data.get("cuil"), student_data["fecha_nacimiento"], student_data.get("genero"), student_data.get("nacionalidad"), student_data.get("provincia_nacimiento"), student_data.get("distrito_nacimiento"), student_data.get("localidad_nacimiento"), student_data.get("calle_residencia"), student_data.get("numero_calle_residencia"), student_data.get("piso_residencia"), student_data.get("torre_residencia"), student_data.get("depto_residencia"), student_data.get("entre_calle_1"), student_data.get("entre_calle_2"), student_data.get("provincia_residencia"), student_data.get("distrito_residencia"), student_data.get("localidad_residencia"), student_data.get("telefono"), student_data.get("telefono_celular"), student_data.get("otro_dato_residencia"), student_data.get("cpi"), student_data.get("documento_extranjero"), student_data.get("aborigen"), student_data.get("lengua_indigena"), student_data.get("otra_lengua_hogar"), student_data.get("transporte"), student_data.get("activo"), student_data.get("hermanos"), student_data.get("lenguaje"), student_data.get("percibe_auh"), student_data.get("percibe_progresar"), student_data.get("asistencia_salas_maternal"), student_data.get("asma"), student_data.get("cardiaco"), student_data.get("diabetes"), student_data.get("presion"), student_data.get("convulsiones"), student_data.get("quemaduras"), student_data.get("alergias"), student_data.get("oncohematologica"), student_data.get("falta_organo"), student_data.get("inmunodeficiencia"), student_data.get("fracturas"), student_data.get("problema_vision"), student_data.get("traumatismo_craneal"), student_data.get("problema_pie"), student_data.get("desmayos"), student_data.get("dolor_pecho"), student_data.get("mareo")))
 
     conn.commit()
     conn.close()
