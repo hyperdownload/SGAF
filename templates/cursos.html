@@ -76,51 +76,39 @@
 <div class="contenedor-tarjetas" id="cursoContainer"></div>
 
 <script>
-    const cursos = {
-        "1ro": ["Curso 1ro 1ra", "Curso 1ro 2da", "Curso 1ro 3ra", "Curso 1ro 4ta", "Curso 1ro 5ta", "Curso 1ro 6ta"],
-        "2do": ["Curso 2do 1ra", "Curso 2do 2da", "Curso 2do 3ra", "Curso 2do 4ta", "Curso 2do 5ta", "Curso 2do 6ta"],
-        "3ro": ["Curso 3ro 1ra", "Curso 3ro 2da", "Curso 3ro 3ra", "Curso 3ro 4ta", "Curso 3ro 5ta", "Curso 3ro 6ta"],
-        "4to": ["Curso 4to 1ra", "Curso 4to 2da", "Curso 4to 3ra", "Curso 4to 4ta", "Curso 4to 5ta", "Curso 4to 6ta", "Curso 4to 8va"],
-        "5to": ["Curso 5to 1ra", "Curso 5to 2da", "Curso 5to 3ra", "Curso 5to 4ta", "Curso 5to 5ta", "Curso 5to 6ta"],
-        "6to": ["Curso 6to 1ra", "Curso 6to 2da", "Curso 6to 3ra", "Curso 6to 4ta", "Curso 6to 5ta", "Curso 6to 6ta"],
-        "7mo": ["Curso 7mo 1ra", "Curso 7mo 2da", "Curso 7mo 3ra", "Curso 7mo 4ta"]
-    };
+    //Convierte los cursos en un arreglo o lista de strings desde JSON
+    const cursos = JSON.parse('{{ cursos | tojson }}');
 
     const container = document.getElementById('cursoContainer');
     const searchInput = document.getElementById('search-input');
 
-    // Función para cargar la plantilla de carta
     async function loadTemplate() {
         const response = await fetch('/get-carta-template');
         return await response.text();
     }
 
-    // Función para generar tarjetas
     async function generateCards(year) {
-        container.innerHTML = ''; // Limpiar el contenedor
+        container.innerHTML = ''; 
         const template = await loadTemplate();
         if (year === 'todos') {
-        // Mostrar todos los cursos
-            Object.values(cursos).flat().forEach(course => {
+            cursos.forEach(course => {
                 const card = createCard(template, course);
                 container.innerHTML += card;
-        });
-        } else if (year in cursos) {
-            cursos[year].forEach(course => {
+            });
+        } else {
+            cursos.filter(course => course.year === year).forEach(course => {
                 const card = createCard(template, course);
                 container.innerHTML += card;
             });
         }
     }
 
-    // Mostrar todas las tarjetas al principio
-    generateCards('todos'); // Muestra todas las tarjetas al cargar la página
+    generateCards('todos');
 
     function createCard(template, course) {
         return template.replace('${course}', course);
     }
 
-    // Filtrar tarjetas por búsqueda
     function filterCards() {
         const searchTerm = searchInput.value.toLowerCase();
         const cards = document.querySelectorAll('.card-container');
@@ -128,14 +116,13 @@
         cards.forEach(card => {
             const title = card.querySelector('.titulo-tarjeta').innerText.toLowerCase();
             if (title.includes(searchTerm)) {
-                card.style.display = ''; // Mostrar tarjeta
+                card.style.display = ''; 
             } else {
-                card.style.display = 'none'; // Ocultar tarjeta
+                card.style.display = 'none'; 
             }
         });
     }
 
-    // Modificar la función selectOption para que llame a generateCards y filterCards
     function selectOption(option) {
         const year = option === '1er año' ? '1ro' :
                      option === '2do año' ? '2do' :
@@ -147,19 +134,18 @@
                      option === 'Todos' ? 'todos' : null;
 
         document.getElementById('selected-option').innerText = option;
-        generateCards(year); // Generar tarjetas para el año seleccionado
-        filterCards(); // Aplicar filtro de búsqueda
+        generateCards(year);
+        filterCards();
     }
 
     searchInput.addEventListener('input', filterCards);
 
-    // Agregar opción "Todos" en el dropdown
     const dropdownCursos = document.getElementById('dropdown');
     const allOption = document.createElement('option');
     allOption.text = 'Todos';
     allOption.value = 'Todos';
     dropdownCursos.add(allOption);
 
-
 </script>
+
 {% endblock %}

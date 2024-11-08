@@ -242,19 +242,18 @@ def formulario():
     print(student_data,"\n",tutor_data,"\n",inscription_data,"\n",legal_data)
     return "Datos recibidos", 204
 
+from flask import jsonify
+import json
+
 @app.route("/cursos")
 def curso():
-    # cursos = base.get_all_courses()  # Obtener la lista de cursos desde la base de datos
     a = base.get_total_cursos()
-    nom=[]
+    nom = []
     for n in range(a):
-
-        curso = base.get_curso_property('Nombre', n+1)
+        curso = base.get_curso_property('Nombre', n + 1)
         nom.append(curso)
     print(nom)
     return render_template("cursos.html", cursos=nom)
-    
-   # Obtener la lista de cursos de la base de datos
 
 @app.route("/nuevoCurso")
 def nuevoCurso():

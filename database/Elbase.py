@@ -475,13 +475,24 @@ def get_all_courses() -> list:
 
 def get_curso_property(property_name: str, condition_value: str, condition_field: str = 'IdCurso') -> any:
     """
-    Obtiene una propiedad específica de un usuario basado en una condición.
-    
+    Obtiene una propiedad específica de un curso basado en una condición.
+
+    Esta función busca en la tabla Curso de la base de datos y devuelve el valor
+    de una propiedad específica para un curso que cumpla con la condición dada.
+
     Args:
-        
-    
+        property_name (str): El nombre de la propiedad del curso que se desea obtener.
+        condition_value (str): El valor de la condición para filtrar el curso.
+        condition_field (str, optional): El campo de la tabla Curso que se usará
+            para filtrar. Por defecto es 'IdCurso'.
+
     Returns:
-        any: El valor de la propiedad solicitada o un mensaje de error si no se encuentra.
+        any: El valor de la propiedad solicitada si se encuentra el curso.
+             Si no se encuentra el curso, devuelve un mensaje de error.
+             En caso de error en la base de datos, devuelve un mensaje con la descripción del error.
+
+    Raises:
+        sqlite3.Error: Si ocurre un error al interactuar con la base de datos.
     """
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
@@ -503,7 +514,7 @@ def get_curso_property(property_name: str, condition_value: str, condition_field
     finally:
         conn.close()
 
-def get_total_cursos()->int:
+def get_total_cursos() -> int:
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
 
@@ -512,15 +523,11 @@ def get_total_cursos()->int:
         SELECT MAX(IdCurso) FROM Curso
         ''')
         result = cursor.fetchone()
-        
-        if result is not None:
-            return int(result[0])
-        else:
-            return f"Error:"
-    
+
+        return int(result[0]) if result is not None else "Error:"
     except sqlite3.Error as e:
         return f"Error en la base de datos: {e}"
-    
+
     finally:
         conn.close()
 
