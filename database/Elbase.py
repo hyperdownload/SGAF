@@ -11,7 +11,7 @@ def create_database(path: str) -> None:
     conn = sqlite3.connect(path)
     cursor = conn.cursor()
 
-    # Tabla Alumno
+    # Tabla Alumno completada
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Alumno (
         IdAlumno INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -27,6 +27,7 @@ def create_database(path: str) -> None:
         ProvinciaNacimiento TEXT,
         DistritoNacimiento TEXT,
         LocalidadNacimiento TEXT,
+        OtraNacionalidad TEXT,
         CalleResidencia TEXT,
         NumeroCalleResidencia INTEGER,
         PisoResidencia INTEGER,
@@ -111,7 +112,6 @@ def create_database(path: str) -> None:
         MotivoOperacion TEXT,
                    
         MuerteSubita BOOLEAN,
-        Diabetes BOOLEAN,
         ProblemasCardiacos BOOLEAN,
         TosCronica BOOLEAN,
         Celiaquia BOOLEAN,
@@ -129,45 +129,44 @@ def create_database(path: str) -> None:
         DistritoEstablecimientoProcedencia TEXT,
         GestionEstablecimientoProcedencia BOOLEAN,
         DependenciaEstablecimiento BOOLEAN,
-        NombreEscuelaProcedencia TEXT
+        NombreEscuelaProcedencia TEXT,
 
-                   
         FOREIGN KEY (IdTutor) REFERENCES Tutor(IdTutor)
     );
     ''')
 
-    # Tabla Tutor
+    # Tabla Tutor completada
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Tutor (
         IdTutor INTEGER PRIMARY KEY AUTOINCREMENT,
+        Parentezco TEXT NOT NULL,
         Nombre TEXT NOT NULL,
         Apellido TEXT NOT NULL,
-        DNI INTEGER NOT NULL,
         EstadoDNI TEXT CHECK(EstadoDNI IN ('Argentino', 'Extranjero', 'En proceso')),
-        CUIL INTEGER,
-        CorreoElectronico TEXT,
-        Telefono INTEGER NOT NULL,
-        TelefonoCelular INTEGER,
-        Calle TEXT NOT NULL,
-        NumeroCalle INTEGER NOT NULL,
-        Piso INTEGER,
-        Torre TEXT,
-        Depto TEXT,
+        DNI INTEGER NOT NULL,
+        CPI BOOLEAN,                     
+        DocumentoExtranjero BOOLEAN,
+        RecibioEducacion BOOLEAN, 
+        NivelEducacionMaximo TEXT
+        NivelEducacionState TEXT,
+        Actividad TEXT,
+        Calle TEXT NOT NULL, 
         EntreCalle1 TEXT,
         EntreCalle2 TEXT,
         Provincia TEXT NOT NULL,
         Distrito TEXT NOT NULL,
+        Telefono INTEGER NOT NULL,
+        NumeroCalle INTEGER NOT NULL,
+        Piso INTEGER,
+        Torre TEXT,
+        Depto TEXT,
+        OtroDatoResidencia TEXT,
         Localidad TEXT NOT NULL,
-        NivelEducacionMaximo TEXT,
-        Completado BOOLEAN,
-        Actividad TEXT,
-        Parentezco TEXT NOT NULL,
-        CPI BOOLEAN,                     
-        AsistenciaEducativa BOOLEAN,     
-        CondicionActividad TEXT          
+        CorreoElectronico TEXT
     );
     ''')
-
+    
+    # Tabla Legal completada
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Legal (
         IdLegal INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -193,46 +192,6 @@ def create_database(path: str) -> None:
     CREATE TABLE IF NOT EXISTS Inscripcion (
         IdInscripcion INTEGER PRIMARY KEY AUTOINCREMENT,
         IdAlumno INTEGER NOT NULL,
-        TipoInscripcion TEXT NOT NULL, 
-        Orientacion TEXT,
-        Anio INTEGER,                  
-        Turno TEXT,                   
-        Jornada TEXT,                 
-        CondicionInscripcion TEXT,     
-        Inclusivo BOOLEAN,           
-        AsistenteExterno BOOLEAN,      
-        EscuelaContraturno BOOLEAN,     
-        MaestriaInclusiva BOOLEAN,     
-        FOREIGN KEY (IdAlumno) REFERENCES Alumno(IdAlumno)
-    );
-    ''')
-
-    # Tabla Legal
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Legal (
-        IdLegal INTEGER PRIMARY KEY AUTOINCREMENT,
-        IdAlumno INTEGER NOT NULL,
-        ApellidoLegal TEXT,
-        TipoDocumentoLegal TEXT,
-        NumeroDocumentoLegal INTEGER,
-        NombreLegal TEXT,
-        Restriccion TEXT,
-        NumLegajo INTEGER,
-        NumMatriz INTEGER,
-        NumFolio INTEGER,
-        FirmaResponsable TEXT,
-        FechaInscripcion DATE,
-        Aclaracion TEXT,
-        FirmaDirectivo TEXT,
-        FOREIGN KEY (IdAlumno) REFERENCES Alumno(IdAlumno)
-    );
-    ''')
-
-    # Tabla Inscripcion
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Inscripcion (
-        IdInscripcion INTEGER PRIMARY KEY AUTOINCREMENT,
-        IdAlumno INTEGER NOT NULL,
         TipoInscripcion TEXT NOT NULL,
         Orientacion TEXT,
         Anio INTEGER,
@@ -240,11 +199,101 @@ def create_database(path: str) -> None:
         Jornada TEXT,
         CondicionInscripcion TEXT,
         Inclusivo BOOLEAN,
+        EscuelaEspecial BOOLEAN,
         AsistenteExterno BOOLEAN,
-        EscuelaContraturno BOOLEAN,
-        MaestriaInclusiva BOOLEAN,
+        EscuelaContraturnoCEC BOOLEAN,
+        EscuelaContraturnoCEF BOOLEAN,
+        EscuelaContraturnoEEE BOOLEAN,
+        AlimentoEscolar BOOLEAN,
         FOREIGN KEY (IdAlumno) REFERENCES Alumno(IdAlumno)
     );
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS LibroMatriz (
+        IdLibroMatriz INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        FechaCreacion DATETIME NOT NULL,
+        IdCalificador INTEGER NOT NULL,
+        FOREIGN KEY (IdCalificador) REFERENCES Calificador(IdCalificador)
+    );
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Calificador (
+        IdCalificador INTEGER PRIMARY KEY AUTOINCREMENT,
+        Año INTEGER NOT NULL,
+        IdAlumno INTEGER NOT NULL,
+        IdCalificacionMateria INTEGER NOT NULL,
+        FOREIGN KEY (IdAlumno) REFERENCES Alumno(IdAlumno),
+        FOREIGN KEY (IdCalificacionMateria) REFERENCES Materia(IdCalificacionMateria)
+    );
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Materia (
+        IdCalificacionMateria INTEGER PRIMARY KEY AUTOINCREMENT,
+        NombreMateria TEXT NOT NULL,
+        CalificacionMateria INTEGER NOT NULL
+    );
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS MatriculaEncabezado (
+        IdMatricula INTEGER PRIMARY KEY AUTOINCREMENT,
+        FechaMatricula DATETIME NOT NULL,
+        IdAlumno INTEGER NOT NULL,
+        IdCurso INTEGER NOT NULL,
+        FOREIGN KEY (IdAlumno) REFERENCES Alumno(IdAlumno),
+        FOREIGN KEY (IdCurso) REFERENCES Curso(IdCurso)
+    );
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS MatriculaDetalle (
+        IdMatriculaDetalle INTEGER PRIMARY KEY AUTOINCREMENT,
+        IdMatricula INTEGER NOT NULL,
+        TipoMatricula TEXT NOT NULL,
+        Analitico BOOLEAN NOT NULL,
+        Calificador BOOLEAN NOT NULL,
+        FOREIGN KEY (IdMatricula) REFERENCES MatriculaEncabezado(IdMatricula)
+    );
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Curso (
+        IdCurso INTEGER PRIMARY KEY AUTOINCREMENT,
+        Nombre TEXT NOT NULL,
+        Orientacion TEXT NOT NULL,
+        Turno TEXT NOT NULL,
+        Activo BOOLEAN NOT NULL,
+        FechaCreacion DATETIME NOT NULL
+    );
+    ''')
+
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Users (
+        IdUsuario INTEGER PRIMARY KEY AUTOINCREMENT,
+        NombreUser TEXT NOT NULL,
+        Password TEXT NOT NULL,
+        Email TEXT NOT NULL,
+        IdRango INTEGER NOT NULL,
+        FOREIGN KEY (IdRango) REFERENCES Rangos(IdRango)
+    );
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Rangos (
+        IdRango INTEGER PRIMARY KEY AUTOINCREMENT,
+        NombreRango TEXT NOT NULL
+    );
+    ''')
+
+    cursor.execute('''
+    INSERT OR IGNORE INTO Rangos (IdRango, NombreRango)
+    VALUES 
+        (1, 'Admin'),
+        (2, 'Preceptor');
     ''')
 
     conn.commit()
@@ -366,6 +415,108 @@ def get_user_property(property_name: str, condition_value: str, condition_field:
             return result[0]
         else:
             return f"Error: no se encontró un usuario con {condition_field} = {condition_value}"
+    
+    except sqlite3.Error as e:
+        return f"Error en la base de datos: {e}"
+    
+    finally:
+        conn.close()
+
+def create_course(nombre: str, turno: str, activo: bool, orientacion: str) -> str:
+    '''
+    Crea un nuevo curso en la base de datos si no existe uno con el mismo nombre y turno.
+
+    Parametros:
+    nombre (str): El nombre del curso.
+    turno (str): El turno en el que se impartira el curso (por ejemplo, 'Mañana', 'Tarde').
+    activo (bool): Estado de actividad del curso (True si esta activo, False si está inactivo).
+    id_orientacion (int): El ID de la orientación asociada al curso.
+
+    Retorna:
+    str: Un mensaje indicando si el curso fue creado exitosamente o si ocurrio un error o duplicado.
+    '''
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+    try:
+        #Verifica si el curso ya existe para evitar duplicados
+        cursor.execute('SELECT IdCurso FROM Curso WHERE Nombre = ? AND Turno = ?', (nombre, turno))
+        if cursor.fetchone() is not None:
+            return "Error: ya existe un curso con este nombre y turno."
+
+        #Registra el curso
+        cursor.execute('''
+        INSERT INTO Curso (Nombre, Turno, Activo, FechaCreacion, Orientacion)
+        VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)
+        ''', (nombre.lower(), turno.lower(), activo, orientacion))
+        
+        conn.commit()
+        return f"Curso '{nombre}' en turno '{turno}' registrado exitosamente."
+
+    except sqlite3.Error as e:
+        return f"Error en la base de datos: {e}"
+
+    finally:
+        conn.close()
+
+def get_all_courses() -> list:
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+    try:
+        cursor.execute('SELECT IdCurso, Nombre, Turno, Activo, FechaCreacion, Orientacion FROM Curso')
+        cursos = cursor.fetchall()
+        return [{"IdCurso": row[0], "Nombre": row[1], "Turno": row[2], "Activo": row[3], "FechaCreacion": row[4], "Orientacion": row[5],} for row in cursos]
+
+    except sqlite3.Error as e:
+        print(f"Error en la base de datos: {e}")
+        return []
+
+    finally:
+        conn.close()
+
+def get_curso_property(property_name: str, condition_value: str, condition_field: str = 'IdCurso') -> any:
+    """
+    Obtiene una propiedad específica de un usuario basado en una condición.
+    
+    Args:
+        
+    
+    Returns:
+        any: El valor de la propiedad solicitada o un mensaje de error si no se encuentra.
+    """
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(f'''
+        SELECT {property_name} FROM Curso WHERE {condition_field} = ?
+        ''', (condition_value,))
+        result = cursor.fetchone()
+        
+        if result is not None:
+            return result[0]
+        else:
+            return f"Error: no se encontró un curso con {condition_field} = {condition_value}"
+    
+    except sqlite3.Error as e:
+        return f"Error en la base de datos: {e}"
+    
+    finally:
+        conn.close()
+
+def get_total_cursos()->int:
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute('''
+        SELECT MAX(IdCurso) FROM Curso
+        ''')
+        result = cursor.fetchone()
+        
+        if result is not None:
+            return int(result[0])
+        else:
+            return f"Error:"
     
     except sqlite3.Error as e:
         return f"Error en la base de datos: {e}"

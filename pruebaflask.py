@@ -180,10 +180,10 @@ def formulario():
     
     tutor_data = {
         'tutor-vinculo': request.form.get('tutor-vinculo'),
-        'apellido-tutor': request.form.get('apellido-tutor'),
         'nombre-tutoe': request.form.get('nombre-tutoe'),
-        'tutor-dni': request.form.get('tutor-dni'),
-        'dni-tutor': request.form.get('dni-tutor'),
+        'apellido-tutor': request.form.get('apellido-tutor'),
+        'tutor-dni': request.form.get('tutor-dni'),#Estado dni
+        'dni-tutor': request.form.get('dni-tutor'),#dni
         'cpi-tutor': request.form.get('cpi-tutor'),
         'foreign_doc-tutor': request.form.get('foreign_doc-tutor'),
         'tutor-education': request.form.get('tutor-education'),
@@ -239,13 +239,21 @@ def formulario():
         'director_signature': request.form.get('director_signature'),
     }
     
-
+    print(student_data,"\n",tutor_data,"\n",inscription_data,"\n",legal_data)
     return "Datos recibidos", 204
 
 @app.route("/cursos")
 def curso():
-    cursos = base.get_all_courses()  # Obtener la lista de cursos desde la base de datos
-    return render_template("cursos.html", cursos=cursos)
+    # cursos = base.get_all_courses()  # Obtener la lista de cursos desde la base de datos
+    a = base.get_total_cursos()
+    nom=[]
+    for n in range(a):
+
+        curso = base.get_curso_property('Nombre', n+1)
+        nom.append(curso)
+    print(nom)
+    return render_template("cursos.html", cursos=nom)
+    
    # Obtener la lista de cursos de la base de datos
 
 @app.route("/nuevoCurso")
@@ -258,7 +266,6 @@ def nuevocursologica():
     nombre_curso = request.form.get("nombre-curso")
     orientation_options = request.form.get("orientation-options")
     turno_options = request.form.get("turno-options")
-
     # Crear el curso en la base de datos
     base.create_course(nombre_curso, turno_options, True, orientation_options)
 
