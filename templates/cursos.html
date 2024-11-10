@@ -79,6 +79,8 @@
     //Convierte los cursos en un arreglo o lista de strings desde JSON
     const cursos = JSON.parse('{{ cursos | tojson }}');
     const orientacion = JSON.parse('{{ orientacion | tojson }}');
+    const turnos = JSON.parse('{{ turnos | tojson }}');
+    console.log(turnos)
 
     const container = document.getElementById('cursoContainer');
     const searchInput = document.getElementById('search-input');
@@ -92,13 +94,13 @@
         container.innerHTML = ''; 
         const template = await loadTemplate();
         if (year === 'todos') {
-            cursos.forEach(course => {
-                const card = createCard(template, course);
+            cursos.forEach((course, index) => {
+                const card = createCard(template, course, orientacion[index], turnos[index]);
                 container.innerHTML += card;
             });
         } else {
-            cursos.filter(course => course.year === year).forEach(course => {
-                const card = createCard(template, course);
+            cursos.filter(course => course.year === year).forEach((course, index) => {
+                const card = createCard(template, course, orientacion[index], turnos[index]);
                 container.innerHTML += card;
             });
         }
@@ -106,8 +108,12 @@
 
     generateCards('todos');
 
-    function createCard(template, course) {
-        return template.replace('${course}', course);
+    function createCard(template, course, orientacion, turnos) {
+        return template
+        .replace('${course}', course)
+        .replace('${orientacion}', orientacion)
+        .replace('${turno}', turnos);
+
     }
 
     function filterCards() {

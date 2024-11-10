@@ -247,16 +247,18 @@ import json
 
 @app.route("/cursos")
 def curso():
-    a = base.get_total_cursos()
+    cursos_data = base.get_total_cursos()
     nom = []
     orient = [] 
-    for n in range(a):
+    turno_list = []
+    for n in range(cursos_data):
         curso = base.get_curso_property('Nombre', n + 1)
         orientacion = base.get_curso_property('orientacion', n + 1)
-        nom.append(orientacion)
+        turno = base.get_curso_property('Turno', n + 1)
         nom.append(curso)
-    print(nom)
-    return render_template("cursos.html", cursos=nom , orientacion= orient) 
+        orient.append(orientacion)
+        turno_list.append(turno)
+    return render_template("cursos.html", cursos=nom , orientacion= orient, turnos = turno_list) 
 
 @app.route("/nuevoCurso")
 def nuevoCurso():
