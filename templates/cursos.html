@@ -46,6 +46,9 @@
             <div onclick="selectOption('5to año')" style="padding: 10px 16px; cursor: pointer;">5to año</div>
             <div onclick="selectOption('6to año')" style="padding: 10px 16px; cursor: pointer;">6to año</div>
             <div onclick="selectOption('7mo año')" style="padding: 10px 16px; cursor: pointer;">7mo año</div>
+            <div onclick="selectOption('Primer ciclo')" style="padding: 10px 16px; cursor: pointer;">Ciclo Basico</div>
+            <div onclick="selectOption('Informatica')" style="padding: 10px 16px; cursor: pointer;">Informatica</div>
+            <div onclick="selectOption('Electromecanica')" style="padding: 10px 16px; cursor: pointer;">Electromecanica</div>
             <div onclick="selectOption('Todos')" style="padding: 10px 16px; cursor: pointer;">todos</div>
             </div>
         </div>
@@ -76,12 +79,10 @@
 <div class="contenedor-tarjetas" id="cursoContainer"></div>
 
 <script>
-    //Convierte los cursos en un arreglo o lista de strings desde JSON
     const cursos = JSON.parse('{{ cursos | tojson }}');
     const orientacion = JSON.parse('{{ orientacion | tojson }}');
     const turnos = JSON.parse('{{ turnos | tojson }}');
-    console.log(turnos)
-
+    
     const container = document.getElementById('cursoContainer');
     const searchInput = document.getElementById('search-input');
 
@@ -93,33 +94,32 @@
     async function generateCards(year) {
         container.innerHTML = ''; 
         const template = await loadTemplate();
-        if (year === 'todos') {
-            cursos.forEach((course, index) => {
-                const card = createCard(template, course, orientacion[index], turnos[index]);
-                container.innerHTML += card;
-            });
-        } else {
-            cursos.filter(course => course.year === year).forEach((course, index) => {
-                const card = createCard(template, course, orientacion[index], turnos[index]);
-                container.innerHTML += card;
-            });
+        
+        let filteredCourses = cursos;
+        
+        if (year && year !== 'todos') {
+            filteredCourses = cursos.filter(course => course.year === year);
         }
+        
+        filteredCourses.forEach((course, index) => {
+            const card = createCard(template, course, orientacion[index], turnos[index]);
+            container.innerHTML += card;
+        });
     }
 
-    generateCards('todos');
+    generateCards('todos'); 
 
     function createCard(template, course, orientacion, turnos) {
         return template
-        .replace('${course}', course)
-        .replace('${orientacion}', orientacion)
-        .replace('${turno}', turnos);
-
+            .replace('${course}', course)
+            .replace('${orientacion}', orientacion)
+            .replace('${turno}', turnos);
     }
 
     function filterCards() {
         const searchTerm = searchInput.value.toLowerCase();
         const cards = document.querySelectorAll('.card-container');
-
+        
         cards.forEach(card => {
             const title = card.querySelector('.titulo-tarjeta').innerText.toLowerCase();
             if (title.includes(searchTerm)) {
@@ -131,14 +131,21 @@
     }
 
     function selectOption(option) {
-        const year = option === '1er año' ? '1ro' :
-                     option === '2do año' ? '2do' :
-                     option === '3er año' ? '3ro' :
-                     option === '4to año' ? '4to' :
-                     option === '5to año' ? '5to' :
-                     option === '6to año' ? '6to' :
-                     option === '7mo año' ? '7mo' :
-                     option === 'Todos' ? 'todos' : null;
+        const yearMap = {
+            '1er año': '1ro',
+            '2do año': '2do',
+            '3er año': '3ro',
+            '4to año': '4to',
+            '5to año': '5to',
+            '6to año': '6to',
+            '7mo año': '7mo',
+            'Ciclo Basico': 'ciclo básico',
+            'Informatica': 'informatica',
+            'Electromecanica': 'electromecanica',
+            'Todos': 'todos'
+        };
+
+        const year = yearMap[option] || null;
 
         document.getElementById('selected-option').innerText = option;
         generateCards(year);
@@ -146,13 +153,6 @@
     }
 
     searchInput.addEventListener('input', filterCards);
-
-    const dropdownCursos = document.getElementById('dropdown');
-    const allOption = document.createElement('option');
-    allOption.text = 'Todos';
-    allOption.value = 'Todos';
-    dropdownCursos.add(allOption);
-
 </script>
 
 {% endblock %}
