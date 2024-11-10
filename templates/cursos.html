@@ -78,6 +78,7 @@
 <script>
     //Convierte los cursos en un arreglo o lista de strings desde JSON
     const cursos = JSON.parse('{{ cursos | tojson }}');
+    const orientacion = JSON.parse('{{ orientacion | tojson }}');
 
     const container = document.getElementById('cursoContainer');
     const searchInput = document.getElementById('search-input');
