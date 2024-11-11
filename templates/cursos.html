@@ -118,14 +118,18 @@
 
     function filterCards() {
         const searchTerm = searchInput.value.toLowerCase();
-        const cards = document.querySelectorAll('.card-container');
         
-        cards.forEach(card => {
-            const title = card.querySelector('.titulo-tarjeta').innerText.toLowerCase();
+        // Solo seleccionar las tarjetas generadas en el contenedor
+        const cardTitles = container.querySelectorAll('.titulo-tarjeta'); 
+
+        cardTitles.forEach((titleElement) => {
+            const cardContainer = titleElement.closest('.card-container');
+            const title = titleElement.innerText.toLowerCase();
+
             if (title.includes(searchTerm)) {
-                card.style.display = ''; 
+                cardContainer.style.display = ''; // Mostrar tarjeta si coincide con búsqueda
             } else {
-                card.style.display = 'none'; 
+                cardContainer.style.display = 'none'; // Ocultar tarjeta si no coincide
             }
         });
     }
@@ -152,7 +156,9 @@
         filterCards();
     }
 
-    searchInput.addEventListener('input', filterCards);
+    document.addEventListener('DOMContentLoaded', function() {
+            searchInput.addEventListener('input', filterCards);
+    });
 </script>
 
 {% endblock %}
