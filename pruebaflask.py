@@ -270,6 +270,7 @@ def nuevocursologica():
     nombre_curso = request.form.get("nombre-curso")
     orientation_options = request.form.get("orientation-options")
     turno_options = request.form.get("turno-options")
+    
     # Crear el curso en la base de datos
     base.create_course(nombre_curso, turno_options, True, orientation_options)
 

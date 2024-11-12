@@ -46,10 +46,6 @@
             <div onclick="selectOption('5to año')" style="padding: 10px 16px; cursor: pointer;">5to año</div>
             <div onclick="selectOption('6to año')" style="padding: 10px 16px; cursor: pointer;">6to año</div>
             <div onclick="selectOption('7mo año')" style="padding: 10px 16px; cursor: pointer;">7mo año</div>
-            <div onclick="selectOption('Primer ciclo')" style="padding: 10px 16px; cursor: pointer;">Ciclo Basico</div>
-            <div onclick="selectOption('Informatica')" style="padding: 10px 16px; cursor: pointer;">Informatica</div>
-            <div onclick="selectOption('Electromecanica')" style="padding: 10px 16px; cursor: pointer;">Electromecanica</div>
-            <div onclick="selectOption('Todos')" style="padding: 10px 16px; cursor: pointer;">todos</div>
             </div>
         </div>
       
@@ -101,6 +97,7 @@
             filteredCourses = cursos.filter(course => course.year === year);
         }
         
+        // creacion de cartas
         filteredCourses.forEach((course, index) => {
             const card = createCard(template, course, orientacion[index], turnos[index]);
             container.innerHTML += card;
@@ -118,7 +115,26 @@
 
     function filterCards() {
         const searchTerm = searchInput.value.toLowerCase();
-        
+
+        // Solo seleccionar las tarjetas generadas en el contenedor
+        const cardTitles = container.querySelectorAll('.titulo-tarjeta'); 
+
+        cardTitles.forEach((titleElement) => {
+            const cardContainer = titleElement.closest('.card-container');
+            const title = titleElement.innerText.toLowerCase();
+
+            if (title.includes(searchTerm)) {
+                cardContainer.style.display = ''; // Mostrar tarjeta si coincide con búsqueda
+            } else {
+                cardContainer.style.display = 'none'; // Ocultar tarjeta si no coincide
+            }
+        });
+    }
+
+    // filtrar por año
+    function filterCardsAge(search) {
+        searchTerm = search.toLowerCase();
+
         // Solo seleccionar las tarjetas generadas en el contenedor
         const cardTitles = container.querySelectorAll('.titulo-tarjeta'); 
 
@@ -143,22 +159,21 @@
             '5to año': '5to',
             '6to año': '6to',
             '7mo año': '7mo',
-            'Ciclo Basico': 'ciclo básico',
-            'Informatica': 'informatica',
-            'Electromecanica': 'electromecanica',
-            'Todos': 'todos'
         };
 
         const year = yearMap[option] || null;
 
+        console.log('el año es:',year);
+
         document.getElementById('selected-option').innerText = option;
-        generateCards(year);
-        filterCards();
+        filterCardsAge(year);
+        // generateCards(year);
     }
 
     document.addEventListener('DOMContentLoaded', function() {
             searchInput.addEventListener('input', filterCards);
     });
+
 </script>
 
 {% endblock %}
