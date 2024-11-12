@@ -280,6 +280,10 @@ def nuevocursologica():
 @app.route('/get-carta-template')
 def get_carta_template():
     return render_template('/components/carta.html')
+
+@app.route("/Listas")
+def Listas():
+    return render_template("Listas.html")
     
 if __name__ == '__main__':
     app.run(debug=True)
