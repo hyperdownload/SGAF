@@ -284,6 +284,26 @@ def get_carta_template():
 @app.route("/Listas")
 def Listas():
     return render_template("Listas.html")
+
+@app.route("/listas-logica", methods=["POST"])
+def listaslogica():
+    nombre_curso = request.form.get("nombre-curso")
+    orientation_options = request.form.get("orientation-options")
+    turno_options = request.form.get("turno-options")
     
+    return redirect(url_for('Lista', nombre_curso=nombre_curso, 
+                            orientation_options=orientation_options, 
+                            turno_options=turno_options))
+
+@app.route("/Lista")
+def Lista():
+    nombre_curso = request.args.get('nombre_curso')
+    orientation_options = request.args.get('orientation_options')
+    turno_options = request.args.get('turno_options')
+
+    cursos = db.session.query(Curso).filter_by(nombre=nombre_curso, orientacion=orientation_options, turno=turno_options).all()
+
+    return render_template("Lista.html", cursos=cursos, orientation_options=orientation_options, turno_options=turno_options)
+
 if __name__ == '__main__':
     app.run(debug=True)

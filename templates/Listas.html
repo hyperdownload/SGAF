@@ -1,40 +1,19 @@
 {% extends 'plantilla.html' %}
-{% block title %}Nuevo curso{% endblock %}
-
-{% block headerinf %}
-{% endblock %}
-<!-- ----------------------------------------------------->
+{% block title %}Listas{% endblock %}
+<link rel="stylesheet" href="static/plantilla.css">
 {% block maincontent %}
-    <div class="title-main">
-        <h2>Crear nuevo curso</h2>
-        <p>ciclo lectivo 2024</p>
-    </div>
-    <div class="container-inputs">
-        <form action="{{ url_for('nuevocursologica') }}" method="post">
-            <div style="display: flex;width: 100%;">
-                    <div class="name-and-input" style="padding: 0 15px; flex: 0 0 33.3333333333%; max-width: 33.33333%;">
-                        <p class="items-name">Nombre del curso (ejemplo: curso 1ro 1ra)</p>
-                        <input type="text" class="input-style" name="nombre-curso" autocomplete="off" required>
-                    </div>                  
-                    <div class="name-and-input" style="padding: 0 15px; flex: 0 0 33.3333333333%; max-width: 33.33333%;">
-                        <p class="items-name">Orientacion</p>
-                        <select  class="input-style" id="orientation-options" name="orientation-options" required>
-                            <option class="option-style" value="Primer ciclo">Primer ciclo</option>
-                            <option class="option-style" value="Informatica">Informatica</option>
-                            <option class="option-style" value="Electromecanica">Electromecanica</option>
-                        </select>
-                    </div>  
-                    <div class="name-and-input" style="padding: 0 15px; flex: 0 0 33.3333333333%; max-width: 33.33333%;">
-                        <p class="items-name">Turno</p>
-                        <select  class="input-style" id="turno" name="turno-options" required>
-                            <option class="option-style" value="Mañana">Mañana</option>
-                            <option class="option-style" value="Tarde">Tarde</option>
-                            <option class="option-style" value="Noche">Noche</option>
-                        </select>
-                    </div>
-            </div>
-            <button class="button2" style="padding: 0; height: 50px; width: 100%; margin: 15px 15px 0;" type="submit">Crear curso</button>
-        </form>
-    </div>
-   <!-- <h1></h1> -->
+<div class="title-main">
+    <h2>{{ cursos[0].nombre if cursos else "No se encontró el curso solicitado" }}</h2>
+    <p>Ciclo lectivo 2024 {{ orientation_options }} {{ turno_options }}</p> 
+</div>
+
+{% if cursos %}
+    {% for curso in cursos %}
+        <div class="curso-item">
+            <p>{{ curso.nombre }} - {{ curso.orientacion }} - {{ curso.turno }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No se encontraron cursos que coincidan con los parámetros proporcionados.</p>
+{% endif %}
 {% endblock %}
