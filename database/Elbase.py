@@ -260,6 +260,16 @@ def create_database(path: str) -> None:
         FechaCreacion DATETIME NOT NULL
     );
     ''')
+    
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS AlumnoCurso (
+        IdAlumno INTEGER NOT NULL,
+        IdCurso INTEGER NOT NULL,
+        PRIMARY KEY (IdAlumno, IdCurso),
+        FOREIGN KEY (IdAlumno) REFERENCES Alumno(IdAlumno) ON DELETE CASCADE,
+        FOREIGN KEY (IdCurso) REFERENCES Curso(IdCurso) ON DELETE CASCADE
+    );
+''')
 
 
     cursor.execute('''
@@ -289,6 +299,40 @@ def create_database(path: str) -> None:
 
     conn.commit()
     conn.close()
+
+def asign_course(student_id:int, course_id:int):
+    try:
+        conn = sqlite3.connect(database_path)
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO AlumnoCurso (IdAlumno, IdCurso) VALUES (?,?)', (student_id, course_id))
+        conn.commit()
+        conn.close()
+        return "Curso asignado correctamente."
+    except sqlite3.Error as e:
+        return f"Error: {e}"
+
+def obtain_course_details(course_id:int):
+    try:
+        conn = sqlite3.connect(database_path)
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Curso WHERE IdCurso =?', (course_id,))
+        course_data = cursor.fetchone()
+        conn.close()
+        return "Error: el curso no existe." if course_data is None else course_data
+    except sqlite3.Error as e:
+        conn.close()
+        return f"Error: {e}"
+    
+def delete_student_of_course(student_id:int, course_id:int):
+    try:
+        conn = sqlite3.connect(database_path)
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM AlumnoCurso WHERE IdCurso=? AND IdAlumno=?',(course_id, student_id))
+        conn.commit()
+        conn.close()
+        return "Alumno eliminado."
+    except sqlite3.Error as e:
+        return f"Error: {e}"
 
 # Funciones de registro de usuario
 def register_user(user_name: str, password: str, email: str, rango: str) -> str:
