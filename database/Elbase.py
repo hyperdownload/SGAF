@@ -301,6 +301,20 @@ def create_database(path: str) -> None:
     conn.close()
 
 def asign_course(student_id:int, course_id:int):
+    """Asigna un curso a un estudiante en la base de datos.
+
+    Esta función vincula a un estudiante con un curso específico al insertar un registro en la tabla AlumnoCurso. Maneja la conexión a la base de datos y gestiona cualquier error que pueda ocurrir durante la operación.
+
+    Args:
+        student_id (int): El identificador único del estudiante.
+        course_id (int): El identificador único del curso.
+
+    Returns:
+        str: Un mensaje que indica el éxito o fracaso de la asignación del curso.
+
+    Raises:
+        sqlite3.Error: Si hay un error durante la operación de la base de datos.
+    """
     try:
         conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
@@ -312,6 +326,19 @@ def asign_course(student_id:int, course_id:int):
         return f"Error: {e}"
 
 def obtain_course_details(course_id:int):
+    """Recupera los detalles de un curso específico de la base de datos.
+
+    Esta función consulta la tabla Curso para obtener información sobre un curso identificado por su ID único. Devuelve los detalles del curso si se encuentra, o un mensaje de error si el curso no existe.
+
+    Args:
+        course_id (int): El identificador único del curso.
+
+    Returns:
+        tuple o str: Una tupla que contiene los detalles del curso o un mensaje de error si el curso no existe.
+
+    Raises:
+        sqlite3.Error: Si hay un error durante la operación de la base de datos.
+    """
     try:
         conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
@@ -324,6 +351,20 @@ def obtain_course_details(course_id:int):
         return f"Error: {e}"
     
 def delete_student_of_course(student_id:int, course_id:int):
+    """Elimina a un estudiante de un curso específico en la base de datos.
+
+    Esta función borra la asociación entre un estudiante y un curso de la tabla AlumnoCurso. Asegura que el estudiante especificado sea eliminado del curso, gestionando cualquier error potencial durante la operación.
+
+    Args:
+        student_id (int): El identificador único del estudiante.
+        course_id (int): El identificador único del curso.
+
+    Returns:
+        str: Un mensaje que indica el resultado de la operación de eliminación.
+
+    Raises:
+        sqlite3.Error: Si hay un error durante la operación de la base de datos.
+    """
     try:
         conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
