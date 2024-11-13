@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
 import database.Elbase as base
+from flask import jsonify
+import json
 import hashlib
 
 app = Flask(__name__)
@@ -48,6 +50,8 @@ def dashboard():
     
 @app.route("/Nuevo-alumno")
 def new_student():
+    if 'user' not in session:
+        return redirect(url_for('login'))
     return render_template("new-student.html")
     
 
@@ -179,74 +183,80 @@ def formulario():
     }
     
     tutor_data = {
-        'tutor-vinculo': request.form.get('tutor-vinculo'),
-        'nombre-tutoe': request.form.get('nombre-tutoe'),
-        'apellido-tutor': request.form.get('apellido-tutor'),
-        'tutor-dni': request.form.get('tutor-dni'),#Estado dni
-        'dni-tutor': request.form.get('dni-tutor'),#dni
-        'cpi-tutor': request.form.get('cpi-tutor'),
+        'parentezco': request.form.get('tutor-vinculo'),
+        'nombre': request.form.get('nombre-tutoe'),
+        'apellido': request.form.get('apellido-tutor'),
+        'dni': request.form.get('dni-tutor'),#dni
+        'estado_dni': request.form.get('tutor-dni'),#Estado dni
+        'correo': request.form.get('correo-tutor'),
+        'telefono': request.form.get('telefono-tutor'),
+        'calle': request.form.get('calle-tutor'),
+        'numero_calle': request.form.get('numero-calle-tutor'),
+        'piso': request.form.get('piso-domicilio-tutor'),
+        'torre': request.form.get('torre-domicilio-tutor'),
+        'depto': request.form.get('depto-domicilio-tutor'),
+        'entre_calle_1': request.form.get('entre-calle-tutor'),
+        'entre_calle_2': request.form.get('y-calle-tutor'),
+        'provincia': request.form.get('provincia-residencia-tutor'),
+        'distrito': request.form.get('distrito-residencia-tutor'),
+        'localidad': request.form.get('localidad-residencia-tutor'),
+        'nivel_educacion_maximo': request.form.get('nivel-cursada'),
+        'completado': request.form.get('nivel-cursada-state'),
+        'actividad': request.form.get('con-actividad'),
+        'cpi': request.form.get('cpi-tutor'),
+        
+        # Faltan en la funcion. Sobra "telefono_celular" y "cuil" 
         'foreign_doc-tutor': request.form.get('foreign_doc-tutor'),
         'tutor-education': request.form.get('tutor-education'),
-        'nivel-cursada': request.form.get('nivel-cursada'),
-        'nivel-cursada-state': request.form.get('nivel-cursada-state'),
-        'con-actividad': request.form.get('con-actividad'),
-        'calle-tutor': request.form.get('calle-tutor'),
-        'entre-calle-tutor': request.form.get('entre-calle-tutor'),
-        'y-calle-tutor': request.form.get('y-calle-tutor'),
-        'provincia-residencia-tutor': request.form.get('provincia-residencia-tutor'),
-        'distrito-residencia-tutor': request.form.get('distrito-residencia-tutor'),
-        'telefono-tutor': request.form.get('telefono-tutor'),
-
-        'numero-calle-tutor': request.form.get('numero-calle-tutor'),
-        'piso-domicilio-tutor': request.form.get('piso-domicilio-tutor'),
-        'torre-domicilio-tutor': request.form.get('torre-domicilio-tutor'),
-        'depto-domicilio-tutor': request.form.get('depto-domicilio-tutor'),
         'otrodato-domicilio-tutor': request.form.get('otrodato-domicilio-tutor'),
-        'localidad-residencia-tutor': request.form.get('localidad-residencia-tutor'),
-        'correo-tutor': request.form.get('correo-tutor'),
     }
     
     inscription_data = {
-        'type_registration': request.form.get('type_registration'),
-        'orientation': request.form.get('orientation'),
-        'year_registration_fields': request.form.get('year_registration_fields'),
-        'request_shift_fields': request.form.get('request_shift_fields'),
-        'request_workday_fields': request.form.get('request_workday_fields'),
-        'registration_conditiony_fields': request.form.get('registration_conditiony_fields'),
-        'proyecto-inclusion': request.form.get('proyecto-inclusion'),
-        'proyecto-inclusion-true': request.form.get('proyecto-inclusion-true'),
-        'acompañante-externo': request.form.get('acompañante-externo'),
-        'complementary_institution_cec': request.form.get('complementary_institution_cec'),
-        'complementary_institution_cef': request.form.get('complementary_institution_cef'),
-        'complementary_institution_eee': request.form.get('complementary_institution_eee'),
+        "id_alumno": 1,
+        'tipo_inscripcion': request.form.get('type_registration'),
+        'orientacion': request.form.get('orientation'),
+        'anio': request.form.get('year_registration_fields'),
+        'turno': request.form.get('request_shift_fields'),
+        'jornada': request.form.get('request_workday_fields'),
+        'condicion_inscripcion': request.form.get('registration_conditiony_fields'),
+        'inclusivo': request.form.get('proyecto-inclusion'),
+        'asistente_externo': request.form.get('acompañante-externo'),
+        'escuela_contraturno': request.form.get('proyecto-inclusion-true'),
+        'escuela_contraturno_cec': request.form.get('complementary_institution_cec'),
+        'escuela_contraturno_cef': request.form.get('complementary_institution_cef'),
+        'escuela_contraturno_eee': request.form.get('complementary_institution_eee'),
         'alimento-escolar': request.form.get('alimento-escolar'),  
     }
 
     legal_data = {
-        'last_name_legals': request.form.get('last_name_legals'),
-        'doc_type_legals': request.form.get('doc_type_legals'),
-        'doc_number_legals': request.form.get('doc_number_legals'),
-        'name_legals': request.form.get('name_legals'),
-        'restriction_legal': request.form.get('restriction_legal'),
+        "id_alumno": 1,
+        'apellido_legal': request.form.get('last_name_legals'),
+        'tipo_documento_legal': request.form.get('doc_type_legals'),
+        'numero_documento_legal': request.form.get('doc_number_legals'),
+        'nombre_legal': request.form.get('name_legals'),
+        'restriccion': request.form.get('restriction_legal'),
 
-        'n_legajo_legals': request.form.get('n_legajo_legals'),
-        'n_matriz_legal': request.form.get('n_matriz_legal'),
-        'n_folio_legal': request.form.get('n_folio_legal'),
+        'num_legajo': request.form.get('n_legajo_legals'),
+        'num_matriz': request.form.get('n_matriz_legal'),
+        'num_folio': request.form.get('n_folio_legal'),
 
-        'person_in_charge': request.form.get('person_in_charge'),
-        'registration_date': request.form.get('registration_date'),
-        'clarification': request.form.get('clarification'),
-        'director_signature': request.form.get('director_signature'),
+        'firma_responsable': request.form.get('person_in_charge'),
+        'fecha_inscripcion': request.form.get('registration_date'),
+        'aclaracion': request.form.get('clarification'),
+        'firma_directivo': request.form.get('director_signature'),
     }
     
     print(student_data,"\n",tutor_data,"\n",inscription_data,"\n",legal_data)
-    return "Datos recibidos", 204
 
-from flask import jsonify
-import json
+    # base.register_student_and_tutor(student_data, tutor_data)
+    base.register_legal_data(legal_data)
+    base.register_inscription(inscription_data)
+    return "Datos recibidos", 204
 
 @app.route("/cursos")
 def curso():
+    if 'user' not in session:
+        return redirect(url_for('login'))
     cursos_data = base.get_total_cursos()
     nom = []
     orient = [] 
@@ -262,6 +272,8 @@ def curso():
 
 @app.route("/nuevoCurso")
 def nuevoCurso():
+    if 'user' not in session:
+        return redirect(url_for('login'))
     return render_template("nuevo-cursos.html")
 
 @app.route("/Nuevo-curso-logica" , methods=['POST']) 
@@ -270,40 +282,18 @@ def nuevocursologica():
     nombre_curso = request.form.get("nombre-curso")
     orientation_options = request.form.get("orientation-options")
     turno_options = request.form.get("turno-options")
-    
     # Crear el curso en la base de datos
     base.create_course(nombre_curso, turno_options, True, orientation_options)
 
-    # Redirigir a la página de cursos después de crear el curso
     return redirect(url_for('curso'))
 
 @app.route('/get-carta-template')
 def get_carta_template():
     return render_template('/components/carta.html')
 
-@app.route("/Listas")
-def Listas():
-    return render_template("Listas.html")
-
-@app.route("/listas-logica", methods=["POST"])
-def listaslogica():
-    nombre_curso = request.form.get("nombre-curso")
-    orientation_options = request.form.get("orientation-options")
-    turno_options = request.form.get("turno-options")
-    
-    return redirect(url_for('Lista', nombre_curso=nombre_curso, 
-                            orientation_options=orientation_options, 
-                            turno_options=turno_options))
-
-@app.route("/Lista")
-def Lista():
-    nombre_curso = request.args.get('nombre_curso')
-    orientation_options = request.args.get('orientation_options')
-    turno_options = request.args.get('turno_options')
-
-    cursos = db.session.query(Curso).filter_by(nombre=nombre_curso, orientacion=orientation_options, turno=turno_options).all()
-
-    return render_template("Lista.html", cursos=cursos, orientation_options=orientation_options, turno_options=turno_options)
+@app.route("/cursos/")
+def cursos_lista():
+    return render_template("plantillaListadoCursos.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
