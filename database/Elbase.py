@@ -269,7 +269,7 @@ def create_database(path: str) -> None:
         FOREIGN KEY (IdAlumno) REFERENCES Alumno(IdAlumno) ON DELETE CASCADE,
         FOREIGN KEY (IdCurso) REFERENCES Curso(IdCurso) ON DELETE CASCADE
     );
-''')
+    ''')
 
 
     cursor.execute('''
@@ -300,10 +300,11 @@ def create_database(path: str) -> None:
     conn.commit()
     conn.close()
 
-def asign_course(student_id:int, course_id:int):
+def asign_course(student_id: int, course_id: int):
     """Asigna un curso a un estudiante en la base de datos.
 
-    Esta función vincula a un estudiante con un curso específico al insertar un registro en la tabla AlumnoCurso. Maneja la conexión a la base de datos y gestiona cualquier error que pueda ocurrir durante la operación.
+    Esta función verifica si el curso y el alumno existen, y si el curso tiene menos de 30 alumnos
+    antes de vincular a un estudiante con un curso específico.
 
     Args:
         student_id (int): El identificador único del estudiante.
@@ -318,12 +319,75 @@ def asign_course(student_id:int, course_id:int):
     try:
         conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
+
+        cursor.execute('SELECT * FROM Curso WHERE IdCurso = ?', (course_id,))
+        if cursor.fetchone() is None:
+            conn.close()
+            return "Error: El curso especificado no existe."
+
+        cursor.execute('SELECT * FROM Alumno WHERE IdAlumno = ?', (student_id,))
+        if cursor.fetchone() is None:
+            conn.close()
+            return "Error: El alumno especificado no existe."
+
+        cursor.execute('SELECT COUNT(*) FROM AlumnoCurso WHERE IdCurso = ?', (course_id,))
+        alumnos_en_curso = cursor.fetchone()[0]
+        if alumnos_en_curso >= 30:
+            conn.close()
+            return "Error: El curso ha alcanzado el límite máximo de 30 alumnos."
+
+        cursor.execute('SELECT * FROM AlumnoCurso WHERE IdAlumno = ? AND IdCurso = ?', (student_id, course_id))
+        if cursor.fetchone() is not None:
+            conn.close()
+            return "Error: El alumno ya está asignado a este curso."
+
         cursor.execute('INSERT INTO AlumnoCurso (IdAlumno, IdCurso) VALUES (?,?)', (student_id, course_id))
         conn.commit()
         conn.close()
         return "Curso asignado correctamente."
     except sqlite3.Error as e:
+        if conn:
+            conn.close()
         return f"Error: {e}"
+
+def get_course_with_least_students(course_ids: list) -> tuple:
+    """
+    Cuenta el número de alumnos en cada curso especificado y devuelve el ID del curso con menos alumnos.
+
+    Args:
+        course_ids (list): Una lista de IDs de cursos a verificar.
+
+    Returns:
+        tuple: Un tuple conteniendo el ID del curso con menos alumnos y el número de alumnos en ese curso.
+               Si hay un error o no se encuentran cursos, devuelve (None, None).
+
+    Raises:
+        sqlite3.Error: Si hay un error durante la operación de la base de datos.
+    """
+    try:
+        conn = sqlite3.connect(database_path)
+        cursor = conn.cursor()
+
+        course_ids_str = ','.join(map(str, course_ids))
+
+        query = f"""
+        SELECT IdCurso, COUNT(IdAlumno) as NumAlumnos
+        FROM AlumnoCurso
+        WHERE IdCurso IN ({course_ids_str})
+        GROUP BY IdCurso
+        ORDER BY NumAlumnos ASC
+        LIMIT 1
+        """
+
+        cursor.execute(query)
+        result = cursor.fetchone()
+
+        conn.close()
+
+        return result
+    except sqlite3.Error as e:
+        print(f"Error en la base de datos: {e}")
+        return (None, None)
 
 def obtain_course_details(course_id:int):
     """Recupera los detalles de un curso específico de la base de datos.
