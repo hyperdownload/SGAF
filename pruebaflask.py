@@ -60,12 +60,12 @@ def formulario():
     # data = request.form #con esta linea obtiene todos los datos
 
     student_data = {
-        'nombre-alumno': request.form.get('nombre-alumno'),
-        'apellido-alumno': request.form.get('apellido-alumno'),
-        'dni-student': request.form.get('dni-student'),
-        'dni-student-state': request.form.get('dni-student-state'),
-        'cuil-student': request.form.get('cuil-student'),
-        'fechaNacimiento': request.form.get('fechaNacimiento'),
+        'nombre': request.form.get('nombre-alumno'),
+        'apellido': request.form.get('apellido-alumno'),
+        'dni': request.form.get('dni-student'),
+        'estado_dni': request.form.get('dni-student-state'),
+        'cuil': request.form.get('cuil-student'),
+        'fecha_nacimiento': request.form.get('fechaNacimiento'),
         'gender': request.form.get('gender'),
         'nacionalidad': request.form.get('lugar-nacimiento-check'),
         'provincia-nacimiento-alumno-check': request.form.get('provincia-nacimiento-alumno-check'), #Bs As o Otra
@@ -95,7 +95,7 @@ def formulario():
         'aboriginal-descendant': request.form.get('aboriginal-descendant'),
         'other-language': request.form.get('other-language'),
         'language': request.form.get('language'),
-        'transport': request.form.get('transport'),
+        'transporte': request.form.get('transport'),
 
         'siblings': request.form.get('siblings'),
         'percibe-auh': request.form.get('percibe-auh'),
@@ -205,7 +205,6 @@ def formulario():
         'actividad': request.form.get('con-actividad'),
         'cpi': request.form.get('cpi-tutor'),
         
-        # Faltan en la funcion. Sobra "telefono_celular" y "cuil" 
         'foreign_doc-tutor': request.form.get('foreign_doc-tutor'),
         'tutor-education': request.form.get('tutor-education'),
         'otrodato-domicilio-tutor': request.form.get('otrodato-domicilio-tutor'),
@@ -245,10 +244,8 @@ def formulario():
         'aclaracion': request.form.get('clarification'),
         'firma_directivo': request.form.get('director_signature'),
     }
-    
-    print(student_data,"\n",tutor_data,"\n",inscription_data,"\n",legal_data)
-
-    # base.register_student_and_tutor(student_data, tutor_data)
+    print(len(student_data))
+    print(base.register_student_and_tutor(student_data, tutor_data))
     base.register_legal_data(legal_data)
     base.register_inscription(inscription_data)
     return "Datos recibidos", 204

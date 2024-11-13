@@ -1,153 +1,252 @@
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import filedialog, messagebox, ttk
 import sqlite3
+import re
 
 class BDViewerApp:
+    MAX_ROWS_DISPLAY = 500 
+    MAX_COLUMNS_DISPLAY = 50 
+
     def __init__(self, root):
         self.root = root
         self.root.title("BD Viewer")
-
-        # Frame para el archivo y la consulta
-        frame_top = tk.Frame(root)
-        frame_top.pack(fill=tk.X, padx=10, pady=10)
-
-        # Botón para cargar archivo .bd
-        self.btn_load = tk.Button(frame_top, text="Cargar archivo .bd", command=self.load_bd_file)
-        self.btn_load.pack(side=tk.LEFT)
-
-        # Campo para mostrar el nombre del archivo cargado
-        self.lbl_filename = tk.Label(frame_top, text="Archivo no cargado.")
-        self.lbl_filename.pack(side=tk.LEFT, padx=10)
-
-        # Campo para consulta SQL
-        self.query_entry = tk.Entry(frame_top, width=50)
-        self.query_entry.pack(side=tk.LEFT, padx=10)
-
-        # Botón para ejecutar la consulta
-        self.btn_query = tk.Button(frame_top, text="Ejecutar Query", command=self.run_query)
-        self.btn_query.pack(side=tk.LEFT)
-
-        # Frame para la lista de tablas
-        frame_left = tk.Frame(root)
-        frame_left.pack(side=tk.LEFT, fill=tk.Y, padx=10, pady=10)
-
-        self.table_listbox = tk.Listbox(frame_left)
-        self.table_listbox.pack(fill=tk.Y, expand=True)
-        self.table_listbox.bind("<<ListboxSelect>>", self.display_table_content)
-
-        # Frame para la visualización de los elementos de la tabla seleccionada
-        frame_right = tk.Frame(root)
-        frame_right.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
-
-        # Crea el Canvas y Scrollbars
-        self.canvas = tk.Canvas(frame_right)
-        self.scroll_x = tk.Scrollbar(frame_right, orient="horizontal", command=self.canvas.xview)
-        self.scroll_y = tk.Scrollbar(frame_right, orient="vertical", command=self.canvas.yview)
+        self.root.geometry("1000x600")
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("dark-blue")
         
-        # Crea el Frame dentro del Canvas para contener el Treeview
-        self.tree_frame = tk.Frame(self.canvas)
-        self.tree_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-
-        self.tree = ttk.Treeview(self.tree_frame, show='headings')
-        self.tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-
-        self.canvas.create_window((0, 0), window=self.tree_frame, anchor="nw")
-        self.canvas.configure(xscrollcommand=self.scroll_x.set, yscrollcommand=self.scroll_y.set)
-        
-        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        self.scroll_x.pack(side=tk.BOTTOM, fill=tk.X)
-        self.scroll_y.pack(side=tk.RIGHT, fill=tk.Y)
-
         self.conn = None
+        self.sql_keywords = ["SELECT", "FROM", "WHERE", "INSERT INTO", "DELETE", "UPDATE", "JOIN", "ON", "ORDER BY", "GROUP BY"]
+        self._create_interface()
+        self.root.resizable(False, False)  
+        self.current_suggestion = ""
+        self.tables_and_columns = {}  # Cache para almacenar tablas y sus columnas
+        
+        self.content_tree.bind("<MouseWheel>", self.on_mouse_wheel)
+        self.content_tree.bind("<Control-MouseWheel>", self.on_horizontal_scroll)
+
+    def on_mouse_wheel(self, event):
+        """Desplazamiento vertical con la rueda del ratón"""
+        sensitivity_factor = 30  # Ajusta este valor para aumentar la sensibilidad del desplazamiento
+        if event.delta:
+            # Sensibilidad aumentada
+            scroll_units = int(-event.delta / 120) * sensitivity_factor
+            self.content_tree.yview_scroll(scroll_units, "units")
+        else:
+            scroll_units = sensitivity_factor if event.num == 5 else -sensitivity_factor
+            self.content_tree.yview_scroll(scroll_units, "units")
+
+    def on_horizontal_scroll(self, event):
+        """Desplazamiento horizontal con Control + rueda del ratón"""
+        sensitivity_factor = 3  # Ajusta este valor para aumentar la sensibilidad del desplazamiento
+        if event.delta:
+            # Sensibilidad aumentada
+            scroll_units = int(-event.delta / 120) * sensitivity_factor
+            self.content_tree.xview_scroll(scroll_units, "units")
+        else:
+            scroll_units = sensitivity_factor if event.num == 5 else -sensitivity_factor
+            self.content_tree.xview_scroll(scroll_units, "units")
+
+    def _create_interface(self):
+        frame_top = ctk.CTkFrame(self.root)
+        frame_top.pack(fill="x", padx=10, pady=10)
+
+        ctk.CTkLabel(frame_top, text="Gestión de Archivo y Consultas").pack()
+
+        self.btn_load = ctk.CTkButton(frame_top, text="Cargar Archivo .db", command=self.load_bd_file)
+        self.btn_load.pack(side="left", padx=5, pady=5)
+
+        self.lbl_filename = ctk.CTkLabel(frame_top, text="Archivo no cargado.")
+        self.lbl_filename.pack(side="left", padx=10, pady=5)
+        
+        self.query_entry = ctk.CTkEntry(frame_top, width=300)
+        self.query_entry.pack(side="left", padx=10, pady=5)
+        self.query_entry.bind("<KeyRelease>", self.suggest_autocomplete)
+        self.query_entry.bind("<Tab>", self.apply_suggestion)
+        
+        self.suggestion_label = ctk.CTkLabel(frame_top, text="", text_color="grey", font=("Arial", 10))
+        self.suggestion_label.pack(side="left", padx=5)
+
+        self.btn_query = ctk.CTkButton(frame_top, text="Ejecutar Consulta", command=self.run_query)
+        self.btn_query.pack(side="left", padx=5, pady=5)
+
+        frame_main = ctk.CTkFrame(self.root)
+        frame_main.pack(fill="both", expand=True, padx=10, pady=10)
+
+        frame_left = ctk.CTkFrame(frame_main)
+        frame_left.pack(side="left", fill="y", padx=10, pady=10)
+
+        ctk.CTkLabel(frame_left, text="Tablas en la Base de Datos").pack()
+
+        self.table_tree = ttk.Treeview(frame_left, show="tree", height=15)
+        self.table_tree.pack(fill="y", expand=True)
+        self.table_tree.bind("<<TreeviewSelect>>", self.display_table_content)
+        
+        frame_right = ctk.CTkFrame(frame_main)
+        frame_right.pack(side="right", fill="both", expand=True, padx=10, pady=10)
+        
+        ctk.CTkLabel(frame_right, text="Contenido de la Tabla / Resultados de la Consulta").pack()
+
+        self.content_tree = ttk.Treeview(frame_right, show="headings", height=20)
+        self.content_tree.pack(side="left", fill="both", expand=True)
+
+        # Configurar scrollbars para el Treeview de contenido
+        vsb = ttk.Scrollbar(frame_right, orient="vertical", command=self.content_tree.yview)
+        vsb.pack(side="right", fill="y")
+        hsb = ttk.Scrollbar(self.content_tree, orient="horizontal", command=self.content_tree.xview)
+        hsb.pack(side="bottom", fill="x")
+        self.content_tree.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+
+        # Aplicar estilo a los Treeviews
+        self.style = ttk.Style()
+        self.style.theme_use("clam")  # Usar un tema compatible con modo oscuro
+        self.style.configure("Treeview", 
+                             background="#2a2d2e", 
+                             foreground="white", 
+                             rowheight=25, 
+                             fieldbackground="#2a2d2e")
+        self.style.map('Treeview', background=[('selected', '#22559b')])
+        
+        self.style.configure("Treeview.Heading",
+                             background="#565b5e",
+                             foreground="white",
+                             relief="flat")
+        self.style.map("Treeview.Heading",
+                       background=[('active', '#3484F0')])
 
     def load_bd_file(self):
         if file_path := filedialog.askopenfilename(
             filetypes=[("SQLite Database Files", "*.db")]
         ):
-            self.lbl_filename.config(text=file_path)
+            self.lbl_filename.configure(text=file_path)
             self.connect_to_db(file_path)
 
     def connect_to_db(self, file_path):
-        # Conecta a la base de datos SQLite
         try:
             if self.conn:
                 self.conn.close()
             self.conn = sqlite3.connect(file_path)
+            self.cache_tables_and_columns()
             self.show_tables()
         except sqlite3.Error as e:
-            messagebox.showerror("Error", f"Failed to connect to the database: {e}")
+            messagebox.showerror("Error", f"No se pudo conectar a la base de datos: {e}")
 
-    def show_tables(self):
-        # Limpias la lista de tablas
-        self.table_listbox.delete(0, tk.END)
-
-        # Obtiene la lista de tablas en la base de datos
+    def cache_tables_and_columns(self):
         cursor = self.conn.cursor()
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
         tables = cursor.fetchall()
-
-        # Añade las tablas a la lista
+        self.tables_and_columns = {}
         for table in tables:
-            self.table_listbox.insert(tk.END, table[0])
-
+            table_name = table[0]
+            cursor.execute(f"PRAGMA table_info({table_name});")
+            columns = [col[1] for col in cursor.fetchall()]
+            self.tables_and_columns[table_name] = columns
         cursor.close()
+
+    def show_tables(self):
+        for item in self.table_tree.get_children():
+            self.table_tree.delete(item)
+        for table in self.tables_and_columns:
+            self.table_tree.insert("", "end", text=table, values=(table,))
 
     def display_table_content(self, event):
-        # Obtiene el nombre de la tabla seleccionada
-        selected_table = self.table_listbox.get(self.table_listbox.curselection())
+        if selected_items := self.table_tree.selection():
+            selected_table = self.table_tree.item(selected_items[0])['text']
+            self._display_table_data(selected_table)
 
-        # Limpia el Treeview
-        self.tree.delete(*self.tree.get_children())
-
-        # Obtiener las columnas y los datos de la tabla seleccionada
+    def _display_table_data(self, table_name):
+        self._clear_content_tree()
         cursor = self.conn.cursor()
-        cursor.execute(f"PRAGMA table_info({selected_table});")
-        columns = [col[1] for col in cursor.fetchall()]
-
-        cursor.execute(f"SELECT * FROM {selected_table};")
+        columns = self.tables_and_columns.get(table_name, [])
+        cursor.execute(f"SELECT * FROM {table_name} LIMIT {self.MAX_ROWS_DISPLAY};")
         rows = cursor.fetchall()
-
-        # Configura las columnas en el Treeview
-        self.tree["columns"] = columns
-        self.tree.heading("#0", text="", anchor=tk.W)
+        
+        self.content_tree["columns"] = columns
         for col in columns:
-            self.tree.heading(col, text=col, anchor=tk.W)
-            self.tree.column(col, anchor=tk.W)
-
-        # Inserta los datos en el Treeview
+            self.content_tree.heading(col, text=col, anchor="w")
+            self.content_tree.column(col, anchor="w", width=120, minwidth=100)  # Ajusta ancho y minwidth según necesidad
+        
         for row in rows:
-            self.tree.insert("", "end", values=row)
-
+            self.content_tree.insert("", "end", values=row)
+        
         cursor.close()
 
-    def run_query(self):
-        # Ejecuta una consulta SQL
-        query = self.query_entry.get()
-        if not query.strip():
-            messagebox.showwarning("Warning", "Porfavor ingrese una Query")
-            return
 
+    def run_query(self):
+        query = self.query_entry.get().strip()
+        if not query:
+            messagebox.showwarning("Warning", "Por favor, ingrese una consulta.")
+            return
         try:
             cursor = self.conn.cursor()
             cursor.execute(query)
-            if query.strip().lower().startswith("select"):
-                results = cursor.fetchall()
-                self.show_query_results(results)
+            if query.lower().startswith("select"):
+                results = cursor.fetchmany(self.MAX_ROWS_DISPLAY)
+                self._show_query_results(results, cursor.description)
             else:
                 self.conn.commit()
-                messagebox.showinfo("Info", "Query ejecutada con exito")
+                messagebox.showinfo("Info", "Consulta ejecutada con éxito.")
                 self.show_tables()
             cursor.close()
         except sqlite3.Error as e:
-            messagebox.showerror("Error", f"Failed to execute query: {e}")
+            messagebox.showerror("Error", f"Error en la ejecución de la consulta: {e}")
 
-    def show_query_results(self, results):
-        # Muestra los resultados de la consulta en el Treeview
-        self.tree.delete(*self.tree.get_children())
-        for row in results:
-            self.tree.insert("", "end", values=row)
+    def _show_query_results(self, results, description):
+        self._clear_content_tree()
+        if results:
+            columns = [desc[0] for desc in description]
+            self.content_tree["columns"] = columns
+            for col in columns:
+                self.content_tree.heading(col, text=col, anchor="w")
+                self.content_tree.column(col, anchor="w", width=100)  # Ajustar el ancho según sea necesario
+            
+            for row in results:
+                self.content_tree.insert("", "end", values=row)
+
+    def _clear_content_tree(self):
+        for item in self.content_tree.get_children():
+            self.content_tree.delete(item)
+
+    def suggest_autocomplete(self, event):
+        current_text = self.query_entry.get().strip().upper()
+        if suggestions := self._generate_suggestions(current_text):
+            self.current_suggestion = suggestions[0]
+            self.suggestion_label.configure(text=self.current_suggestion)
+        else:
+            self.suggestion_label.configure(text="")
+
+    def apply_suggestion(self, event):
+        self.query_entry.delete(0, "end")
+        self.query_entry.insert(0, self.current_suggestion)
+        self.suggestion_label.configure(text="")
+        return "break"
+
+    def _generate_suggestions(self, current_text):
+        suggestions = []
+        last_keyword = self.get_last_keyword(current_text)
+
+        if last_keyword == "SELECT":
+            for table, columns in self.tables_and_columns.items():
+                suggestions.extend(columns)
+        elif last_keyword == "FROM":
+            suggestions.extend(self.tables_and_columns.keys())
+        else:
+            suggestions.extend([kw for kw in self.sql_keywords if kw.startswith(current_text)])
+        
+        return suggestions
+
+    def get_last_keyword(self, current_text):
+        words = re.split(r"\s+", current_text)
+        return next(
+            (word for word in reversed(words) if word in self.sql_keywords), ""
+        )
+
+    def on_closing(self):
+        if self.conn:
+            self.conn.close()
+        self.root.destroy()
 
 if __name__ == "__main__":
-    root = tk.Tk()
+    root = ctk.CTk()
     app = BDViewerApp(root)
+    root.protocol("WM_DELETE_WINDOW", app.on_closing)
     root.mainloop()
