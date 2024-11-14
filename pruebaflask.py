@@ -304,5 +304,11 @@ def cursos_grilla(curso_id,nombre_curso):
     # Pasa los datos del curso a la plantilla
     return render_template("plantillaListadoCursos.html", cursos=curso, orientacion=orientacion, turno=turno)
 
+def run_server():
+    app = Flask(__name__)
+    app.secret_key = 'supersecretkey'
+    
+    return app
+
 if __name__ == '__main__':
     app.run(debug=True)
