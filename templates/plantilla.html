@@ -43,7 +43,7 @@
     <div class="container">
         <header>
             <div style="display: flex; flex-direction: row; align-items: center;">
-                <button class="button-header" onclick="openSidebar()"><img src="static/img/menu.png"></button>
+                <button class="button-header" onclick="openSidebar()"><img src="{{ url_for('static', filename='/img/menu.png') }}"></button>
                 <!-- NAV -->
                 <nav style="display: flex;">
                     <a href="{{ url_for('dashboard') }}" class="item-nav">inicio</a> 

@@ -54,7 +54,12 @@ def new_student():
     if 'user' not in session:
         return redirect(url_for('login'))
     return render_template("new-student.html")
-    
+
+def obtener_primer_numero(cadena): # obtiene el primer numero de un string, lo cree para obtener el año de los cursos
+    for char in cadena:
+        if char.isdigit():
+            return int(char)
+    return None
 
 @app.route('/submit', methods=['POST'])
 def formulario():
@@ -244,10 +249,26 @@ def formulario():
         'aclaracion': request.form.get('clarification'),
         'firma_directivo': request.form.get('director_signature'),
     }
-    print(len(student_data))
-    print(base.register_student_and_tutor(student_data, tutor_data))
+    base.register_student_and_tutor(student_data, tutor_data)
     base.register_legal_data(legal_data)
     base.register_inscription(inscription_data)
+
+    orientacion= request.form.get('orientation')
+    turno= request.form.get('request_shift_fields')
+    anio = request.form.get('year_registration_fields')
+    
+    cursos_data = base.get_total_cursos()
+
+    for n in range(cursos_data):
+        curso = base.get_curso_property('Nombre', n + 1)
+        orientacion_bd = base.get_curso_property('orientacion', n + 1)
+        turno_bd = base.get_curso_property('Turno', n + 1)
+
+        if (int(anio) == obtener_primer_numero(curso) and orientacion.title() == orientacion_bd.title() and 
+        turno.title() == turno_bd.title()):
+            pass
+            #Lo di todo
+
     return "Datos recibidos", 204
 
 @app.route("/cursos")

@@ -868,7 +868,7 @@
                                 {% endfor %}
                             </div>
                             {% set request_for_shift = {
-                                'Año': { 'request_shift_fields': ['Mañana', 'Tarde', 'Vespertino', 'Noche'] },}            
+                                'Turno': { 'request_shift_fields': ['Mañana', 'Tarde', 'Vespertino', 'Noche'] },}            
                             %}
                             {% for title, options in request_for_shift.items() %}
                                 <p class="items-name">{{ title }}</p>

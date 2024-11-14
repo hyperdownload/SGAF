@@ -480,7 +480,7 @@ def register_student_and_tutor(student_data: dict, tutor_data: dict) -> str:
     try:
         cursor.execute('SELECT IdTutor FROM Tutor WHERE DNI = ?', (tutor_data["dni"],))
         tutor = cursor.fetchone()
-        print(student_data)
+
         if tutor:
             id_tutor = tutor[0]
         else:
