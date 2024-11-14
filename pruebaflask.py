@@ -292,5 +292,11 @@ def get_carta_template():
 def cursos_lista():
     return render_template("plantillaListadoCursos.html")
 
+def run_server():
+    app = Flask(__name__)
+    app.secret_key = 'supersecretkey'
+    
+    return app
+
 if __name__ == '__main__':
     app.run(debug=True)
