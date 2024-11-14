@@ -1,10 +1,13 @@
 {% extends 'plantilla.html' %}
-{% block title %}Cursos {% endblock %} <!--reemplazar por variables de cursos, quedaria por ejem: "Curso {{var}}" -->
+{% block title %}{{cursos}}{% endblock %}
+{% block headerinf %}
+<link rel="stylesheet" href="static/plantilla.css">
+{% endblock %}
 {% block maincontent %}
 <div class="title-main">
     <h2>{{cursos}}</h2>
     <p>Ciclo lectivo 2024</p> 
 </div>
-
+<a href="{{ url_for('curso') }}">Volver a Cursos</a>
 
 {% endblock %}

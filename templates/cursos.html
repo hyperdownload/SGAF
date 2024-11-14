@@ -22,8 +22,7 @@
             width: 100%; 
             font-size: 16px; 
             color: #333; 
-            background-color: #fff; 
-            border: 2px solid #d2d0d0; 
+            background-color: var(--background); 
             border-radius: 8px; 
             padding: 12px 16px; 
             cursor: pointer; 
@@ -99,18 +98,20 @@
         
         // creacion de cartas
         filteredCourses.forEach((course, index) => {
-            const card = createCard(template, course, orientacion[index], turnos[index]);
+            const card = createCard(template, course, orientacion[index], turnos[index], index);
             container.innerHTML += card;
         });
     }
 
     generateCards('todos'); 
 
-    function createCard(template, course, orientacion, turnos) {
+    function createCard(template, course, orientacion, turnos, index) {
+        const courseUrl = course.toLowerCase().replace(/\s+/g, '-');
         return template
             .replace('${course}', course)
             .replace('${orientacion}', orientacion)
-            .replace('${turno}', turnos);
+            .replace('${turno}', turnos)
+            .replace('${url}', `${index + 1}-${courseUrl}`);
     }
 
     function filterCards() {

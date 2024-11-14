@@ -8,29 +8,29 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
     <title>{% block title %}Plantilla{% endblock %}</title>
-    <link rel="stylesheet" href="static/plantilla.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/plantilla.css') }}">
     {% block headerinf %}{% endblock %}
 </head>
 <body>
     <div class="side-bar" id="sideBar">
-        <img src="static/img/crown-solid.svg" style="width: 25px; height: 25px; margin: 20px 27px;">
+        <img src="{{ url_for('static', filename='img/crown-solid.svg') }}" style="width: 25px; height: 25px; margin: 20px 27px;">
         <div class="scroll-alumnos">
             <p class="items-name">ALUMNOS</p>
             <a href="{{ url_for('new_student') }}" class="cuadritos">
                 <span>
-                    <img src="static/img/agregar-usuario.svg">
+                    <img src="{{ url_for('static', filename='img/agregar-usuario.svg') }}">
                     <p class="sideBar-item">Nuevo alumno</p>
                 </span>
             </a>
             <a href="{{ url_for('curso') }}" class="cuadritos">
                 <span>
-                    <img src="static/img/agregar-usuario.svg">
+                    <img src="{{ url_for('static', filename='img/agregar-usuario.svg') }}">
                     <p class="sideBar-item">Cursos</p>
                 </span>
             </a>
             <a href="{{ url_for('nuevoCurso') }}" class="cuadritos">
                 <span>
-                    <img src="static/img/agregar-usuario.svg">
+                    <img src="{{ url_for('static', filename='img/agregar-usuario.svg') }}">
                     <p class="sideBar-item">Cursos</p>
                 </span>
             </a>
@@ -56,7 +56,7 @@
                     <!-- {% endblock %} -->
                 </nav>
             </div>
-            <button  id="profileButton" class="button-header" onclick="toggleMenu()"><img src="static/img/perfil.jpg" style="width: 35px; height: 35px; border-radius: 50%;"></button>
+            <button  id="profileButton" class="button-header" onclick="toggleMenu()"><img src="{{ url_for('static', filename='/img/perfil.jpg') }}" style="width: 35px; height: 35px; border-radius: 50%;"></button>
             <!-- Dropdown -->
             <div class="drop" id="dropdown">
                 <div class="dropdown-container">

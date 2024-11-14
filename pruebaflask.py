@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
+from urllib.parse import quote
 import database.Elbase as base
 from flask import jsonify
 import json
@@ -57,7 +58,6 @@ def new_student():
 
 @app.route('/submit', methods=['POST'])
 def formulario():
-    # data = request.form #con esta linea obtiene todos los datos
 
     student_data = {
         'nombre': request.form.get('nombre-alumno'),
@@ -258,14 +258,17 @@ def curso():
     nom = []
     orient = [] 
     turno_list = []
+    url = []
     for n in range(cursos_data):
         curso = base.get_curso_property('Nombre', n + 1)
         orientacion = base.get_curso_property('orientacion', n + 1)
         turno = base.get_curso_property('Turno', n + 1)
+        curso_url = quote(curso.replace(" ", "-").lower())
         nom.append(curso)
         orient.append(orientacion)
         turno_list.append(turno)
-    return render_template("cursos.html", cursos=nom , orientacion= orient, turnos = turno_list) 
+        url.append(curso_url)
+    return render_template("cursos.html", cursos=nom , orientacion= orient, turnos = turno_list, url= url) 
 
 @app.route("/nuevoCurso")
 def nuevoCurso():
@@ -288,9 +291,18 @@ def nuevocursologica():
 def get_carta_template():
     return render_template('/components/carta.html')
 
-@app.route("/cursos/")
-def cursos_lista():
-    return render_template("plantillaListadoCursos.html")
+@app.route("/cursos/<int:curso_id>-<nombre_curso>")
+def cursos_grilla(curso_id,nombre_curso):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    nombre_curso = nombre_curso.replace("-", " ")
+    curso = base.get_curso_property('Nombre', curso_id)
+    orientacion = base.get_curso_property('orientacion', curso_id)
+    turno = base.get_curso_property('Turno', curso_id)
+    
+    # Pasa los datos del curso a la plantilla
+    return render_template("plantillaListadoCursos.html", cursos=curso, orientacion=orientacion, turno=turno)
 
 if __name__ == '__main__':
     app.run(debug=True)
