@@ -1,13 +1,51 @@
 {% extends 'plantilla.html' %}
 {% block title %}{{cursos}}{% endblock %}
 {% block headerinf %}
-<link rel="stylesheet" href="static/plantilla.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
 {% endblock %}
 {% block maincontent %}
 <div class="title-main">
     <h2>{{cursos}}</h2>
     <p>Ciclo lectivo 2024</p> 
 </div>
-<a href="{{ url_for('curso') }}">Volver a Cursos</a>
+<div class="container-inputs">
+    <table class="tablas-design">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Documento</th>
+                <th>Telefono (Tutor)</th>
+                <th>Opciones</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>
+                        <span>
+                            <img src="{{ url_for('static', filename='/img/perfil.jpg') }}">
+                            {{nombre_alumno}}
+                        </span>
+                    </td>
+                    <td>{{documento_alumno}}</td>
+                    <td>{{telefono_tutor}}</td>
+                    <td class="option-table">
+                        <a href="">
+                            <img src="{{ url_for('static', filename='/img/eye-regular.svg') }}">
+                        </a>
+                        <a href=""><img src="{{ url_for('static', filename='/img/trash-can-regular.svg') }}"></a>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </thead>
+    </table>
+    <div class="footer-tools">
+        <div class="list-items">
+
+        </div>
+        <div class="pages">
+            
+        </div>
+    </div>
+</div>
 
 {% endblock %}

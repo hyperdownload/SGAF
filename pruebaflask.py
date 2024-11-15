@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
+from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response, g
 from urllib.parse import quote
 import database.Elbase as base
 from flask import jsonify
@@ -18,14 +18,21 @@ def no_cache(response): #Borra la cache para no guardar las sesiones
 def page_not_found(e):
     return render_template('404.html'), 405
 
+@app.before_request #Para el menu de los usuarios
+def load_user_data():
+    if 'user' in session:
+        g.email = session['user']
+        g.nombre = base.get_user_property('NombreUser', g.email)
+    else:
+        g.email = None
+        g.nombre = None
+
 @app.route('/', methods= ['GET','POST']) 
 def login():
     if request.method == 'POST':
         email = request.form.get("email")
         password = request.form.get("password")
-        # nombre = base.get_user_property('NombreUser', email)
-        print(hashlib.sha256(password.encode()).hexdigest() , base.get_user_property('Password', email))
-        #OBVIAMENTE CAMBIAR LOGICA
+
         if hashlib.sha256(password.encode()).hexdigest() == base.get_user_property('Password', email):
             session['user'] = email  
             return redirect(url_for('dashboard'))
@@ -46,7 +53,7 @@ def forgot_password():
 def dashboard():
     if 'user' not in session:
         return redirect(url_for('login'))
-    response = make_response(render_template("dashboard.html", email=session['user']))
+    response = make_response(render_template("dashboard.html"))
     return no_cache(response)
     
 @app.route("/Nuevo-alumno")
@@ -258,6 +265,8 @@ def formulario():
     anio = request.form.get('year_registration_fields')
     
     cursos_data = base.get_total_cursos()
+    student_id = base.obtain_max_id_student()
+    print(student_id)
 
     for n in range(cursos_data):
         curso = base.get_curso_property('Nombre', n + 1)
@@ -266,7 +275,9 @@ def formulario():
 
         if (int(anio) == obtener_primer_numero(curso) and orientacion.title() == orientacion_bd.title() and 
         turno.title() == turno_bd.title()):
-            pass
+            print("---------------")
+
+            print(student_id)
             #Lo di todo
 
     return "Datos recibidos", 204

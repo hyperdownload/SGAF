@@ -13,22 +13,24 @@
 </head>
 <body>
     <div class="side-bar" id="sideBar">
-        <img src="{{ url_for('static', filename='img/crown-solid.svg') }}" style="width: 25px; height: 25px; margin: 20px 27px;">
+        <a href="{{ url_for('dashboard') }}" style="display: flex;height: 70px;align-items: center;justify-content: center;">
+            <img src="{{ url_for('static', filename='img/logotipo g n.svg') }}" style="width: 35px; height: 35px;">
+        </a>
         <div class="scroll-alumnos">
             <p class="items-name">ALUMNOS</p>
-            <a href="{{ url_for('new_student') }}" class="cuadritos">
+            <a href="{{ url_for('new_student') }}" class="cuadritos {% if request.path == url_for('new_student') %}active{% endif %}">
                 <span>
                     <img src="{{ url_for('static', filename='img/agregar-usuario.svg') }}">
                     <p class="sideBar-item">Nuevo alumno</p>
                 </span>
             </a>
-            <a href="{{ url_for('curso') }}" class="cuadritos">
+            <a href="{{ url_for('curso') }}" class="cuadritos {% if request.path == url_for('curso') %}active{% endif %}">
                 <span>
                     <img src="{{ url_for('static', filename='img/agregar-usuario.svg') }}">
                     <p class="sideBar-item">Cursos</p>
                 </span>
             </a>
-            <a href="{{ url_for('nuevoCurso') }}" class="cuadritos">
+            <a href="{{ url_for('nuevoCurso') }}" class="cuadritos {% if request.path == url_for('nuevoCurso') %}active{% endif %}">
                 <span>
                     <img src="{{ url_for('static', filename='img/agregar-usuario.svg') }}">
                     <p class="sideBar-item">Cursos</p>
@@ -56,7 +58,7 @@
                     <!-- {% endblock %} -->
                 </nav>
             </div>
-            <button  id="profileButton" class="button-header" onclick="toggleMenu()"><img src="{{ url_for('static', filename='/img/perfil.jpg') }}" style="width: 35px; height: 35px; border-radius: 50%;"></button>
+            <button  id="profileButton" class="button-header" onclick="toggleMenu()"><img src="{{ url_for('static', filename='/img/perfil.jpg') }}" style="width: 40px; height: 40px; border-radius: 50%;"></button>
             <!-- Dropdown -->
             <div class="drop" id="dropdown">
                 <div class="dropdown-container">
@@ -70,8 +72,10 @@
                     <div class="user-info">
                         <img src="static/img/perfil.jpg">
                         <div style="display: flex; flex-direction: column;">
-                            <h4>Julio jaramillo</h4> <!-- CONECTAR CON LA BD PARA OBTENER EL USERNAME -->
-                            <p>Elpapu@gmail.com</p> <!-- CONECTAR CON LA BD PARA OBTENER EL MAIL -->
+                            {% if g.email %}
+                            <h4>{{ g.nombre }}</h4> <!-- CONECTAR CON LA BD PARA OBTENER EL USERNAME -->
+                            <p>{{g.email}}</p> <!-- CONECTAR CON LA BD PARA OBTENER EL MAIL -->
+                            {% endif %}
                         </div>
                     </div>
                     <hr>
