@@ -257,7 +257,8 @@ def create_database(path: str) -> None:
         Orientacion TEXT NOT NULL,
         Turno TEXT NOT NULL,
         Activo BOOLEAN NOT NULL,
-        FechaCreacion DATETIME NOT NULL
+        FechaCreacion DATETIME NOT NULL,
+        AnioCurso TEXT NOT NULL
     );
     ''')
     
@@ -464,8 +465,8 @@ def enroll_student_in_course(student_id: int, year: int, turno: str, specialty: 
         cursor.execute(
             '''
             SELECT IdCurso FROM Curso 
-            WHERE Orientacion = ? AND Turno = ? AND Activo = 1 AND strftime('%Y', FechaCreacion) = ?
-            ''', (specialty, turno, str(year))
+            WHERE Orientacion = ? AND Turno = ? AND Activo = 1 AND AnioCurso = ?
+            ''', (specialty, turno, year)
         )
         course = cursor.fetchone()
         if course is None:
@@ -835,7 +836,7 @@ def get_user_property(property_name: str, condition_value: str, condition_field:
     finally:
         conn.close()
 
-def create_course(nombre: str, turno: str, activo: bool, orientacion: str) -> str:
+def create_course(nombre: str, turno: str, activo: bool, orientacion: str, AnioCurso: str) -> str:
     '''
     Crea un nuevo curso en la base de datos si no existe uno con el mismo nombre y turno.
 
@@ -858,9 +859,9 @@ def create_course(nombre: str, turno: str, activo: bool, orientacion: str) -> st
 
         #Registra el curso
         cursor.execute('''
-        INSERT INTO Curso (Nombre, Turno, Activo, FechaCreacion, Orientacion)
-        VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)
-        ''', (nombre.lower(), turno.lower(), activo, orientacion))
+        INSERT INTO Curso (Nombre, Turno, Activo, FechaCreacion, Orientacion, AnioCurso)
+        VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?, ?)
+        ''', (nombre.lower(), turno.lower(), activo, orientacion, AnioCurso))
         
         conn.commit()
         return f"Curso '{nombre}' en turno '{turno}' registrado exitosamente."
@@ -875,9 +876,9 @@ def get_all_courses() -> list:
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
     try:
-        cursor.execute('SELECT IdCurso, Nombre, Turno, Activo, FechaCreacion, Orientacion FROM Curso')
+        cursor.execute('SELECT IdCurso, Nombre, Turno, Activo, FechaCreacion, Orientacion, AnioCurso FROM Curso')
         cursos = cursor.fetchall()
-        return [{"IdCurso": row[0], "Nombre": row[1], "Turno": row[2], "Activo": row[3], "FechaCreacion": row[4], "Orientacion": row[5],} for row in cursos]
+        return [{"IdCurso": row[0], "Nombre": row[1], "Turno": row[2], "Activo": row[3], "FechaCreacion": row[4], "Orientacion": row[5], "AnioCurso": row[6]} for row in cursos]
 
     except sqlite3.Error as e:
         print(f"Error en la base de datos: {e}")

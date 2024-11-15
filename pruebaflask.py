@@ -257,28 +257,19 @@ def formulario():
         'firma_directivo': request.form.get('director_signature'),
     }
     base.register_student_and_tutor(student_data, tutor_data)
-    base.register_legal_data(legal_data)
+    # base.register_legal_data(legal_data)
     base.register_inscription(inscription_data)
 
     orientacion= request.form.get('orientation')
     turno= request.form.get('request_shift_fields')
     anio = request.form.get('year_registration_fields')
     
-    cursos_data = base.get_total_cursos()
+    # cursos_data = base.get_total_cursos()
     student_id = base.obtain_max_id_student()
-    print(student_id)
 
-    for n in range(cursos_data):
-        curso = base.get_curso_property('Nombre', n + 1)
-        orientacion_bd = base.get_curso_property('orientacion', n + 1)
-        turno_bd = base.get_curso_property('Turno', n + 1)
-
-        if (int(anio) == obtener_primer_numero(curso) and orientacion.title() == orientacion_bd.title() and 
-        turno.title() == turno_bd.title()):
-            print("---------------")
-
-            print(student_id)
-            #Lo di todo
+    print( student_id, anio, turno.lower(), orientacion.lower())
+    result = base.enroll_student_in_course(student_id= student_id, year= anio, turno= turno.lower(), specialty= "Primer ciclo")
+    print(result)
 
     return "Datos recibidos", 204
 
@@ -314,8 +305,9 @@ def nuevocursologica():
     nombre_curso = request.form.get("nombre-curso")
     orientation_options = request.form.get("orientation-options")
     turno_options = request.form.get("turno-options")
+    anio_curso = obtener_primer_numero(nombre_curso)
     # Crear el curso en la base de datos
-    base.create_course(nombre_curso, turno_options, True, orientation_options)
+    base.create_course(nombre_curso, turno_options, True, orientation_options, anio_curso)
 
     return redirect(url_for('curso'))
 
