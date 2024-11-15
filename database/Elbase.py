@@ -722,6 +722,17 @@ def register_student_and_tutor(student_data: dict, tutor_data: dict) -> str:
     finally:
         conn.close()  
 
+def obtain_max_id_student():
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+    cursor.execute('SELECT MAX(IdAlumno) FROM Alumno')
+    result = cursor.fetchone()
+    if result and result[0] is not None:
+        return result[0]
+    else:
+        print("No se encontraron registros en la tabla.")
+    conn.close()
+
 def register_legal_data(legal_data: dict) -> str:
     """
     Registra los datos legales asociados a un alumno en la tabla Legal.
