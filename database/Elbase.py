@@ -723,6 +723,23 @@ def register_student_and_tutor(student_data: dict, tutor_data: dict) -> str:
         conn.close()  
 
 def obtain_max_id_student():
+    """Obtener el ID máximo de estudiante de la base de datos.
+
+    Esta función se conecta a la base de datos y consulta la tabla 'Alumno' para encontrar el ID de estudiante más alto. 
+    Si no se encuentran registros, imprime un mensaje indicando que no existen registros.
+
+    Args:
+        None
+
+    Returns:
+        int: El ID máximo de estudiante, o None si no se encuentran registros.
+
+    Raises:
+        sqlite3.Error: Si hay un error al conectarse a la base de datos o al ejecutar la consulta.
+
+    Examples:
+        max_id = obtain_max_id_student()
+    """
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
     cursor.execute('SELECT MAX(IdAlumno) FROM Alumno')
