@@ -30,10 +30,10 @@ class BDViewerApp:
         if event.delta:
             # Sensibilidad aumentada
             scroll_units = int(-event.delta / 120) * sensitivity_factor
-            self.content_tree.yview_scroll(scroll_units, "units")
         else:
             scroll_units = sensitivity_factor if event.num == 5 else -sensitivity_factor
-            self.content_tree.yview_scroll(scroll_units, "units")
+
+        self.content_tree.yview_scroll(scroll_units, "units")
 
     def on_horizontal_scroll(self, event):
         """Desplazamiento horizontal con Control + rueda del ratón"""
@@ -41,10 +41,10 @@ class BDViewerApp:
         if event.delta:
             # Sensibilidad aumentada
             scroll_units = int(-event.delta / 120) * sensitivity_factor
-            self.content_tree.xview_scroll(scroll_units, "units")
         else:
             scroll_units = sensitivity_factor if event.num == 5 else -sensitivity_factor
-            self.content_tree.xview_scroll(scroll_units, "units")
+
+        self.content_tree.xview_scroll(scroll_units, "units")
 
     def _create_interface(self):
         frame_top = ctk.CTkFrame(self.root)
