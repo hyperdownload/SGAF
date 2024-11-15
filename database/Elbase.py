@@ -456,13 +456,11 @@ def enroll_student_in_course(student_id: int, year: int, turno: str, specialty: 
         conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
 
-        # Verificar que el alumno existe
         cursor.execute('SELECT * FROM Alumno WHERE IdAlumno = ?', (student_id,))
         if cursor.fetchone() is None:
             conn.close()
             return "Error: El alumno especificado no existe."
 
-        # Verificar que el curso con las condiciones especificadas existe
         cursor.execute(
             '''
             SELECT IdCurso FROM Curso 
@@ -476,13 +474,11 @@ def enroll_student_in_course(student_id: int, year: int, turno: str, specialty: 
 
         course_id = course[0]
 
-        # Verificar que el curso no haya alcanzado el límite de 30 alumnos
         cursor.execute('SELECT COUNT(*) FROM AlumnoCurso WHERE IdCurso = ?', (course_id,))
         if cursor.fetchone()[0] >= 30:
             conn.close()
             return "Error: El curso ha alcanzado el límite máximo de 30 alumnos."
 
-        # Inscribir al alumno en el curso
         cursor.execute('INSERT INTO AlumnoCurso (IdAlumno, IdCurso) VALUES (?, ?)', (student_id, course_id))
         conn.commit()
         conn.close()
