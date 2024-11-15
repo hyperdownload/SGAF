@@ -439,6 +439,89 @@ def delete_student_of_course(student_id:int, course_id:int):
     except sqlite3.Error as e:
         return f"Error: {e}"
 
+def enroll_student_in_course(student_id: int, year: int, turno: str, specialty: str) -> str:
+    """
+    Inscribe a un alumno en un curso, verificando condiciones de año, turno y especialidad.
+
+    Args:
+        student_id (int): El identificador único del estudiante.
+        year (int): El año en el que se inscribe el curso.
+        turno (str): El turno (mañana, tarde, noche) del curso.
+        specialty (str): La especialidad del curso.
+
+    Returns:
+        str: Un mensaje que indica el éxito o fracaso de la inscripción.
+    """
+    try:
+        conn = sqlite3.connect(database_path)
+        cursor = conn.cursor()
+
+        # Verificar que el alumno existe
+        cursor.execute('SELECT * FROM Alumno WHERE IdAlumno = ?', (student_id,))
+        if cursor.fetchone() is None:
+            conn.close()
+            return "Error: El alumno especificado no existe."
+
+        # Verificar que el curso con las condiciones especificadas existe
+        cursor.execute(
+            '''
+            SELECT IdCurso FROM Curso 
+            WHERE Orientacion = ? AND Turno = ? AND Activo = 1 AND strftime('%Y', FechaCreacion) = ?
+            ''', (specialty, turno, str(year))
+        )
+        course = cursor.fetchone()
+        if course is None:
+            conn.close()
+            return "Error: No se encontró un curso que cumpla con las condiciones especificadas."
+
+        course_id = course[0]
+
+        # Verificar que el curso no haya alcanzado el límite de 30 alumnos
+        cursor.execute('SELECT COUNT(*) FROM AlumnoCurso WHERE IdCurso = ?', (course_id,))
+        if cursor.fetchone()[0] >= 30:
+            conn.close()
+            return "Error: El curso ha alcanzado el límite máximo de 30 alumnos."
+
+        # Inscribir al alumno en el curso
+        cursor.execute('INSERT INTO AlumnoCurso (IdAlumno, IdCurso) VALUES (?, ?)', (student_id, course_id))
+        conn.commit()
+        conn.close()
+        return "Alumno inscrito correctamente en el curso."
+    except sqlite3.Error as e:
+        if conn:
+            conn.close()
+        return f"Error en la inscripción: {e}"
+
+def get_student_data(student_id: int) -> dict:
+    """
+    Obtiene los datos completos de un alumno desde la base de datos.
+
+    Args:
+        student_id (int): El identificador único del estudiante.
+
+    Returns:
+        dict: Un diccionario con los datos del alumno o un mensaje de error si no se encuentra el alumno.
+    """
+    try:
+        conn = sqlite3.connect(database_path)
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT * FROM Alumno WHERE IdAlumno = ?', (student_id,))
+        student_data = cursor.fetchone()
+
+        if student_data is None:
+            conn.close()
+            return {"Error": "El alumno especificado no existe."}
+
+        column_names = [description[0] for description in cursor.description]
+        conn.close()
+
+        return dict(zip(column_names, student_data))
+    except sqlite3.Error as e:
+        if conn:
+            conn.close()
+        return {"Error": f"Error al obtener datos del alumno: {e}"}
+
 # Funciones de registro de usuario
 def register_user(user_name: str, password: str, email: str, rango: str) -> str:
     """
