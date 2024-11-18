@@ -3,90 +3,96 @@
 <!-- ----------------------------------------------------->
 {% block maincontent %}
 <style>
-.stats-container {
-    display: flex;
-    gap: 1rem;
-}
-
-.card {
-    background-color: #2874A6; /* cambia el color de fondo de todas las tarjetas */
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-    text-align: center;
-    flex: 1;
-    max-width: 150px;
-    transition: transform 0.3s ease;
-    color: #ffffff; 
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-.icon {
-    font-size: 32px; 
-    margin-bottom: 8px; 
-}
-
-h3 {
-    margin: 0;
-    font-size: 16px; 
-}
-
-p {
-    margin: 8px 0 0; 
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.image img {
-    width: 30px;
-    height: 30px;
-}
-</style>
-<div class="stats-container">
-    <div class="card">
-        <div class="image">
-            <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}">
+    .stats-container {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    
+    .card {
+        background-color: #2874A6;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 24px;
+        text-align: center;
+        flex: 1;
+        max-width: 200px;
+        transition: transform 0.3s ease;
+        color: #ffffff;
+        margin-bottom: 16px;
+    }
+    
+    .card:hover {
+        transform: scale(1.05);
+    }
+    
+    .image img {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 16px;
+    }
+    
+    h3 {
+        margin: 0;
+        font-size: 16px;
+    }
+    
+    p {
+        margin: 8px 0 0;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    </style>
+    
+    <div class="stats-container">
+        <div class="card">
+            <div class="image">
+                <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}" alt="Alumnos Registrados">
+            </div>
+            <h3>Alumnos Registrados</h3>
+            <p>01</p>
         </div>
-        <h3>Alumnos Registrados</h3>
-        <p>01</p> <!--Aca se debera poner algo que este vinculado a la base Trabajo para mauri-->
-    </div>
-    <div class="card">
-        <div class="image">
-            <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}">
+    
+        <div class="card">
+            <div class="image">
+                <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}" alt="Cursos Existentes">
+            </div>
+            <h3>Cursos Existentes</h3>
+            <p>{{ total_cursos }}</p>
         </div>
-        <h3>Cursos Existentes</h3>
-        <p>2</p> <!--Aca se debera poner algo que este vinculado a la base Trabajo para mauri-->
-    </div>
-    <div class="card">
-        <div class="image">
-            <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}">
+    
+        <div class="card">
+            <div class="image">
+                <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}" alt="Proyectos Realizados">
+            </div>
+            <h3>Proyectos Realizados</h3>
+            <p>356</p>
         </div>
-        <h3>Proyectos Realizados</h3>
-        <p>356</p> <!--Aca se debera poner algo que este vinculado a la base Trabajo para mauri-->
-    </div>
-    <div class="card">
-        <div class="image">
-            <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}">
+    
+        <div class="card">
+            <div class="image">
+                <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}" alt="Otro ítem">
+            </div>
+            <h3>No sé qué más poner</h3>
+            <p>696</p>
         </div>
-        <h3>No se que más poner</h3>
-        <p>696</p> <!--Aca se debera poner algo que este vinculado a la base Trabajo para mauri-->
-    </div>
-    <div class="card">
-        <div class="image">
-            <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}">
+    
+        <div class="card">
+            <div class="image">
+                <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}" alt="Otro ítem">
+            </div>
+            <h3>No sé qué más poner</h3>
+            <p>60</p>
         </div>
-        <h3>No se que más poner</h3>
-        <p>60</p> <!--Aca se debera poner algo que este vinculado a la base Trabajo para mauri-->
-    </div>
-    <div class="card">
-        <div class="image">
-            <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}">
+    
+        <div class="card">
+            <div class="image">
+                <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}" alt="Otro ítem">
+            </div>
+            <h3>No sé qué más poner</h3>
+            <p>59</p>
         </div>
-        <h3>No se que más poner</h3>
-        <p>59</p> <!--Aca se debera poner algo que este vinculado a la base Trabajo para mauri-->
     </div>
-</div>
+    
 {% endblock %}
