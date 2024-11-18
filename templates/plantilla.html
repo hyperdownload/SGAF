@@ -20,20 +20,20 @@
             <p class="items-name">ALUMNOS</p>
             <a href="{{ url_for('new_student') }}" class="cuadritos {% if request.path == url_for('new_student') %}active{% endif %}">
                 <span>
-                    <img src="{{ url_for('static', filename='img/agregar-usuario.svg') }}">
+                    <img src="{{ url_for('static', filename='img/logotipo g n.svg') }}" style="width: 25px; height: 25px;">
                     <p class="sideBar-item">Nuevo alumno</p>
                 </span>
             </a>
             <a href="{{ url_for('curso') }}" class="cuadritos {% if request.path == url_for('curso') %}active{% endif %}">
                 <span>
-                    <img src="{{ url_for('static', filename='img/agregar-usuario.svg') }}">
+                    <img src="{{ url_for('static', filename='img/logotipo g n.svg') }}" style="width: 25px; height: 25px;">
                     <p class="sideBar-item">Cursos</p>
                 </span>
             </a>
             <a href="{{ url_for('nuevoCurso') }}" class="cuadritos {% if request.path == url_for('nuevoCurso') %}active{% endif %}">
                 <span>
-                    <img src="{{ url_for('static', filename='img/agregar-usuario.svg') }}">
-                    <p class="sideBar-item">Cursos</p>
+                    <img src="{{ url_for('static', filename='img/logotipo g n.svg') }}" style="width: 25px; height: 25px;">
+                    <p class="sideBar-item">Crear nuevos cursos</p>
                 </span>
             </a>
 

@@ -268,7 +268,7 @@ def formulario():
     student_id = base.obtain_max_id_student()
 
     print( student_id, anio, turno.lower(), orientacion.lower())
-    result = base.enroll_student_in_course(student_id= student_id, year= anio, turno= turno.lower(), specialty= "Primer ciclo")
+    result = base.enroll_student_in_course(student_id= student_id, year= anio, turno= turno.lower(), specialty= "Orientacion")
     print(result)
 
     return "Datos recibidos", 204
