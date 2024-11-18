@@ -43,57 +43,16 @@
         font-size: 24px;
         font-weight: bold;
     }
-
     </style>
-    
     <div class="stats-container">
-        <div class="card">
-            <div class="image">
-                <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}" alt="Alumnos Registrados">
+        {% for stat in stats %}
+            <div class="card">
+                <div class="image">
+                    <img src="{{ url_for('static', filename=stat.img) }}" alt="{{ stat.txt }}">
+                </div>
+                <h3 class="card-title">{{ stat.txt }}</h3>
+                <p class="card-text">{{ stat.count }}</p>
             </div>
-            <h3 class="card-title">Alumnos Registrados</h3>
-            <p class="card-text">01</p>
-        </div>
-    
-        <div class="card">
-            <div class="image">
-                <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}" alt="Cursos Existentes">
-            </div>
-            <h3 class="card-title">Cursos Existentes</h3>
-            <p class="card-text">{{ total_cursos }}</p>
-        </div>
-    
-        <div class="card">
-            <div class="image">
-                <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}" alt="Proyectos Realizados">
-            </div>
-            <h3 class="card-title">Proyectos Realizados</h3>
-            <p class="card-text">356</p>
-        </div>
-    
-        <div class="card">
-            <div class="image">
-                <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}" alt="Otro ítem">
-            </div>
-            <h3 class="card-title">No sé qué más poner</h3>
-            <p class="card-text">696</p>
-        </div>
-    
-        <div class="card">
-            <div class="image">
-                <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}" alt="Otro ítem">
-            </div>
-            <h3 class="card-title">No sé qué más poner</h3>
-            <p class="card-text">60</p>
-        </div>
-    
-        <div class="card">
-            <div class="image">
-                <img src="{{ url_for('static', filename='img/logotipo g b.svg') }}" alt="Otro ítem">
-            </div>
-            <h3 class="card-title">No sé qué más poner</h3>
-            <p class="card-text">59</p>
-        </div>
+        {% endfor %}
     </div>
-    
 {% endblock %}

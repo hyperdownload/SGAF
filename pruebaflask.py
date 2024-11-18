@@ -54,8 +54,17 @@ def dashboard():
     if 'user' not in session:
         return redirect(url_for('login'))
     cursos_data = base.get_total_cursos()
-    print(cursos_data) 
-    response = make_response(render_template("dashboard.html", total_cursos=cursos_data))
+    #alumnos_registrados = base.get_total_alumnos() 
+    stats = [
+        {'img': 'img/Logotipo g b.svg', 'txt': 'Alumnos Registrados', 'count': 124},
+        {'img': 'img/Logotipo g b.svg', 'txt': 'Cursos Existentes', 'count': cursos_data},
+        {'img': 'img/otro4.svg', 'txt': 'otro item', 'count': 356},
+        {'img': 'img/otro.svg', 'txt': 'otro item 1', 'count': 696},
+        {'img': 'img/otro2.svg', 'txt': 'otro item 2', 'count': 60},
+        {'img': 'img/otro3.svg', 'txt': 'otro item 3', 'count': 59}
+    ]
+    
+    response = make_response(render_template("dashboard.html", stats=stats))
     return no_cache(response)
 
 @app.route("/Nuevo-alumno")
