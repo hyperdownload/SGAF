@@ -53,16 +53,10 @@ def forgot_password():
 def dashboard():
     if 'user' not in session:
         return redirect(url_for('login'))
-    response = make_response(render_template("dashboard.html"))
+    cursos_data = base.get_total_cursos()
+    print(cursos_data) 
+    response = make_response(render_template("dashboard.html", total_cursos=cursos_data))
     return no_cache(response)
-
-@app.route("/dashboard_logica")
-def dashboard_logica():
-    total_cursos = base.get_total_cursos()  # Devuelve la cantidad de cursos
-    print("Total de cursos:", total_cursos)  # Imprime el valor en la consola
-    
-    return render_template("dashboard.html", total_cursos=total_cursos)
-
 
 @app.route("/Nuevo-alumno")
 def new_student():
