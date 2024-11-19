@@ -134,7 +134,7 @@ def create_database(path: str) -> None:
         Nombre TEXT NOT NULL,
         Apellido TEXT NOT NULL,
         EstadoDNI TEXT NOT NULL,
-        DNI INTEGER NOT NULL UNIQUE,
+        DNI INTEGER NOT NULL,
         CorreoElectronico TEXT,
         Telefono INTEGER NOT NULL,
         Calle TEXT NOT NULL,
@@ -639,12 +639,7 @@ def register_student_and_tutor(student_data: dict, tutor_data: dict) -> str:
     cursor = conn.cursor()
 
     try:
-        cursor.execute('SELECT IdTutor FROM Tutor WHERE DNI = ?', (tutor_data["dni"],))
-        tutor = cursor.fetchone()
-
-        if tutor:
-            id_tutor = tutor[0]
-        else:
+        if True:
             print(tutor_data["estado_dni"])
             cursor.execute('''
                 INSERT INTO Tutor (
@@ -665,7 +660,7 @@ def register_student_and_tutor(student_data: dict, tutor_data: dict) -> str:
 
         cursor.execute('SELECT IdAlumno FROM Alumno WHERE DNI = ?', (student_data["dni"],))
         if cursor.fetchone() is not None:
-            return "Error: ya existe un alumno con este DNI."
+            print ("Error: ya existe un alumno con este DNI.")
 
         cursor.execute('''
         INSERT INTO Alumno (

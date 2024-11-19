@@ -232,7 +232,7 @@ def formulario():
         'tutor-education': request.form.get('tutor-education'),
         'otrodato-domicilio-tutor': request.form.get('otrodato-domicilio-tutor'),
     }
-
+    base.register_student_and_tutor(student_data, tutor_data)
     student_id = base.obtain_max_id_student()
 
     inscription_data = {
@@ -268,7 +268,7 @@ def formulario():
         'aclaracion': request.form.get('clarification'),
         'firma_directivo': request.form.get('director_signature'),
     }
-    base.register_student_and_tutor(student_data, tutor_data)
+    
     
     # base.register_legal_data(legal_data)
     base.register_inscription(inscription_data)
