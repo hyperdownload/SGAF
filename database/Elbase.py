@@ -440,6 +440,33 @@ def delete_student_of_course(student_id:int, course_id:int):
     except sqlite3.Error as e:
         return f"Error: {e}"
 
+def obtain_student_count()->int:
+    """Obtener el número total de estudiantes registrados en la base de datos.
+
+    Esta función se conecta a la base de datos y ejecuta una consulta para contar el número total de entradas en la tabla 'Alumno'. 
+    Devuelve el conteo de estudiantes, proporcionando una visión general rápida de la población estudiantil.
+
+    Args:
+        None
+
+    Returns:
+        int: El número total de estudiantes registrados.
+
+    Raises:
+        sqlite3.Error: Si hay un error al conectarse a la base de datos o al ejecutar la consulta.
+
+    Examples:
+        student_count = obtain_student_count()
+    """
+    try:
+        conn = sqlite3.connect(database_path)
+        cursor = conn.cursor()
+        cursor.execute('SELECT COUNT(*) FROM Alumno')
+        return cursor.fetchone()[0]
+    except sqlite3.Error as e:
+        print(f"Error en la base de datos: {e}")
+        return 0
+
 def enroll_student_in_course(student_id: int, year: int, turno: str, specialty: str) -> str:
     """
     Inscribe a un alumno en un curso, verificando condiciones de año, turno y especialidad.
