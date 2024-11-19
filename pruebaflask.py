@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response, g
 from urllib.parse import quote
 import database.Elbase as base
+from database.back_functions import *
 from flask import jsonify
 import json
 import hashlib
@@ -56,7 +57,7 @@ def dashboard():
     cursos_data = base.get_total_cursos()
     #alumnos_registrados = base.get_total_alumnos() 
     stats = [
-        {'img': 'img/Logotipo g b.svg', 'txt': 'Alumnos Registrados', 'count': 124},
+        {'img': 'img/Logotipo g b.svg', 'txt': 'Alumnos Registrados', 'count': base.obtain_max_id_student()},
         {'img': 'img/Logotipo g b.svg', 'txt': 'Cursos Existentes', 'count': cursos_data},
         {'img': 'img/otro4.svg', 'txt': 'otro item', 'count': 356},
         {'img': 'img/otro.svg', 'txt': 'otro item 1', 'count': 696},
@@ -297,7 +298,7 @@ def curso():
     turno_list = []
     url = []
     for n in range(cursos_data):
-        curso = base.get_curso_property('Nombre', n + 1)
+        curso = f"{base.get_curso_property('Curso', n + 1)}°{base.get_curso_property('Division', n + 1)}"
         orientacion = base.get_curso_property('orientacion', n + 1)
         turno = base.get_curso_property('Turno', n + 1)
         curso_url = quote(curso.replace(" ", "-").lower())
@@ -316,12 +317,11 @@ def nuevoCurso():
 @app.route("/Nuevo-curso-logica" , methods=['POST']) 
 def nuevocursologica():
     # Aca se obtienen los datos zz
-    nombre_curso = request.form.get("nombre-curso")
+    curso, division = split_course_division(request.form.get("nombre-curso"))
     orientation_options = request.form.get("orientation-options")
     turno_options = request.form.get("turno-options")
-    anio_curso = obtener_primer_numero(nombre_curso)
     # Crear el curso en la base de datos
-    base.create_course(nombre_curso, turno_options, True, orientation_options, anio_curso)
+    base.create_course(curso, division, turno_options, True, orientation_options)
 
     return redirect(url_for('curso'))
 
