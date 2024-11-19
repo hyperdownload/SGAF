@@ -1,4 +1,4 @@
-```markdown
+
 # 💻 My Electron App
 
 Una aplicación creada con **Electron** y **Node.js**.
@@ -49,6 +49,3 @@ My Electron App/
 - Para más información sobre cómo utilizar **Electron**, visita su [documentación oficial](https://www.electronjs.org/docs).
 
 ---
-
-¡Disfruta de tu aplicación! 🎉
-```
