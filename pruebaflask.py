@@ -1,3 +1,22 @@
+import subprocess
+import sys
+
+#Lista de paquetes externos necesarios
+REQUIRED_PACKAGES = [
+    "flask",
+    "urllib3"
+]
+
+def check_and_install_packages(packages):
+    for package in packages:
+        try:
+            __import__(package)
+        except ImportError:
+            print(f"'{package}' no está instalado. Instalando...")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+check_and_install_packages(REQUIRED_PACKAGES)
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response, g
 from urllib.parse import quote
 import database.Elbase as base
