@@ -11,5 +11,7 @@ def split_course_division(input_string):
     try:
         curso, division = input_string.split('°')
         return int(curso), int(division)
-    except ValueError:
-        raise ValueError("El formato de la cadena debe ser 'X°Y', donde X y Y son números.")
+    except ValueError as e:
+        raise ValueError(
+            "El formato de la cadena debe ser 'X°Y', donde X y Y son números."
+        ) from e

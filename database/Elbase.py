@@ -821,11 +821,7 @@ def obtain_max_id_student():
     cursor = conn.cursor()
     cursor.execute('SELECT MAX(IdAlumno) FROM Alumno')
     result = cursor.fetchone()
-    if result and result[0] is not None:
-        return result[0]
-    else:
-        print("No se encontraron registros en la tabla.")
-    conn.close()
+    return result[0] if result and result[0] is not None else 0
 
 def register_legal_data(legal_data: dict) -> str:
     """
@@ -938,7 +934,7 @@ def create_course(curso: int, division: int, turno: str, activo: bool, orientaci
         cursor.execute('''
         INSERT INTO Curso (Curso, Division, Turno, Activo, FechaCreacion, Orientacion)
         VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?)
-        ''', (curso, division, turno.lower(), activo, orientacion))
+        ''', (curso, division, turno, activo, orientacion))
         
         conn.commit()
         return f"Curso '{curso}' en turno '{turno}' registrado exitosamente."
@@ -1026,4 +1022,4 @@ def get_total_cursos() -> int:
 if __name__ == '__main__':
     create_database(database_path)
 
-    print(register_user('Sex', '1', 'b@gmail.com', 'Admin'))
+    print(register_user('SGA', '1', 'b@gmail.com', 'Admin'))

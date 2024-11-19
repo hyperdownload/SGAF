@@ -354,7 +354,7 @@ def cursos_grilla(curso_id,nombre_curso):
         return redirect(url_for('login'))
     
     nombre_curso = nombre_curso.replace("-", " ")
-    curso = base.get_curso_property('Nombre', curso_id)
+    curso = f"{base.get_curso_property('Curso', curso_id)}°{base.get_curso_property('Division', curso_id)}"
     orientacion = base.get_curso_property('orientacion', curso_id)
     turno = base.get_curso_property('Turno', curso_id)
 
