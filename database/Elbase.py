@@ -545,6 +545,60 @@ def get_student_data(student_id: int) -> dict:
         if conn:
             conn.close()
         return {"Error": f"Error al obtener datos del alumno: {e}"}
+    
+def get_tutor_data(tutor_id: int) -> dict:
+    """
+    Obtiene los datos completos de un tutor desde la base de datos.
+
+    Args:
+        tutor_id (int): El identificador único del tutor.
+
+    Returns:
+        dict: Un diccionario con los datos del tutor o un mensaje de error si no se encuentra el tutor.
+    """
+    try:
+        conn = sqlite3.connect(database_path)
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT * FROM Tutor WHERE IdTutor = ?', (tutor_id,))
+        student_data = cursor.fetchone()
+
+        if student_data is None:
+            conn.close()
+            return {"Error": "El tutor especificado no existe."}
+
+        column_names = [description[0] for description in cursor.description]
+        conn.close()
+
+        return dict(zip(column_names, student_data))
+    except sqlite3.Error as e:
+        if conn:
+            conn.close()
+        return {"Error": f"Error al obtener datos del tutor: {e}"}
+    
+def get_students_in_course(curso_id: int) -> list:
+    """
+    Obtiene los IDs de los alumnos pertenecientes a un curso específico.
+    
+    Args:
+        curso_id (int): El identificador único del curso.
+
+    Returns:
+        list: Lista de IDs de los alumnos en el curso.
+    """
+    try:
+        conn = sqlite3.connect(database_path)
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT IdAlumno FROM AlumnoCurso WHERE IdCurso = ?', (curso_id,))
+        student_ids = [row[0] for row in cursor.fetchall()]
+
+        conn.close()
+        return student_ids
+    except sqlite3.Error as e:
+        if conn:
+            conn.close()
+        return {"Error": f"Error al obtener los alumnos del curso: {e}"}
 
 # Funciones de registro de usuario
 def register_user(user_name: str, password: str, email: str, rango: str) -> str:

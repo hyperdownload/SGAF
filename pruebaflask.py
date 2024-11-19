@@ -232,9 +232,11 @@ def formulario():
         'tutor-education': request.form.get('tutor-education'),
         'otrodato-domicilio-tutor': request.form.get('otrodato-domicilio-tutor'),
     }
-    
+
+    student_id = base.obtain_max_id_student()
+
     inscription_data = {
-        "id_alumno": 1,
+        "id_alumno": student_id,
         'tipo_inscripcion': request.form.get('type_registration'),
         'orientacion': request.form.get('orientation'),
         'anio': request.form.get('year_registration_fields'),
@@ -249,9 +251,8 @@ def formulario():
         'escuela_contraturno_eee': request.form.get('complementary_institution_eee'),
         'alimento-escolar': request.form.get('alimento-escolar'),  
     }
-
     legal_data = {
-        "id_alumno": 1,
+        "id_alumno": student_id,
         'apellido_legal': request.form.get('last_name_legals'),
         'tipo_documento_legal': request.form.get('doc_type_legals'),
         'numero_documento_legal': request.form.get('doc_number_legals'),
@@ -268,8 +269,10 @@ def formulario():
         'firma_directivo': request.form.get('director_signature'),
     }
     base.register_student_and_tutor(student_data, tutor_data)
+    
     # base.register_legal_data(legal_data)
     base.register_inscription(inscription_data)
+    base.register_legal_data(legal_data)
 
     orientacion= request.form.get('orientation')
     turno= request.form.get('request_shift_fields')
@@ -279,7 +282,7 @@ def formulario():
     student_id = base.obtain_max_id_student()
 
     print( student_id, anio, turno.lower(), orientacion.lower())
-    result = base.enroll_student_in_course(student_id= student_id, year= anio, turno= turno.lower(), specialty= "Orientacion")
+    result = base.enroll_student_in_course(student_id= student_id, year= anio, turno= turno.lower(), specialty= orientacion)
     print(result)
 
     return "Datos recibidos", 204
@@ -335,9 +338,29 @@ def cursos_grilla(curso_id,nombre_curso):
     curso = base.get_curso_property('Nombre', curso_id)
     orientacion = base.get_curso_property('orientacion', curso_id)
     turno = base.get_curso_property('Turno', curso_id)
+
+    student_ids = base.get_students_in_course(curso_id)
     
+    student_field = ["IdAlumno", "Nombre", "DNI", "IdTutor", "Genero"]
+    tutor_field = ["Telefono",]
+
+    students_data = []
+    for student_id in student_ids:
+        student_data = base.get_student_data(student_id)
+        filtered_student = {field: student_data.get(field) for field in student_field}
+
+        tutor_id = filtered_student.get("IdTutor")
+        if tutor_id:
+            tutor_data = base.get_tutor_data(tutor_id)
+            filter_tutor_data = {field: tutor_data.get(field) for field in tutor_field}
+            filtered_student.update({"Tutor": filter_tutor_data})
+        else:
+            print("no funciona pe")
+
+        students_data.append(filtered_student)
+
     # Pasa los datos del curso a la plantilla
-    return render_template("plantillaListadoCursos.html", cursos=curso, orientacion=orientacion, turno=turno)
+    return render_template("plantillaListadoCursos.html", cursos=curso, orientacion=orientacion, turno=turno, students_data=students_data)
 
 def run_server():
     app = Flask(__name__)
