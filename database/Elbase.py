@@ -253,12 +253,12 @@ def create_database(path: str) -> None:
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Curso (
         IdCurso INTEGER PRIMARY KEY AUTOINCREMENT,
-        Nombre TEXT NOT NULL,
+        Curso TEXT NOT NULL,
+        Division TEXT NOT NULL,
         Orientacion TEXT NOT NULL,
         Turno TEXT NOT NULL,
         Activo BOOLEAN NOT NULL,
-        FechaCreacion DATETIME NOT NULL,
-        AnioCurso TEXT NOT NULL
+        FechaCreacion DATETIME NOT NULL
     );
     ''')
     
@@ -492,7 +492,7 @@ def enroll_student_in_course(student_id: int, year: int, turno: str, specialty: 
         cursor.execute(
             '''
             SELECT IdCurso FROM Curso 
-            WHERE Orientacion = ? AND Turno = ? AND Activo = 1 AND AnioCurso = ?
+            WHERE Orientacion = ? AND Turno = ? AND Activo = 1 AND Curso = ?
             ''', (specialty, turno, year)
         )
         course = cursor.fetchone()
@@ -912,12 +912,13 @@ def get_user_property(property_name: str, condition_value: str, condition_field:
     finally:
         conn.close()
 
-def create_course(nombre: str, turno: str, activo: bool, orientacion: str, AnioCurso: str) -> str:
+def create_course(curso: int, division: int, turno: str, activo: bool, orientacion: str) -> str:
     '''
-    Crea un nuevo curso en la base de datos si no existe uno con el mismo nombre y turno.
+    Crea un nuevo curso en la base de datos si no existe uno con el mismo curso y turno.
 
     Parametros:
-    nombre (str): El nombre del curso.
+    curso (str): El curso del curso.
+    division (int): La división en la que se impartirá el curso.
     turno (str): El turno en el que se impartira el curso (por ejemplo, 'Mañana', 'Tarde').
     activo (bool): Estado de actividad del curso (True si esta activo, False si está inactivo).
     id_orientacion (int): El ID de la orientación asociada al curso.
@@ -929,18 +930,18 @@ def create_course(nombre: str, turno: str, activo: bool, orientacion: str, AnioC
     cursor = conn.cursor()
     try:
         #Verifica si el curso ya existe para evitar duplicados
-        cursor.execute('SELECT IdCurso FROM Curso WHERE Nombre = ? AND Turno = ?', (nombre, turno))
+        cursor.execute('SELECT IdCurso FROM Curso WHERE Curso = ? AND Division = ? AND Turno = ?', (curso, division, turno))
         if cursor.fetchone() is not None:
-            return "Error: ya existe un curso con este nombre y turno."
+            return "Error: ya existe un curso con este curso y turno."
 
         #Registra el curso
         cursor.execute('''
-        INSERT INTO Curso (Nombre, Turno, Activo, FechaCreacion, Orientacion, AnioCurso)
-        VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?, ?)
-        ''', (nombre.lower(), turno.lower(), activo, orientacion, AnioCurso))
+        INSERT INTO Curso (Curso, Division, Turno, Activo, FechaCreacion, Orientacion)
+        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?)
+        ''', (curso, division, turno.lower(), activo, orientacion))
         
         conn.commit()
-        return f"Curso '{nombre}' en turno '{turno}' registrado exitosamente."
+        return f"Curso '{curso}' en turno '{turno}' registrado exitosamente."
 
     except sqlite3.Error as e:
         return f"Error en la base de datos: {e}"
@@ -952,9 +953,9 @@ def get_all_courses() -> list:
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
     try:
-        cursor.execute('SELECT IdCurso, Nombre, Turno, Activo, FechaCreacion, Orientacion, AnioCurso FROM Curso')
+        cursor.execute('SELECT IdCurso, Curso, Division, Turno, Activo, FechaCreacion, Orientacion FROM Curso')
         cursos = cursor.fetchall()
-        return [{"IdCurso": row[0], "Nombre": row[1], "Turno": row[2], "Activo": row[3], "FechaCreacion": row[4], "Orientacion": row[5], "AnioCurso": row[6]} for row in cursos]
+        return [{"IdCurso": row[0], "Curso": row[1], "Division":row[2], "Turno": row[3], "Activo": row[4], "FechaCreacion": row[5], "Orientacion": row[6]} for row in cursos]
 
     except sqlite3.Error as e:
         print(f"Error en la base de datos: {e}")
@@ -1013,8 +1014,9 @@ def get_total_cursos() -> int:
         SELECT MAX(IdCurso) FROM Curso
         ''')
         result = cursor.fetchone()
-
-        return int(result[0]) if result is not None else "Error:"
+        if result != (None,):
+            return int(result[0]) if result is not None else "Error:"
+        else: return 0
     except sqlite3.Error as e:
         return f"Error en la base de datos: {e}"
 
