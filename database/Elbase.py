@@ -678,7 +678,7 @@ def register_student_and_tutor(student_data: dict, tutor_data: dict) -> str:
             DisminucionAuditivaAudifonos,DisminucionVisualLentes,MedicacionHabitualTipo,MotivoOperacion,MuerteSubita,ProblemasCardiacos,TosCronica,Celiaquia,
             DistritoEstablecimiento,NombreEstablecimiento,NumeroEstablecimiento,SectorGestion,ClaveProvincial,CUE,PaisEstablecimientoProcedencia,ProvinciaEstablecimientoProcedencia,
             NivelModalidad,DistritoEstablecimientoProcedencia,GestionEstablecimientoProcedencia,DependenciaEstablecimiento,NombreEscuelaProcedencia
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,
             ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         ''', (
             id_tutor,
@@ -711,8 +711,8 @@ def register_student_and_tutor(student_data: dict, tutor_data: dict) -> str:
             student_data.get("foreign_doc"),
             student_data.get("aboriginal-descendant"),
             student_data.get("language"),
-            student_data.get("other-language"),
             student_data.get("transporte"),
+            student_data.get("other-language"),
             student_data.get("siblings"),
             student_data.get("percibe-auh"),
             student_data.get("percibe-progresar"),
