@@ -6,6 +6,33 @@
 <!-- ----------------------------------------------------->
 {% block maincontent %}
 <!-- <p>{{student}}</p> -->
+<style>
+    .input-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap:0 30px;
+    }
+
+    .input-item {
+        flex: 1 1 calc(50% - 30px);
+        min-width: 200px;
+    }
+    .input-t{
+        flex: 1 1 calc(33% - 30px);
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+    .input-medium {
+        flex: 1 1 calc(24% - 30px);
+        min-width: 200px;
+    }
+    .input-small{
+        flex: 1 1 calc(11.5% - 30px);
+        min-width: 100px;
+    }
+</style>
 
 <div class="container-inputs">
     {% include 'components/tab.html'%}
@@ -21,18 +48,126 @@
         <form action="{{ url_for('formulario') }}" method="post">
             <div class="content active">
                 <div class="divisor-inputs">
-                    <p>{{student}}</p>
+                    <h2>Datos del estudiante</h2>
+                    <div class="input-container">
+                        {% for key in ['Apellido', 'Nombre', 'EstadoDNI', 'DNI', 'CUIL', 'Genero', 'Nacionalidad', 'ProvinciaNacimiento', 'DistritoNacimiento', 'LocalidadNacimiento'] %}
+                            {% if key in student %}
+                                <div class="{% if key in ['EstadoDNI', 'DNI', 'CUIL', 'Genero'] %}input-medium{% else %}input-item{% endif %}">
+                                    <p class="items-name">{{ key }}</p>
+                                    <input type="text" class="input-style" id="{{ key }}" value="{{ student[key] }}" disabled>                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
+
+                <div class="divisor-inputs">
+                    <h2>Domicilio</h2>
+                    <div class="input-container">
+                        {% for key in ['CalleResidencia', 'NumeroCalleResidencia', 'PisoResidencia', 'TorreResidencia', 'DeptoResidencia', 'EntreCalle1', 'EntreCalle2', 'OtroDatoResidencia', 'ProvinciaResidencia', 'DistritoResidencia', 'LocalidadResidencia', 'Telefono', 'Celular'] %}
+                            {% if key in student %}
+                                <div class="
+                                {% if key in ['NumeroCalleResidencia', 'PisoResidencia', 'TorreResidencia', 'DeptoResidencia'] %}input-small
+                                {% elif key in ['EntreCalle1', 'EntreCalle2', 'ProvinciaResidencia', 'DistritoResidencia'] %}input-medium
+                                {% else %}input-item{% endif %}">
+                                    <p class="items-name">{% if key in ['NumeroCalleResidencia'] %} Nº {% else %} {{key}}{% endif %}</p>
+                                    <input type="text" class="input-style" id="{{ key }}" value="{{ student[key] }}" disabled>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="divisor-inputs">
+                    <h2>Otros datos</h2>
+                    <div class="input-container">
+                        {% set txt_title = {
+                            'Aborigen': '¿Se reconoce perteneciente o descendiente de Pueblos Originarios?',
+                            'LenguaIndigena': 'En caso afirmativo',
+                            'OtraLenguaHogar': '¿Se hablan lenguas distintas al castellano en el hogar?'
+                        } %}
+                        {% for key in ['Aborigen', 'OtraLenguaHogar', 'LenguaIndigena', 'PercibeAUH', 'PercibeProgresar','Hermanos', 'Hijos', 'AsistenciaSalasMaternal', 'Transporte'] %}
+                            {% if key in student %}
+                                <div class="{% if key in ['Aborigen','LenguaIndigena', 'OtraLenguaHogar'] %}input-t{% else %}input-item{% endif %}">
+                                    <p class="items-name">{{ txt_title[key] if key in txt_title else key }}</p>
+                                    <input type="text" class="input-style" id="{{ key }}" value="{{ student[key] }}" disabled>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="divisor-inputs">
+                    <h2>Informacion de salud</h2>
+                    <h4  style="width: 100%; margin: 30px 0 0;">Padecido alguna o algunas de las siguientes condiciones de salud</h4>
+                    <div class="input-container">
+                        {% for key in ['Asma', 'Cardiaco', 'Diabetes', 'Presion', 'Convulsiones', 'Sanguineas', 'Quemaduras', 'FaltaOrgano', 'Oncohematologica', 'Inmunodeficiencia', 'Fracturas', 'OtroProblemaHuesos', 'TraumatismoCraneal', 'ProblemaPiel'] %}
+                        {% if key in student %}
+                            <div class="input-medium">
+                                <p class="items-name">{{ key }}</p>
+                                <select class="input-style" id="{{ key }}" disabled>
+                                    <option value="Si" {% if student[key] == 'Si' %}selected{% endif %}>Sí</option>
+                                    <option value="No" {% if student[key] == 'No' %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <h4  style="width: 100%; margin: 30px 0 0;">En relacion con el ejercicio (durante o después), ha padecido</h4>
+                    {% for key in ['Desmayos', 'DolorPecho', 'Mareo', 'MayorCansancio', 'Palpitaciones', 'DificultadRespirar'] %}
+                        {% if key in student %}
+                            <div class="input-t">
+                                <p class="items-name">{{ key }}</p>
+                                <select class="input-style" id="{{ key }}" disabled>
+                                    <option value="Si" {% if student[key] == 'Si' %}selected{% endif %}>Sí</option>
+                                    <option value="No" {% if student[key] == 'No' %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <h4  style="width: 100%; margin: 30px 0 0;">¿Tuvo alguna internación?</h4>
+                    {% for key in ['SalaComun', 'SalaComunVeces', 'SalaComunDiagnostico', 'InternacionIntesiva', 'InternacionIntesivaVeces', 'InternacionIntesivaDiagnostico', 'Alergias', 'Medicamentos', 'Vacunas', 'Alimento', 'PicaduraInsectos', 'AlergiasEstacionales', 'OtrasAlergias', 'MedicamentosRequirioInternacion', 'VacunasRequirioInternacion', 'AlimentoRequirioInternacion', 'PicaduraInsectosRequirioInternacion', 'AlergiasEstacionalesRequirioInternacion', 'OtrasAlergiasRequirioInternacion'] %}
+                        {% if key in student %}
+                            <div class="
+                            {% if key in ['SalaComun', 'SalaComunVeces', 'InternacionIntesiva', 'InternacionIntesivaVeces', 'SalaComunDiagnostico', 'InternacionIntesivaDiagnostico'] %}input-t
+                            {% else %}input-item{% endif %}">
+                                <p class="items-name">{{ key }}</p>
+                                {% if key in ['SalaComunVeces', 'InternacionIntesivaVeces'] %}
+                                    <input type="number" class="input-style" id="{{ key }}" value="{{ student[key] }}" disabled>
+                                {% elif key in ['InternacionIntesivaDiagnostico', 'SalaComunDiagnostico'] %}
+                                    <input type="text" class="input-style" id="{{ key }}" value="{{ student[key] }}" disabled>
+                                {% else %}
+                                    <select class="input-style" id="{{ key }}" disabled>
+                                        <option value="Si" {% if student[key] == 'Si' %}selected{% endif %}>Sí</option>
+                                        <option value="No" {% if student[key] == 'No' %}selected{% endif %}>No</option>
+                                    </select>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <h4  style="width: 100%; margin: 30px 0 0;"></h4>
+                    </div>
+                </div>
+
+                <div class="divisor-inputs">
+                    <h2>Otros datos</h2>
+                    <div class="input-container">
+
+                    </div>
+                </div>
+                <div class="divisor-inputs">
+                    <h2>Otros datos</h2>
+                    <div class="input-container">
+
+                    </div>
+                </div>
+
             </div> 
+        
+        
+        
+        
+        
+        
+        
         </form>
     </div>
-
-
-
-
-
-
-
-
-<input type="text" class="input-style"value="{{ student['Nombre'] }} {{ student['Apellido'] }}" disabled>
 {% endblock %}

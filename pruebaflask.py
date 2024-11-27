@@ -374,8 +374,9 @@ def informacion_alumno(student_id):
     if 'user' not in session:
             return redirect(url_for('login'))
     student_data = base.get_student_data(student_id)
+    filtered_data = dict(list(student_data.items())[2:])
 
-    return render_template("alumnoinfo.html", student=student_data)
+    return render_template("alumnoinfo.html", student=filtered_data)
 
 def run_server():
     app = Flask(__name__)
