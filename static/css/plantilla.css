@@ -5,11 +5,13 @@
     text-decoration: none;
 }
 :root{
-    --background:#FBF8F3;/* Si se cambian este colores se modifica todo*/
-    --hover-pri-color: #232323;/* Si se cambian este colores se modifica todo*/
-    --primary-color:#3d3d3d;/* Si se cambian este colores se modifica todo*/
+    --background:#ffff;/* Si se cambian este colores se modifica todo*/
+    --hover-pri-color: #ecf2ff;/* Si se cambian este colores se modifica todo*/
+    --primary-color:#5d87ff;/* Si se cambian este colores se modifica todo*/
     --amarillo:#fabe25;
-    --azul:#0080ff;
+    --txt:#3d3d3d;
+    --txt-hover:#232323;
+    --azul:#5d87ff;
     --rojo:#e9353f;
     --verde:#33d072;
     --verde2:#4bbf7a;
@@ -71,7 +73,7 @@ button{
     font-family: 'Plus Jakarta Sans';
     font-size: 12px;
     font-weight: bold;
-    color: var(--primary-color);
+    color: var(--txt);
     /* color: #2A3547; */
     margin: 20px 0 10px;
 }
@@ -108,7 +110,7 @@ body{
             display: flex;
             flex-direction: row;
             width: 100%;
-            color: var(--primary-color);
+            color: var(--txt);
             align-items: center;
             cursor: pointer;
         }
@@ -123,7 +125,7 @@ body{
         }
     }
     .cuadritos:hover{
-        background-color: var(--gris1);
+        background-color: var(--hover-pri-color);
     }
     .cuadritos.active {
         background-color: var(--primary-color);
@@ -191,7 +193,7 @@ header{
         }
     }
     .item-nav:hover{
-        background-color: var(--gris1);
+        background-color: var(--hover-pri-color);
     }
     /* ------------------------------DROPDOWN-STYLE----------------------------------- */
     .drop{
@@ -256,7 +258,7 @@ header{
                 display: flex; 
                 justify-content: center; 
                 align-items: center; 
-                background-color: var(--gris); 
+                background-color: var(--hover-pri-color); 
                 border-radius: 5px;
             }
         }
@@ -337,7 +339,7 @@ form input.input-style,.input-style{
     width: 100%;
     height: 50px;
     background-color: var(--background);
-    color: var(--primary-color);
+    color: var(--txt);
     border-style: none;
     border-radius: 10px;
     border: 2px solid #d2d0d0;

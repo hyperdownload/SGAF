@@ -7,7 +7,7 @@
 :root{
     --background:#FBF8F3;
     --amarillo:#fabe25;
-    --azul:#0080ff;
+    --azul:#5d87ff;
     --rojo:#e9353f;
     --verde:#33d072;
     --verde2:#4bbf7a;
@@ -15,6 +15,7 @@
     --negro:#3d3d3d;
     --gris:#dcdcdc;
     --gris1:#edebeb;
+    --hover-pri-color: #ecf2ff;
 
 }
 .plus-jakarta {

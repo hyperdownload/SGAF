@@ -76,12 +76,8 @@ def dashboard():
     cursos_data = base.get_total_cursos()
     #alumnos_registrados = base.get_total_alumnos() 
     stats = [
-        {'img': 'img/Logotipo g b.svg', 'txt': 'Alumnos Registrados', 'count': base.obtain_max_id_student()},
-        {'img': 'img/Logotipo g b.svg', 'txt': 'Cursos Existentes', 'count': cursos_data},
-        {'img': 'img/otro4.svg', 'txt': 'otro item', 'count': 356},
-        {'img': 'img/otro.svg', 'txt': 'otro item 1', 'count': 696},
-        {'img': 'img/otro2.svg', 'txt': 'otro item 2', 'count': 60},
-        {'img': 'img/otro3.svg', 'txt': 'otro item 3', 'count': 59}
+        {'img': 'img/icon-user-male.svg', 'txt': 'Alumnos Registrados', 'count': base.obtain_max_id_student()},
+        {'img': 'img/icon-user-male.svg', 'txt': 'Cursos Existentes', 'count': cursos_data}
     ]
     
     response = make_response(render_template("dashboard.html", stats=stats))
@@ -92,12 +88,6 @@ def new_student():
     if 'user' not in session:
         return redirect(url_for('login'))
     return render_template("new-student.html")
-
-def obtener_primer_numero(cadena): # obtiene el primer numero de un string, lo cree para obtener el año de los cursos
-    for char in cadena:
-        if char.isdigit():
-            return int(char)
-    return None
 
 @app.route('/submit', methods=['POST'])
 def formulario():
@@ -289,7 +279,6 @@ def formulario():
         'firma_directivo': request.form.get('director_signature'),
     }
     
-    
     # base.register_legal_data(legal_data)
     base.register_inscription(inscription_data)
     base.register_legal_data(legal_data)
@@ -302,7 +291,7 @@ def formulario():
     student_id = base.obtain_max_id_student()
 
     print( student_id, anio, turno.lower(), orientacion.lower())
-    result = base.enroll_student_in_course(student_id= student_id, year= anio, turno= turno.lower(), specialty= orientacion)
+    result = base.enroll_student_in_course(student_id= student_id, year= anio, turno= turno, specialty= orientacion)
     print(result)
 
     return "Datos recibidos", 204
@@ -360,7 +349,7 @@ def cursos_grilla(curso_id,nombre_curso):
 
     student_ids = base.get_students_in_course(curso_id)
     
-    student_field = ["IdAlumno", "Nombre", "DNI", "IdTutor", "Genero"]
+    student_field = ["IdAlumno", "Nombre", "Apellido", "DNI", "IdTutor", "Genero"]
     tutor_field = ["Telefono",]
 
     students_data = []
@@ -378,8 +367,15 @@ def cursos_grilla(curso_id,nombre_curso):
 
         students_data.append(filtered_student)
 
-    # Pasa los datos del curso a la plantilla
     return render_template("plantillaListadoCursos.html", cursos=curso, orientacion=orientacion, turno=turno, students_data=students_data)
+
+@app.route("/alumno/<int:student_id>")
+def informacion_alumno(student_id):
+    if 'user' not in session:
+            return redirect(url_for('login'))
+    student_data = base.get_student_data(student_id)
+
+    return render_template("alumnoinfo.html", student=student_data)
 
 def run_server():
     app = Flask(__name__)

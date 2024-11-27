@@ -5,14 +5,14 @@
 {% endblock %}
 {% block maincontent %}
 <div class="title-main">
-    <h2>{{cursos}}</h2>
+    <h2>Curso {{cursos}}</h2>
     <p>Ciclo lectivo 2024</p> 
 </div>
 <div class="container-inputs">
     <table class="tablas-design">
         <thead>
             <tr>
-                <th>Nombre</th>
+                <th style="padding:16px 16px 16px 83px;">Nombre</th>
                 <th>Documento</th>
                 <th>Telefono (Tutor)</th>
                 <th>Opciones</th>
@@ -29,13 +29,13 @@
                             {% else %}
                                 <img src="{{ url_for('static', filename='/img/user-solid.svg') }}">
                             {% endif %}
-                            {{ student.Nombre }}
+                            {{ student.Nombre.title() }} {{ student.Apellido.title() }}
                         </span>
                     </td>
                     <td>{{ student.DNI }}</td>
                     <td>{{ student.Tutor.Telefono}}</td>
                     <td class="option-table">
-                        <a href="">
+                        <a href="{{ url_for('informacion_alumno', student_id=student['IdAlumno']) }}">
                             <img src="{{ url_for('static', filename='/img/eye-regular.svg') }}">
                         </a>
                         <a href=""><img src="{{ url_for('static', filename='/img/trash-can-regular.svg') }}"></a>

@@ -1,0 +1,38 @@
+{% extends 'plantilla.html' %}
+{% block title %}Nuevo curso{% endblock %}
+
+{% block headerinf %}
+{% endblock %}
+<!-- ----------------------------------------------------->
+{% block maincontent %}
+<!-- <p>{{student}}</p> -->
+
+<div class="container-inputs">
+    {% include 'components/tab.html'%}
+    <div class="tab-header-container">
+        <button class="tab_btn active">Alumno</button>
+        <button class="tab_btn">Tutor</button>
+        <button class="tab_btn">Inscripcion</button>
+        <button class="tab_btn">Legal</button>
+        <div class="line"></div>
+    </div>
+    
+    <div class="tab-body-container">
+        <form action="{{ url_for('formulario') }}" method="post">
+            <div class="content active">
+                <div class="divisor-inputs">
+                    <p>{{student}}</p>
+                </div>
+            </div> 
+        </form>
+    </div>
+
+
+
+
+
+
+
+
+<input type="text" class="input-style"value="{{ student['Nombre'] }} {{ student['Apellido'] }}" disabled>
+{% endblock %}

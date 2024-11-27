@@ -70,7 +70,7 @@
                 <div class="sub-menu">
                     <h4>Perfil de usuario</h4>
                     <div class="user-info">
-                        <img src="static/img/perfil.jpg">
+                        <img src="{{ url_for('static', filename='/img/perfil.jpg') }}">
                         <div style="display: flex; flex-direction: column;">
                             {% if g.email %}
                             <h4>{{ g.nombre }}</h4> <!-- CONECTAR CON LA BD PARA OBTENER EL USERNAME -->
@@ -80,7 +80,7 @@
                     </div>
                     <hr>
                     <a href="" class="sub-menu-link">
-                        <div class="cuadro"><img src="static/img/icon-account.svg"></div>
+                        <div class="cuadro"><img src="{{ url_for('static', filename='/img/icon-account.svg') }}"></div>
                         <div style="padding-left: 30px;">
                             <h4>Mi perfil</h4>
                             <p>Configurar cuenta</p>
