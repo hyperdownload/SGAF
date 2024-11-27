@@ -639,30 +639,42 @@ def register_student_and_tutor(student_data: dict, tutor_data: dict) -> str:
     cursor = conn.cursor()
 
     try:
-        if True:
-            print(tutor_data["estado_dni"])
-            cursor.execute('''
+        return _extracted_from_register_student_and_tutor_11(
+            tutor_data, cursor, student_data, conn
+        )
+    except sqlite3.Error as e:
+        conn.rollback()  
+        return f"Error en la base de datos: {e}"
+
+    finally:
+        conn.close()  
+
+
+# TODO Rename this here and in `register_student_and_tutor`
+def _extracted_from_register_student_and_tutor_11(tutor_data, cursor, student_data, conn):
+    print(tutor_data["estado_dni"])
+    cursor.execute('''
                 INSERT INTO Tutor (
                     Parentezco, Nombre, Apellido, EstadoDNI, DNI, CorreoElectronico, Telefono, Calle, NumeroCalle, Piso, Torre,
                     Depto, EntreCalle1, EntreCalle2, Provincia, Distrito, Localidad, NivelEducacionMaximo, NivelEducacionState,
                     Actividad, CPI, DocumentoExtranjero, RecibioEducacion, OtroDatoResidencia
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
-                tutor_data["parentezco"], tutor_data["nombre"], tutor_data["apellido"], tutor_data["estado_dni"], tutor_data["dni"],
-                tutor_data.get("correo"), tutor_data["telefono"], tutor_data["calle"], tutor_data["numero_calle"],
-                tutor_data.get("piso"), tutor_data.get("torre"), tutor_data.get("depto"), tutor_data.get("entre_calle_1"),
-                tutor_data.get("entre_calle_2"), tutor_data["provincia"], tutor_data["distrito"], tutor_data["localidad"],
-                tutor_data.get("nivel_educacion_maximo"), tutor_data.get("completado"), tutor_data.get("actividad"),
-                tutor_data.get("cpi"), tutor_data.get("foreign_doc-tutor"), tutor_data.get("tutor-education"),
-                tutor_data.get("otrodato-domicilio-tutor")
-            ))
-            id_tutor = cursor.lastrowid 
+        tutor_data["parentezco"], tutor_data["nombre"], tutor_data["apellido"], tutor_data["estado_dni"], tutor_data["dni"],
+        tutor_data.get("correo"), tutor_data["telefono"], tutor_data["calle"], tutor_data["numero_calle"],
+        tutor_data.get("piso"), tutor_data.get("torre"), tutor_data.get("depto"), tutor_data.get("entre_calle_1"),
+        tutor_data.get("entre_calle_2"), tutor_data["provincia"], tutor_data["distrito"], tutor_data["localidad"],
+        tutor_data.get("nivel_educacion_maximo"), tutor_data.get("completado"), tutor_data.get("actividad"),
+        tutor_data.get("cpi"), tutor_data.get("foreign_doc-tutor"), tutor_data.get("tutor-education"),
+        tutor_data.get("otrodato-domicilio-tutor")
+    ))
+    id_tutor = cursor.lastrowid 
 
-        cursor.execute('SELECT IdAlumno FROM Alumno WHERE DNI = ?', (student_data["dni"],))
-        if cursor.fetchone() is not None:
-            print ("Error: ya existe un alumno con este DNI.")
+    cursor.execute('SELECT IdAlumno FROM Alumno WHERE DNI = ?', (student_data["dni"],))
+    if cursor.fetchone() is not None:
+        print ("Error: ya existe un alumno con este DNI.")
 
-        cursor.execute('''
+    cursor.execute('''
         INSERT INTO Alumno (
             IdTutor, Nombre, Apellido, DNI, EstadoDNI, CUIL, FechaDeNacimiento, Genero, Nacionalidad, ProvinciaNacimiento, 
             DistritoNacimiento, LocalidadNacimiento, OtraNacionalidad, CalleResidencia, NumeroCalleResidencia, PisoResidencia, 
@@ -681,123 +693,116 @@ def register_student_and_tutor(student_data: dict, tutor_data: dict) -> str:
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,
             ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         ''', (
-            id_tutor,
-            student_data.get("nombre"),
-            student_data.get("apellido"),
-            student_data.get("dni"),
-            student_data.get("estado_dni"),
-            student_data.get("cuil"),
-            student_data.get("fecha_nacimiento"),
-            student_data.get("gender"),
-            student_data.get("nacionalidad"),
-            student_data.get("provincia-nacimiento-alumno-check"),
-            student_data.get("distrito-alumno"),
-            student_data.get("localidad-alumno"),
-            student_data.get("otra-nacionalidad"),
-            student_data.get("calle-alumno"),
-            student_data.get("numero-calle-alumno"),
-            student_data.get("piso-domicilio-alumno"),
-            student_data.get("torre-domicilio-alumno"),
-            student_data.get("depto-domicilio-alumno"),
-            student_data.get("entre-calle-alumno"),
-            student_data.get("y-calle-alumno"),
-            student_data.get("provincia-residencia-alumno"),
-            student_data.get("distrito-residencia-alumno"),
-            student_data.get("localidad-residencia-alumno"),
-            student_data.get("telefono-alumno"),
-            student_data.get("telefono-celular-alumno"),
-            student_data.get("otrodato-domicilio-alumno"),
-            student_data.get("cpi-student"),
-            student_data.get("foreign_doc"),
-            student_data.get("aboriginal-descendant"),
-            student_data.get("language"),
-            student_data.get("transporte"),
-            student_data.get("other-language"),
-            student_data.get("siblings"),
-            student_data.get("percibe-auh"),
-            student_data.get("percibe-progresar"),
-            student_data.get("children"),
-            student_data.get("salas-maternales"),
-            student_data.get("asma"),
-            student_data.get("cardiacas"),
-            student_data.get("diabetes"),
-            student_data.get("presion"),
-            student_data.get("convulsiones"),
-            student_data.get("sanguineas"),
-            student_data.get("quemaduras"),
-            student_data.get("falta-organo"),
-            student_data.get("oncohematologica"),
-            student_data.get("inmunodeficiencias"),
-            student_data.get("fracturas"),
-            student_data.get("disminución-visual"),
-            student_data.get("traumatismo-craneal"),
-            student_data.get("problema-piel"),
-            student_data.get("desmayos"),
-            student_data.get("dolor-fuerte-en-el-pecho"),
-            student_data.get("mareo"),
-            student_data.get("mayor-cansancio"),
-            
-            student_data.get("otro-problema"),
-            student_data.get("palpitaciones"),
-            student_data.get("dificultad-respirar"),
-            student_data.get("sala-comun"),
-            student_data.get("internacion-intensiva"),
-            student_data.get("sala-comun-cuantas-veces"),
-            student_data.get('internacion-intensiva-cuantas-veces'),
-            
-            student_data.get('sala-comun-diagnostico'),
-            student_data.get('internacion-intensiva-diagnostico'),
-            student_data.get('padece-alergia'),
-            student_data.get('medicamentos'),
-            student_data.get('vacunas'),
-            student_data.get('alimento'),
-            student_data.get('picadura-insectos'),
-            student_data.get('alergias-Estacionales'),
-            student_data.get('otras-alergias'),
-            student_data.get('medicamentos-requirio-internacion'),
-            student_data.get('vacunas-requirio-internacion'),
-            student_data.get('alimento-requirio-internacion'),
-            student_data.get('picadura-insectos-requirio-internacion'),
-            student_data.get('alergias-Estacionales-requirio-internacion'),
-            student_data.get('otras-alergias-requirio-internacion'),
-            student_data.get('disminucion-auditiva'),
-            student_data.get('disminución-visual'),
-            student_data.get('medicacion-habitual'),
-            student_data.get('operacion'),
-            student_data.get('disminucion-auditiva-audifonos'),
-            student_data.get('disminución-visual-lentes'),
-            student_data.get('medicacion-habitual-tipo'),
-            student_data.get('motivo-operacion'),
-            student_data.get('muerte-subita'),
-            student_data.get('Diabetes'),
-            student_data.get('problemas-cardíacos'),
-            student_data.get('tos-cronica'),
-            student_data.get('celiaquia'),
-            student_data.get('distrito-establecimiento'),
-            student_data.get('nombre-establecimiento'),
-            student_data.get('numero-establecimiento'),
-            student_data.get('sector-gestion'),
-            student_data.get('clave-provincial'),
-            student_data.get('cue'),
-            student_data.get('pais-establecimiento-procedencia'),
-            student_data.get('provincia-establecimiento-procedencia'),
-            student_data.get('nivel-modalidad'),
-            student_data.get('distrito-establecimiento-procedencia'),
-            
-            student_data.get('gestion-establecimiento-procedencia'),
-            student_data.get('dependecia_establecimiento'),
-            student_data.get('nombre-escuela-procedencia'),
-        ))
+        id_tutor,
+        student_data.get("nombre"),
+        student_data.get("apellido"),
+        student_data.get("dni"),
+        student_data.get("estado_dni"),
+        student_data.get("cuil"),
+        student_data.get("fecha_nacimiento"),
+        student_data.get("gender"),
+        student_data.get("nacionalidad"),
+        student_data.get("provincia-nacimiento-alumno-check"),
+        student_data.get("distrito-alumno"),
+        student_data.get("localidad-alumno"),
+        student_data.get("otra-nacionalidad"),
+        student_data.get("calle-alumno"),
+        student_data.get("numero-calle-alumno"),
+        student_data.get("piso-domicilio-alumno"),
+        student_data.get("torre-domicilio-alumno"),
+        student_data.get("depto-domicilio-alumno"),
+        student_data.get("entre-calle-alumno"),
+        student_data.get("y-calle-alumno"),
+        student_data.get("provincia-residencia-alumno"),
+        student_data.get("distrito-residencia-alumno"),
+        student_data.get("localidad-residencia-alumno"),
+        student_data.get("telefono-alumno"),
+        student_data.get("telefono-celular-alumno"),
+        student_data.get("otrodato-domicilio-alumno"),
+        student_data.get("cpi-student"),
+        student_data.get("foreign_doc"),
+        student_data.get("aboriginal-descendant"),
+        student_data.get("language"),
+        student_data.get("transporte"),
+        student_data.get("other-language"),
+        student_data.get("siblings"),
+        student_data.get("percibe-auh"),
+        student_data.get("percibe-progresar"),
+        student_data.get("children"),
+        student_data.get("salas-maternales"),
+        student_data.get("asma"),
+        student_data.get("cardiacas"),
+        student_data.get("diabetes"),
+        student_data.get("presion"),
+        student_data.get("convulsiones"),
+        student_data.get("sanguineas"),
+        student_data.get("quemaduras"),
+        student_data.get("falta-organo"),
+        student_data.get("oncohematologica"),
+        student_data.get("inmunodeficiencias"),
+        student_data.get("fracturas"),
+        student_data.get("disminución-visual"),
+        student_data.get("traumatismo-craneal"),
+        student_data.get("problema-piel"),
+        student_data.get("desmayos"),
+        student_data.get("dolor-fuerte-en-el-pecho"),
+        student_data.get("mareo"),
+        student_data.get("mayor-cansancio"),
 
-        conn.commit()
-        return f"Alumno {student_data['nombre']} {student_data['apellido']} registrado exitosamente."
-    
-    except sqlite3.Error as e:
-        conn.rollback()  
-        return f"Error en la base de datos: {e}"
+        student_data.get("otro-problema"),
+        student_data.get("palpitaciones"),
+        student_data.get("dificultad-respirar"),
+        student_data.get("sala-comun"),
+        student_data.get("internacion-intensiva"),
+        student_data.get("sala-comun-cuantas-veces"),
+        student_data.get('internacion-intensiva-cuantas-veces'),
 
-    finally:
-        conn.close()  
+        student_data.get('sala-comun-diagnostico'),
+        student_data.get('internacion-intensiva-diagnostico'),
+        student_data.get('padece-alergia'),
+        student_data.get('medicamentos'),
+        student_data.get('vacunas'),
+        student_data.get('alimento'),
+        student_data.get('picadura-insectos'),
+        student_data.get('alergias-Estacionales'),
+        student_data.get('otras-alergias'),
+        student_data.get('medicamentos-requirio-internacion'),
+        student_data.get('vacunas-requirio-internacion'),
+        student_data.get('alimento-requirio-internacion'),
+        student_data.get('picadura-insectos-requirio-internacion'),
+        student_data.get('alergias-Estacionales-requirio-internacion'),
+        student_data.get('otras-alergias-requirio-internacion'),
+        student_data.get('disminucion-auditiva'),
+        student_data.get('disminución-visual'),
+        student_data.get('medicacion-habitual'),
+        student_data.get('operacion'),
+        student_data.get('disminucion-auditiva-audifonos'),
+        student_data.get('disminución-visual-lentes'),
+        student_data.get('medicacion-habitual-tipo'),
+        student_data.get('motivo-operacion'),
+        student_data.get('muerte-subita'),
+        student_data.get('Diabetes'),
+        student_data.get('problemas-cardíacos'),
+        student_data.get('tos-cronica'),
+        student_data.get('celiaquia'),
+        student_data.get('distrito-establecimiento'),
+        student_data.get('nombre-establecimiento'),
+        student_data.get('numero-establecimiento'),
+        student_data.get('sector-gestion'),
+        student_data.get('clave-provincial'),
+        student_data.get('cue'),
+        student_data.get('pais-establecimiento-procedencia'),
+        student_data.get('provincia-establecimiento-procedencia'),
+        student_data.get('nivel-modalidad'),
+        student_data.get('distrito-establecimiento-procedencia'),
+
+        student_data.get('gestion-establecimiento-procedencia'),
+        student_data.get('dependecia_establecimiento'),
+        student_data.get('nombre-escuela-procedencia'),
+    ))
+
+    conn.commit()
+    return f"Alumno {student_data['nombre']} {student_data['apellido']} registrado exitosamente."  
 
 def obtain_max_id_student():
     """Obtener el ID máximo de estudiante de la base de datos.
