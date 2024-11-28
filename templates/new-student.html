@@ -1113,7 +1113,8 @@
                 }});
         });
 
-        document.addEventListener("DOMContentLoaded", updateSections, sectionbs);
+
+        document.addEventListener("DOMContentLoaded", updateSections, sectionbs, LugarNacimientoOptions);
         document.getElementById("dni-options").addEventListener("change", updateSections);
         function updateSections() {
             const hasDniSection = document.getElementById("section-has-dni");
@@ -1143,5 +1144,19 @@
                 provinciaBuenosAires.style.display = "none";
             }
         }
+        document.getElementById("lugar-nacimiento-alumno").addEventListener("change", LugarNacimientoOptions);
+
+            function LugarNacimientoOptions() {
+            const argentinaOptions = document.getElementById("provincia-nacimiento-alumno");
+            const selectedValues = [...document.querySelectorAll("#lugar-nacimiento-alumno input[type='checkbox']:checked")].map(cb => cb.value);
+
+            if (selectedValues.includes("En el extranjero")) {
+                argentinaOptions.style.display = "none";
+            } else {
+                argentinaOptions.style.display = "flex";
+            }
+        }
+        
+
     </script>
 {% endblock %}
