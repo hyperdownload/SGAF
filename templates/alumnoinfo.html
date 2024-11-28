@@ -12,6 +12,9 @@
         flex-wrap: wrap;
         gap:0 30px;
     }
+    .input-c{
+        flex: 1 1 100%;
+    }
 
     .input-item {
         flex: 1 1 calc(50% - 30px);
@@ -123,7 +126,7 @@
                         {% endif %}
                     {% endfor %}
                     <h4  style="width: 100%; margin: 30px 0 0;">¿Tuvo alguna internación?</h4>
-                    {% for key in ['SalaComun', 'SalaComunVeces', 'SalaComunDiagnostico', 'InternacionIntesiva', 'InternacionIntesivaVeces', 'InternacionIntesivaDiagnostico', 'Alergias', 'Medicamentos', 'Vacunas', 'Alimento', 'PicaduraInsectos', 'AlergiasEstacionales', 'OtrasAlergias', 'MedicamentosRequirioInternacion', 'VacunasRequirioInternacion', 'AlimentoRequirioInternacion', 'PicaduraInsectosRequirioInternacion', 'AlergiasEstacionalesRequirioInternacion', 'OtrasAlergiasRequirioInternacion'] %}
+                    {% for key in ['SalaComun', 'SalaComunVeces', 'SalaComunDiagnostico', 'InternacionIntesiva', 'InternacionIntesivaVeces', 'InternacionIntesivaDiagnostico'] %}
                         {% if key in student %}
                             <div class="
                             {% if key in ['SalaComun', 'SalaComunVeces', 'InternacionIntesiva', 'InternacionIntesivaVeces', 'SalaComunDiagnostico', 'InternacionIntesivaDiagnostico'] %}input-t
@@ -143,30 +146,266 @@
                         {% endif %}
                     {% endfor %}
 
+                    <h4  style="width: 100%; margin: 30px 0 0;">¿Ha padecido alergia a los siguientes items?</h4>
+                    {% for key in [ 'Alergias', 'Medicamentos', 'MedicamentosRequirioInternacion', 'Vacunas', 'VacunasRequirioInternacion', 'Alimento', 'AlimentoRequirioInternacion', 'PicaduraInsectos', 'PicaduraInsectosRequirioInternacion', 'AlergiasEstacionales', 'AlergiasEstacionalesRequirioInternacion', 'OtrasAlergias', 'OtrasAlergiasRequirioInternacion'] %}
+                        {% if key in student %}
+                            <div class="
+                            {% if key in ['Alergias'] %}input-c
+                            {% else %}input-item{% endif %}">
+                                <p class="items-name">{% if key in ['Alergias'] %} Alergias graves {% else %} {{key}}{% endif %}</p>
+                                <select class="input-style" id="{{ key }}" disabled>
+                                    <option value="Si" {% if student[key] == 'Si' %}selected{% endif %}>Sí</option>
+                                    <option value="No" {% if student[key] == 'No' %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <h4  style="width: 100%; margin: 30px 0 0;">Otros inconvenientes</h4>
+                    {% for key in ['DisminucionAuditiva', 'DisminucionAuditivaAudifonos', 'DisminucionVisual', 'DisminucionVisualLentes', 'MedicacionHabitual', 'MedicacionHabitualTipo', 'Operacion', 'MotivoOperacion'] %}
+                        {% if key in student %}
+                            <div class="input-item">
+                                <p class="items-name">{{ key }}</p>
+                                {% if key in ['MedicacionHabitualTipo', 'MotivoOperacion'] %}
+                                    <input type="text" class="input-style" id="{{ key }}" value="{{ student[key] }}" disabled>
+                                {% else %}
+                                    <select class="input-style" id="{{ key }}" disabled>
+                                        <option value="Si" {% if student[key] == 'Si' %}selected{% endif %}>Sí</option>
+                                        <option value="No" {% if student[key] == 'No' %}selected{% endif %}>No</option>
+                                    </select>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                     <h4  style="width: 100%; margin: 30px 0 0;"></h4>
                     </div>
                 </div>
 
                 <div class="divisor-inputs">
-                    <h2>Otros datos</h2>
-                    <div class="input-container">
-
+                    <h2>Antecedentes familiares de salud</h2>
+                    <h4  style="width: 100%; margin: 30px 0 0;">Algún familiar directo padece o ha padecido alguna o algunas de las siguientes condiciones de salud</h4>
+                    <div class="input-container" style="width: 100%;">
+                        {% for key in ['MuerteSubita', 'ProblemasCardiacos', 'TosCronica', 'Celiaquia'] %}
+                            {% if key in student %}
+                                <div class="input-item">
+                                    <p class="items-name">{{ key }}</p>
+                                    <select class="input-style" id="{{ key }}" disabled>
+                                        <option value="Si" {% if student[key] == 'Si' %}selected{% endif %}>Sí</option>
+                                        <option value="No" {% if student[key] != 'Si' %}selected{% endif %}>No</option>
+                                    </select>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="divisor-inputs">
-                    <h2>Otros datos</h2>
+                    <h2>Datos del establecimiento en el que se inscribe</h2>
                     <div class="input-container">
+                        {% for key in ['DistritoEstablecimiento', 'NombreEstablecimiento', 'NumeroEstablecimiento', 'SectorGestion', 'ClaveProvincial', 'CUE'] %}
+                            {% if key in student %}
+                                {% if key == 'SectorGestion' %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <select class="input-style" id="{{ key }}" disabled>
+                                            <option value="Estatal" {% if student[key] == 'Estatal' %}selected{% endif %}>Estatal</option>
+                                            <option value="Privado" {% if student[key] == 'Privado' %}selected{% endif %}>Privado</option>
+                                        </select>
+                                    </div>
+                                {% else %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <input type="text" class="input-style" id="{{ key }}" value="{{ student[key] }}" disabled>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
 
+                <div class="divisor-inputs">
+                    <h2>Datos del establecimiento de procedencia</h2>
+                    <div class="input-container">
+                        {% for key in ['PaisEstablecimientoProcedencia', 'ProvinciaEstablecimientoProcedencia', 'NivelModalidad', 'DistritoEstablecimientoProcedencia', 'GestionEstablecimientoProcedencia', 'DependenciaEstablecimiento', 'NombreEscuelaProcedencia'] %}
+                            {% if key in student %}
+                                {% if key == 'PaisEstablecimientoProcedencia' %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <select class="input-style" id="{{ key }}" disabled>
+                                            <option value="Argentina" {% if student[key] == 'Argentina' %}selected{% endif %}>Argentina</option>
+                                            <option value="Otro país" {% if student[key] == 'Otro país' %}selected{% endif %}>Otro país</option>
+                                        </select>
+                                    </div>
+                                {% elif key == 'ProvinciaEstablecimientoProcedencia' %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <select class="input-style" id="{{ key }}" disabled>
+                                            <option value="Buenos Aires" {% if student[key] == 'Buenos Aires' %}selected{% endif %}>Buenos Aires</option>
+                                            <option value="Otra provincia" {% if student[key] == 'Otra provincia' %}selected{% endif %}>Otra provincia</option>
+                                        </select>
+                                    </div>
+                                {% elif key == 'GestionEstablecimientoProcedencia' %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <select class="input-style" id="{{ key }}" disabled>
+                                            <option value="Estatal" {% if student[key] == 'Estatal' %}selected{% endif %}>Estatal</option>
+                                            <option value="Privado" {% if student[key] == 'Privado' %}selected{% endif %}>Privado</option>
+                                        </select>
+                                    </div>
+                                {% elif key == 'DependenciaEstablecimiento' %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <select class="input-style" id="{{ key }}" disabled>
+                                            <option value="Oficial" {% if student[key] == 'Oficial' %}selected{% endif %}>Oficial</option>
+                                            <option value="Municipal" {% if student[key] == 'Municipal' %}selected{% endif %}>Municipal</option>
+                                            <option value="Nacional" {% if student[key] == 'Nacional' %}selected{% endif %}>Nacional</option>
+                                            <option value="Privada" {% if student[key] == 'Privada' %}selected{% endif %}>Privada</option>
+                                            <option value="Otros organismos" {% if student[key] == 'Otros organismos' %}selected{% endif %}>Otros organismos</option>
+                                        </select>
+                                    </div>
+                                {% else %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <input type="text" class="input-style" id="{{ key }}" value="{{ student[key] }}" disabled>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
 
             </div> 
         
+            <div class="content">
+                <div class="divisor-inputs">
+                    <h2>Otros datos</h2>
+                    <div class="input-container">
+                        {% for key in ['Parentezco', 'Nombre', 'Apellido', 'EstadoDNI', 'DNI', 'RecibioEducacion', 'NivelEducacionMaximo', 'NivelEducacionState', 'Actividad', 'CPI', 'DocumentoExtranjero'] %}
+                            {% if key in tutor %}
+                                {% if key == 'Parentezco' %}
+                                    <div class="input-c">
+                                        <p class="items-name">{{ key }}</p>
+                                        <select class="input-style" id="{{ key }}" disabled>
+                                            <option value="Madre" {% if tutor[key] == 'Madre' %}selected{% endif %}>Madre</option>
+                                            <option value="Padre" {% if tutor[key] == 'Padre' %}selected{% endif %}>Padre</option>
+                                            <option value="Tutor" {% if tutor[key] == 'Tutor' %}selected{% endif %}>Tutor</option>
+                                            <option value="Tutora" {% if tutor[key] == 'Tutora' %}selected{% endif %}>Tutora</option>
+                                            <option value="Otro" {% if tutor[key] == 'Otro' %}selected{% endif %}>Otro</option>
+                                        </select>
+                                    </div>
+                                {% elif key == 'EstadoDNI' %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <select class="input-style" id="{{ key }}" >
+                                            <option value="SI, y tiene el DNI físico" {% if tutor[key] == 'SI, y tiene el DNI físico' %}selected{% endif %}>SI, y tiene el DNI físico</option>
+                                            <option value="SI, pero NO tiene el DNI físico y se encuentra en trámite" {% if tutor[key] == 'SI, pero NO tiene el DNI físico y se encuentra en trámite' %}selected{% endif %}>SI, pero NO tiene el DNI físico y se encuentra en trámite</option>
+                                            <option value="SI, pero NO tiene el DNI físico y NO se encuentra en trámite" {% if tutor[key] == 'SI, pero NO tiene el DNI físico y NO se encuentra en trámite' %}selected{% endif %}>SI, pero NO tiene el DNI físico y NO se encuentra en trámite</option>
+                                            <option value="NO posee DNI argentino" {% if tutor[key] == 'NO posee DNI argentino' %}selected{% endif %}>NO posee DNI argentino</option>
+                                        </select>
+                                    </div>
+                                {% elif key in ['CPI', 'DocumentoExtranjero'] %}
+                                    {% if tutor['EstadoDNI'] == 'NO posee DNI argentino' %}
+                                        <div class="input-item">
+                                            <p class="items-name">{{ key }}</p>
+                                            <input type="text" class="input-style" id="{{ key }}" value="{{ tutor[key] }}" disabled>
+                                        </div>
+                                    {% endif %}
+                                {% elif key == 'NivelEducacionMaximo' %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <select class="input-style" id="{{ key }}" disabled>
+                                            <option value="Primario" {% if tutor[key] == 'Primario' %}selected{% endif %}>Primario</option>
+                                            <option value="Secundario" {% if tutor[key] == 'Secundario' %}selected{% endif %}>Secundario</option>
+                                            <option value="Superior" {% if tutor[key] == 'Superior' %}selected{% endif %}>Superior</option>
+                                            <option value="Superior universitario" {% if tutor[key] == 'Superior universitario' %}selected{% endif %}>Superior universitario</option>
+                                            <option value="Posgrado" {% if tutor[key] == 'Posgrado' %}selected{% endif %}>Posgrado</option>
+                                        </select>
+                                    </div>
+                                {% elif key == 'NivelEducacionState' %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <select class="input-style" id="{{ key }}" disabled>
+                                            <option value="Si" {% if tutor[key] == 'Si' %}selected{% endif %}>Si</option>
+                                            <option value="No" {% if tutor[key] == 'No' %}selected{% endif %}>No</option>
+                                        </select>
+                                    </div>
+                                {% elif key == 'Actividad' %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <select class="input-style" id="{{ key }}" disabled>
+                                            <option value="Estudia" {% if tutor[key] == 'Estudia' %}selected{% endif %}>Estudia</option>
+                                            <option value="Trabaja" {% if tutor[key] == 'Trabaja' %}selected{% endif %}>Trabaja</option>
+                                            <option value="Busca trabajo" {% if tutor[key] == 'Busca trabajo' %}selected{% endif %}>Busca trabajo</option>
+                                            <option value="Hace tareas de cuidado no pagas" {% if tutor[key] == 'Hace tareas de cuidado no pagas' %}selected{% endif %}>Hace tareas de cuidado no pagas</option>
+                                            <option value="Recibe jubilación/pensión" {% if tutor[key] == 'Recibe jubilación/pensión' %}selected{% endif %}>Recibe jubilación/pensión</option>
+                                        </select>
+                                    </div>
+                                {% elif key == 'RecibioEducacion' %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <select class="input-style" id="{{ key }}" disabled>
+                                            <option value="SI" {% if tutor[key] == 'SI' %}selected{% endif %}>SI</option>
+                                            <option value="NO" {% if tutor[key] == 'NO' %}selected{% endif %}>NO</option>
+                                        </select>
+                                    </div>
+                                {% else %}
+                                    <div class="input-item">
+                                        <p class="items-name">{{ key }}</p>
+                                        <input type="text" class="input-style" id="{{ key }}" value="{{ tutor[key] }}" disabled>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="divisor-inputs">
+                    <h2>Domicilio</h2>
+                    <div class="input-container">
+                        {% for key in [ 'Calle', 'NumeroCalle', 'Piso', 'Torre', 'Depto', 'EntreCalle1', 'EntreCalle2', 'OtroDatoResidencia', 'Provincia', 'Distrito', 'Localidad', 'CorreoElectronico', 'Telefono'] %}
+                            {% if key in tutor %}
+                                {% if key == 'CorreoElectronico' %}
+                                <div class="input-item">
+                                    <p class="items-name">{{ key }}</p>
+                                    <input type="email" class="input-style" id="{{ key }}" value="{{ tutor[key] }}" disabled>
+                                </div>
+                                {% else %}
+                                    <div class="
+                                    {% if key in ['NumeroCalle', 'Piso', 'Torre', 'Depto'] %}input-small
+                                    {% elif key in ['EntreCalle1', 'EntreCalle2', 'Provincia', 'Distrito'] %}input-medium
+                                    {% else %}input-item{% endif %}">
+                                        <p class="items-name">{% if key in ['NumeroCalle'] %} Nº {% else %} {{key}}{% endif %}</p>
+                                        <input type="text" class="input-style" id="{{ key }}" value="{{ tutor[key] }}" disabled>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         
+            <div class="content">
+                <div class="divisor-inputs">
+                    <h2>Otros datos</h2>
+                    <div class="input-container">
+                    
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="divisor-inputs">
+                    <h2>Otros datos</h2>
+                    <div class="input-container">
+                    
+                    </div>
+                </div>
+            </div>
         
-        
-        
-        
+            <div class="divisor-inputs">
+                <h2>Otros datos</h2>
+                <div class="input-container">
+
+                </div>
+            </div>
         
         </form>
     </div>
