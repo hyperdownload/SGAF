@@ -1236,6 +1236,36 @@
                 });
             });
         });
+        document.addEventListener("DOMContentLoaded", function () {
+            const educSiCheckbox = document.getElementById("educ-si");
+            const educNoCheckbox = document.getElementById("educ-no");
+            const nivelCursadaCheckboxes = document.querySelectorAll("input[name='nivel-cursada']");
+            const nivelCursadaStateCheckboxes = document.querySelectorAll("input[name='nivel-cursada-state']");
+
+            function toggleNivelCursada() {
+                const disable = educNoCheckbox.checked; // Si "NO" esta seleccionado deshabilita los checkboxes
+                // Deshabilita y limpia los checkboxes de nivel-cursada
+                nivelCursadaCheckboxes.forEach((checkbox) => {
+                    checkbox.disabled = disable;
+                    if (disable) {
+                        checkbox.checked = false; // Limpia la seleccion si se desactiva
+                    }
+                });
+
+                // Deshabilita y limpia los checkboxes de nivel-cursada-state
+                nivelCursadaStateCheckboxes.forEach((checkbox) => {
+                    checkbox.disabled = disable;
+                    if (disable) {
+                        checkbox.checked = false; // Limpia la seleccion si se desactiva
+                    }
+                });
+            }
+
+            // Asigna los eventos de cambio a los checkboxes "SI" y "NO"
+            educSiCheckbox.addEventListener("change", toggleNivelCursada);
+            educNoCheckbox.addEventListener("change", toggleNivelCursada);
+        });
+
         // inscriocion
         document.querySelectorAll('input[name="type_registration"]').forEach(function (checkbox) {
         checkbox.addEventListener('change', function() {
