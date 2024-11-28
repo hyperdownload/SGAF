@@ -18,7 +18,7 @@ def create_database(path: str) -> None:
         IdTutor INTEGER NOT NULL,
         Nombre TEXT NOT NULL,
         Apellido TEXT NOT NULL,
-        DNI INTEGER,
+        DNI INTEGER UNIQUE,
         CUIL INTEGER NOT NULL,
         Lenguaje BOOLEAN DEFAULT 0,
         EstadoDNI TEXT ,
@@ -51,7 +51,7 @@ def create_database(path: str) -> None:
         Activo BOOLEAN DEFAULT 1,
         FechaCreacion DATETIME NOT NULL,
         -- Nuevos campos 
-        Hermanos INTEGER,
+        Hermanos TEXT,
         PercibeAUH BOOLEAN,
         PercibeProgresar BOOLEAN,
         Hijos BOOLEAN,
@@ -679,8 +679,8 @@ def _extracted_from_register_student_and_tutor_11(tutor_data, cursor, student_da
             IdTutor, Nombre, Apellido, DNI, EstadoDNI, CUIL, FechaDeNacimiento, Genero, Nacionalidad, ProvinciaNacimiento, 
             DistritoNacimiento, LocalidadNacimiento, OtraNacionalidad, CalleResidencia, NumeroCalleResidencia, PisoResidencia, 
             TorreResidencia, DeptoResidencia, EntreCalle1, EntreCalle2, ProvinciaResidencia, DistritoResidencia, LocalidadResidencia, 
-            Telefono, Celular, OtroDatoResidencia, CPI, DocumentoExtranjero, Aborigen,Lenguaje, LenguaIndigena, OtraLenguaHogar, Transporte, 
-            Activo, FechaCreacion, Hermanos, PercibeAUH, PercibeProgresar, Hijos, AsistenciaSalasMaternal, Asma, Cardiaco, Diabetes, 
+            Telefono, Celular, OtroDatoResidencia, CPI, DocumentoExtranjero, Aborigen,Lenguaje, Transporte, OtraLenguaHogar, Hermanos,
+            Activo, FechaCreacion, LenguaIndigena, PercibeAUH, PercibeProgresar, Hijos, AsistenciaSalasMaternal, Asma, Cardiaco, Diabetes, 
             Presion, Convulsiones, Sanguineas, Quemaduras, FaltaOrgano, Oncohematologica, Inmunodeficiencia, Fracturas, 
             ProblemaVision, TraumatismoCraneal, ProblemaPiel, Desmayos, DolorPecho, Mareo, 
             MayorCansancio, OtroProblemaHuesos,Palpitaciones,DificultadRespirar,SalaComun,InternacionIntesiva,SalaComunVeces,
@@ -800,7 +800,6 @@ def _extracted_from_register_student_and_tutor_11(tutor_data, cursor, student_da
         student_data.get('dependecia_establecimiento'),
         student_data.get('nombre-escuela-procedencia'),
     ))
-
     conn.commit()
     return f"Alumno {student_data['nombre']} {student_data['apellido']} registrado exitosamente."  
 
