@@ -692,49 +692,56 @@
                             </div>
                         </div>
 
-                        <p class="items-name">¿Posee DNI argentino?</p>
-                        <div class="checkbox-container" style="flex-direction: row;">
+                        <p class="items-name">¿Posee DNI argentino del tutor?</p>
+                        <div class="checkbox-container" id="dni-options-tutor" style="flex-direction: column;">
                             <div class="check-label">
-                                <input type="checkbox" id="dni-si-fisico" name="tutor-dni" value="SI y tiene DNI fisico">
-                                <label for="dni-si-fisico">SI, y tiene el DNI físico</label>
+                                <input type="checkbox" id="dni-tutor-si-fisico" name="tutor-dni" value="SI y tiene DNI físico">
+                                <label for="dni-tutor-si-fisico">SI, y tiene el DNI físico</label>
                             </div>
                             <div class="check-label">
-                                <input type="checkbox" id="dni-si-sin-fisico" name="tutor-dni" value="SI, pero NO tiene el DNI fisico">
-                                <label for="dni-si-sin-fisico">SI, pero NO tiene el DNI físico</label>
+                                <input type="checkbox" id="dni-tutor-si-sin-fisico" name="tutor-dni" value="SI, pero NO tiene el DNI físico y se encuentra en trámite">
+                                <label for="dni-tutor-si-sin-fisico">SI, pero NO tiene el DNI físico y se encuentra en trámite</label>
                             </div>
                             <div class="check-label">
-                                <input type="checkbox" id="dni-no" name="tutor-dni" value="NO, posee DNI argentino">
-                                <label for="dni-no">NO posee DNI argentino</label>
+                                <input type="checkbox" id="dni-tutor-si-no-tramite" name="tutor-dni" value="SI, pero NO tiene el DNI físico y NO se encuentra en trámite">
+                                <label for="dni-tutor-si-no-tramite">SI, pero NO tiene el DNI físico y NO se encuentra en trámite</label>
+                            </div>
+                            <div class="check-label">
+                                <input type="checkbox" id="dni-tutor-no" name="tutor-dni" value="NO posee DNI argentino">
+                                <label for="dni-tutor-no">NO posee DNI argentino</label>
                             </div>
                         </div>
-
-                        <div id="section-has-dni" style="display: none; width: 100%;">
-                            <div class="column-form-left">
-                                <p class="items-name">Sí respondió SI, indique número de DNI argentino:</p>
-                                <input type="number" class="input-style" name="dni-tutor" autocomplete="off" placeholder="" >
+                        <div id="section-has-dni-tutor" style="display: none; flex-direction: row; width: 100%; margin-top: 15px;">
+                            <div class="name-and-input" style="margin-right: 20px;">
+                                <p class="items-name">Si respondió que tiene DNI argentino, indique número:</p>
+                                <input type="number" class="input-style" name="dni-tutor" autocomplete="off" placeholder="Número de DNI">
+                            </div>
+                            <div class="name-and-input">
+                                <p class="items-name">CUIL:</p>
+                                <input type="number" class="input-style" name="cuil-tutor" autocomplete="off" placeholder="CUIL">
                             </div>
                         </div>
-
-                        <div id="section-no-dni" style="display: none;">
-                            <p class="items-name">Sí respondio que NO tiene DNI argentino:</p>
-                            <div class="checkbox-container">
+                        <div id="section-no-dni-tutor" style="display: none; flex-direction: row; width: 100%; gap: 30; margin-top: 15px;">
+                            <p class="items-name">Si respondió que NO tiene DNI argentino:</p>
+                            <div class="checkbox-container" style="flex-direction: column;">
                                 <div class="check-label">
-                                    <label>¿Posee certificado de pre-identificación(CPI)?</label>
-                                    <input style="margin: 0 10px 0 0;" type="checkbox" name="cpi-tutor" value="Si" checked>
-                                    <label for="checkbox1">Si</label>
+                                    <label>¿Posee certificado de pre-identificación (CPI)?</label>
+                                    <input style="margin: 0 10px 0 0;" type="checkbox" name="cpi-tutor" value="Si">
+                                    <label>Si</label>
                                     <input style="margin: 0 10px 0 0;" type="checkbox" name="cpi-tutor" value="No">
-                                    <label for="checkbox1">No</label>
+                                    <label>No</label>
                                 </div>
                                 <div class="check-label">
                                     <label>¿Posee documento extranjero?</label>
-                                    <input style="margin: 0 10px 0 0;" type="checkbox" name="foreign_doc-tutor" value="Si" checked>
-                                    <label for="checkbox1">Si</label>
-                                    <input type="text" style="max-width: 110px" placeholder="Indique tipo" autocomplete="off" name="document_type" class="input-style">
-                                    <input style="margin: 0 10px 0 10px;"type="checkbox" name="foreign_doc-tutor"  value="No">
-                                    <label for="checkbox1">No</label>
+                                    <input style="margin: 0 10px 0 0;" type="checkbox" name="foreign-doc-tutor" value="Si">
+                                    <label>Si</label>
+                                    <input type="text" style="max-width: 150px;" placeholder="Indique tipo" autocomplete="off" name="document-type-tutor" class="input-style">
+                                    <input style="margin: 0 10px 0 10px;" type="checkbox" name="foreign-doc-tutor" value="No">
+                                    <label>No</label>
                                 </div>
                             </div>
-                        </div>
+                        </div>
+
 
                         <p class="items-name">¿Asistió a algún establecimiento educativo?</p>
                         <div class="checkbox-container" style="flex-direction: row;">
@@ -1114,13 +1121,16 @@
         });
 
 
-        document.addEventListener("DOMContentLoaded", updateSections, sectionbs, LugarNacimientoOptions);
+        document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("dni-options").addEventListener("change", updateSections);
+        document.getElementById("dni-options-tutor").addEventListener("change", updateTutorSections);
+        });
+
         function updateSections() {
             const hasDniSection = document.getElementById("section-has-dni");
             const noDniSection = document.getElementById("section-no-dni");
             const checkedValue = [...document.querySelectorAll("#dni-options input[type='checkbox']:checked")].map(cb => cb.value);
-            
+
             if (checkedValue.includes("NO posee DNI argentino")) {
                 hasDniSection.style.display = "none";
                 noDniSection.style.display = "block";
@@ -1131,8 +1141,24 @@
                 hasDniSection.style.display = "none";
                 noDniSection.style.display = "none";
             }
-
         }
+
+        function updateTutorSections() {
+            const hasDniSection = document.getElementById("section-has-dni-tutor");
+            const noDniSection = document.getElementById("section-no-dni-tutor");
+            const checkedValue = [...document.querySelectorAll("#dni-options-tutor input[type='checkbox']:checked")].map(cb => cb.value);
+
+            if (checkedValue.includes("NO posee DNI argentino")) {
+                hasDniSection.style.display = "none";
+                noDniSection.style.display = "block";
+            } else if (checkedValue.length > 0) {
+                hasDniSection.style.display = "flex";
+                noDniSection.style.display = "none";
+            } else {
+                hasDniSection.style.display = "none";
+                noDniSection.style.display = "none";
+            }
+        }
         document.getElementById("provincia-nacimiento-alumno").addEventListener("change", sectionbs);
         function sectionbs() {
             const provinciaBuenosAires = document.getElementById("BSAS-option");
