@@ -830,54 +830,15 @@
                     <button class="button2" type="submit">subir</button>
                 </div>
                 
-                <div class="content"> 
-                    <div class="divisor-inputs">
-                        <h2 style="width: 100%;">Inscripción</h2>
-                        {% set registration_data = {
-                            'Se inscribe en': { 'type_registration': ['Ciclo Básico', 'Ciclo Superior', 'Aula de fortalecimiento', 'Escuela Profesional Secundaria'] },
-                        } %}
-                        {% for title, options in registration_data.items() %}
-                            <p class="items-name">{{ title }}</p>
-                            <div class="checkbox-container" style="flex-direction: row;">
-                                {% for name, labels in options.items() %}
-                                    {% for label in labels %}
-                                        <div class="check-label">
-                                            <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
-                                            <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
-                                        </div>
-                                    {% endfor %}
-                                {% endfor %}
-                            </div>
-                        {% endfor %}
-                        
-                        <div class="column-form-left" style="display: flex; flex-wrap: wrap; column-gap:30px;">
-                            <div class="name-and-input">
-                                <p class="items-name">Orientación</p>
-                                <select class="input-style" id="orientation-options" name="orientation" required>
-                                    <option class="option-style" value="Primer ciclo">Primer ciclo</option>
-                                    <option class="option-style" value="Informatica">Informatica</option>
-                                    <option class="option-style" value="Electromecanica">Electromecanica</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="column-form-right" style="display: flex; flex-wrap: wrap; column-gap:30px;">
-                            {% set year_registration = {
-                                'Año': { 'year_registration_fields': ['1', '2', '3', '4', '5', '6', '7'] },
+                    <div class="content"> 
+                        <div class="divisor-inputs">
+                            <h2 style="width: 100%;">Inscripción</h2>
+                            {% set registration_data = {
+                                'Se inscribe en': { 'type_registration': ['Ciclo Básico', 'Ciclo Superior', 'Aula de fortalecimiento', 'Escuela Profesional Secundaria'] },
                             } %}
-                            
-                            <p class="items-name">Año</p>
-                            <div class="checkbox-container" id="checkbox-container" style="flex-flow: row wrap;">
-                                <!-- los checkboxes se añaden dinámicamente con js -->
-                            </div>
-                        </div>
-                    </div>
-                            {% set request_for_shift = {
-                                'Turno': { 'request_shift_fields': ['Mañana', 'Tarde', 'Vespertino', 'Noche'] },}            
-                            %}
-                            {% for title, options in request_for_shift.items() %}
+                            {% for title, options in registration_data.items() %}
                                 <p class="items-name">{{ title }}</p>
-                                <div class="checkbox-container" style="flex-flow: row wrap;">
+                                <div class="checkbox-container" style="flex-direction: row;">
                                     {% for name, labels in options.items() %}
                                         {% for label in labels %}
                                             <div class="check-label">
@@ -888,13 +849,53 @@
                                     {% endfor %}
                                 </div>
                             {% endfor %}
-
+                            
+                            <div class="column-form-left" style="display: flex; flex-wrap: wrap; column-gap:30px;">
+                                <div class="name-and-input">
+                                    <p class="items-name">Orientación</p>
+                                    <select class="input-style" id="orientation-options" name="orientation" required>
+                                        <option class="option-style" value="Primer ciclo">Primer ciclo</option>
+                                        <option class="option-style" value="Informatica">Informatica</option>
+                                        <option class="option-style" value="Electromecanica">Electromecanica</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="column-form-right" style="display: flex; flex-wrap: wrap; column-gap:30px;">
+                                {% set year_registration = {
+                                    'Año': { 'year_registration_fields': ['1', '2', '3', '4', '5', '6', '7'] },
+                                } %}
+                                
+                                <p class="items-name">Año</p>
+                                <div class="checkbox-container" id="checkbox-container" style="flex-flow: row wrap;">
+                                    <!-- los checkboxes se añaden dinámicamente con js -->
+                                </div>
+                            </div>
+                      </div>
+                        <div class="divisor-inputs" style="padding-left: 10px;">
+                            {% set request_for_shift = {
+                                'Turno': { 'request_shift_fields': ['Mañana', 'Tarde', 'Vespertino', 'Noche'] },}            
+                            %}
+                            {% for title, options in request_for_shift.items() %}
+                                <p class="items-name">{{ title }}</p>
+                                <div class="checkbox-container" style="flex-flow: row wrap; margin-left: 10px;">
+                                    {% for name, labels in options.items() %}
+                                        {% for label in labels %}
+                                            <div class="check-label">
+                                                <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                                <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        
                             {% set request_for_workday = {
                                 'Jornada': { 'request_workday_fields': ['Simple', 'Extendida', 'Completa/Doble escolaridad'] },}            
                             %}
                             {% for title, options in request_for_workday.items() %}
                                 <p class="items-name">{{ title }}</p>
-                                <div class="checkbox-container" style="flex-flow: row wrap;">
+                                <div class="checkbox-container" style="flex-flow: row wrap; margin-left: 10px;">
                                     {% for name, labels in options.items() %}
                                         {% for label in labels %}
                                             <div class="check-label">
@@ -909,7 +910,7 @@
                         <div class="divisor-inputs">
                             <h2 style="width: 100%;">Condición en la Inscripción actual</h2>
                             {% set registration_condition = {
-                                'Jornada': { 'registration_conditiony_fields': ['Ingresante al Nivel', 'Promovid@', 'Reinscript@'] },}            
+                                'Jornada': { 'registration_conditiony_fields': ['Ingresante al Nivel', 'Promovid@', 'Reinscript@'] },}
                             %}
                             {% for title, options in registration_condition.items() %}
                                 <p class="items-name">{{ title }}</p>
@@ -917,13 +918,25 @@
                                     {% for name, labels in options.items() %}
                                         {% for label in labels %}
                                             <div class="check-label">
-                                                <input type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}" value="{{ label }}">
+                                                <input type="checkbox" 
+                                                       id="{{ name }}-{{ loop.index }}" 
+                                                       name="{{ name }}" 
+                                                       value="{{ label }}" 
+                                                       class="styled-checkbox" 
+                                                       data-condition="{{ label }}" 
+                                                       onchange="generateYearOptions()">
                                                 <label for="{{ name }}-{{ loop.index }}">{{ label }}</label>
                                             </div>
                                         {% endfor %}
                                     {% endfor %}
                                 </div>
                             {% endfor %}
+                        </div>
+                        <div class="divisor-inputs">
+                            <h2 style="width: 100%;">Seleccione el Año</h2>
+                            <div id="year-options" class="checkbox-container" style="flex-flow: row wrap;">
+                                <!-- los checkboxes se añaden dinámicamente con js -->
+                            </div>
                         </div>
                         <div class="divisor-inputs">
                             <h2 style="width: 100%;">Inclusión</h2>
@@ -1274,5 +1287,49 @@
         document.querySelector('input[name="type_registration"][value="Ciclo Básico"]').checked = true;
         document.querySelector('input[name="type_registration"]:checked').dispatchEvent(new Event('change'));
     };
+
+    //Ingresante al Nivel Promovid@ Reinscript@
+    function generateYearOptions() {
+        const selectedCondition = document.querySelector('input[name="registration_conditiony_fields"]:checked')
+            ?.getAttribute("data-condition");
+        const yearOptionsContainer = document.getElementById('year-options');
+        yearOptionsContainer.innerHTML = "";
+
+        let years = [];
+        if (selectedCondition === "Ingresante al Nivel") {
+            years = [1]; 
+        } else if (selectedCondition === "Promovid@" || selectedCondition === "Reinscript@") {
+            years = [2, 3, 4, 5, 6, 7]; 
+        }
+
+        years.forEach(year => {
+            const div = document.createElement('div');
+            div.className = "check-label"; 
+            
+            // pone el sufijo correcto para cada año
+            let yearText = "";
+            if (year === 1) {
+                yearText = "1ro";
+            } else if (year === 2) {
+                yearText = "2do";
+            } else if (year === 3) {
+                yearText = "3ro";
+            } else if (year === 4) {
+                yearText = "4to";
+            } else if (year === 5) {
+                yearText = "5to";
+            } else if (year === 6) {
+                yearText = "6to";
+            } else if (year === 7) {
+                yearText = "7mo";
+            }
+
+            div.innerHTML = `
+                <input type="checkbox" id="year-${year}" name="year" value="${year}" class="styled-checkbox">
+                <label for="year-${year}">${yearText}</label>
+            `;
+            yearOptionsContainer.appendChild(div);
+        });
+    }
     </script>
 {% endblock %}
